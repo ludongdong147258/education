@@ -23,7 +23,11 @@ angular.module('education')
             getPersonalInfo: function() {
                 StudentService.getPersonalInfo({}, function(data) {
                     if (data.success == 'Y') {
-                        $scope.personalInfo = data.data;
+                        var data = data.data;
+                        if(data.age){
+                            data.age = parseInt(data.age);
+                        }
+                        $scope.personalInfo = data;
                         if($scope.personalInfo.state){
                             angular.forEach($scope.personalInfo.state,function(val){
                                 angular.forEach($scope.states,function(item){
