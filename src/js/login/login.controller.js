@@ -26,13 +26,12 @@ angular.module('education')
             if (flag) {
                 LoginService.login($scope.loginInfo, function(data) {
                     if (data.success == 'Y') {
+                        CONFIG.token = data.data.token;
                         $rootScope.showMessage('登录成功!');
                         var user = data.data.user;
                         user.role = $scope.loginInfo.type;
-                        user.isLogin = true;
                         localStorage.setItem("token",data.data.token);
                         localStorage.setItem("user",JSON.stringify(user));
-                        CONFIG.token = data.data.token;
                         CONFIG.user = user;
                         $rootScope.user = user;
                         $state.go('home');

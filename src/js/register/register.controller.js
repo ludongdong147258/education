@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('RegisterController', ['$rootScope', '$scope', '$state', '$stateParams', 'RegisterService', 'LoginService', '$timeout', function($rootScope, $scope, $state, $stateParams, RegisterService, LoginService, $timeout) {
+    .controller('RegisterController', ['$rootScope', '$scope', '$state', '$stateParams', 'RegisterService', 'LoginService', '$timeout','CONFIG', function($rootScope, $scope, $state, $stateParams, RegisterService, LoginService, $timeout,CONFIG) {
         $rootScope.showHeaderBar = false;
         var obj = {
             validateInput: function(type) {
@@ -38,7 +38,7 @@ angular.module('education')
         };
         // 返回
         $scope.back = function() {
-            $state.go('home');
+            window.history.back();
         };
         $scope.displayStates = [true, false, false];
         // tab切换
@@ -61,8 +61,15 @@ angular.module('education')
                     $scope.registerInfo[type],
                     function(data) {
                         if (data.success == 'Y') {
+                            CONFIG.token = data.data.token;
+                            var user = data.data.user;
+                            user.role = type;
+                            localStorage.setItem("token",data.data.token);
+                            localStorage.setItem("user",JSON.stringify(user));
+                            CONFIG.user = user;
+                            $rootScope.user = user;
                             $rootScope.showMessage('注册成功!');
-                            $state.go('login');
+                            $state.go('home');
                         } else if (data.success == 'N') {
                             for (var prop in data.msg) {
                                 $rootScope.showMessage(data.msg[prop]);
