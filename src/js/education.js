@@ -247,6 +247,15 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
                         controller: 'SearchController'
                     }
                 }
+            }).state('updatepwd', {
+                url: '/updatepwd',
+                cache: false,
+                views: {
+                    baseContent: {
+                        templateUrl: './js/updatepwd/updatepwd.html',
+                        controller: 'UpdatepwdController'
+                    }
+                }
             });
     }])
     .controller('MainController', ['$rootScope', '$scope', '$state', '$ionicSideMenuDelegate', '$ionicModal', '$ionicPopup', '$timeout', '$ionicLoading', '$ionicPopover', function($rootScope, $scope, $state, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $ionicPopover) {
