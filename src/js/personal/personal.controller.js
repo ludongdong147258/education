@@ -5,6 +5,9 @@ angular.module('education')
             window.history.back();
         };
         if ($rootScope.user) {
+            if(!$rootScope.user.avatar){
+                $rootScope.user.avatar = '././images/person.png';
+            }
             var role = $rootScope.user.role;
             $scope.roleDisplay = CONFIG[role];
             switch (role) {
