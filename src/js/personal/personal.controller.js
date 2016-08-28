@@ -5,7 +5,7 @@ angular.module('education')
             window.history.back();
         };
         if ($rootScope.user) {
-            if(!$rootScope.user.avatar){
+            if (!$rootScope.user.avatar) {
                 $rootScope.user.avatar = '././images/person.png';
             }
             var role = $rootScope.user.role;
@@ -54,9 +54,13 @@ angular.module('education')
                         state: 'staffOrder',
                         class: 'ion-ios-list energized',
                         name: '我的订单'
-                    },{
+                    }, {
+                        state: 'staffOrderService',
+                        class: 'ion-ios-list-outline calm',
+                        name: '服务订单提交'
+                    }, {
                         state: 'examineList',
-                        class: 'ion-ios-list energized',
+                        class: 'ion-ios-people positive',
                         name: '机构/教师审核'
                     }]
                     break;

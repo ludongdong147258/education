@@ -76,7 +76,7 @@
                 辅导仪上门安装:
             </div>
             <div class="col">
-                5000元
+                ¥5000元
             </div>
         </div>
         <div class="row">
@@ -84,7 +84,7 @@
                 作业辅导服务:
             </div>
             <div class="col">
-                x 5个月 1500元
+                x 5个月 ¥1500元
             </div>
         </div>
         <div class="row">
@@ -92,7 +92,7 @@
                 预习、复习服务:
             </div>
             <div class="col">
-                x 5个月 2500元
+                x 5个月 ¥2500元
             </div>
         </div>
         <div class="row">
@@ -100,7 +100,7 @@
                 补习服务:
             </div>
             <div class="col">
-                x 5个月 2500元
+                x 5个月 ¥2500元
             </div>
         </div>
         <div class="row">
@@ -108,31 +108,14 @@
                 <strong>总价:<strong/>
             </div>
             <div class="col">
-                <span class="assertive">7000元</span>
+                <span class="assertive">¥7000元</span>
             </div>
         </div>
-        <div class="button-bar">
-            <button ng-class="{'button-energized':dispalyStates[0]}" class="button button-full button-clear button-stable" ng-click="tabChange(0)">
-                支付宝收款
-            </button>
-            <button ng-class="{'button-energized':dispalyStates[1]}" class="button button-full button-clear button-stable" ng-click="tabChange(1)">
-                微信收款
-            </button>
-            <button ng-class="{'button-energized':dispalyStates[2]}" class="button button-full button-clear button-stable" ng-click="tabChange(2)">
-                网银收款
-            </button>
-        </div>
-        <label class="item item-input" ng-show="dispalyStates[0]">
-            <span class="input-label">支付宝账号</span>
-            <input type="text" placeholder="未填写" ng-model="personalInfo.alipay">
-        </label>
-        <label class="item item-input" ng-show="dispalyStates[1]">
-            <span class="input-label">微信账号</span>
-            <input type="text" placeholder="未填写" ng-model="personalInfo.wechatpay">
-        </label>
-        <label class="item item-input" ng-show="dispalyStates[2]">
-            <span class="input-label">银行卡号</span>
-            <input type="number" placeholder="未填写" ng-model="personalInfo.bankcard">
-        </label>
     </ion-content>
+    <ion-footer-bar>
+        <div class="button-bar footer-bar">
+            <a class="button button-energized">微信支付</a>
+            <a class="button button-energized">支付宝支付</a>
+        </div>
+    </ion-footer-bar>
 </ion-view>

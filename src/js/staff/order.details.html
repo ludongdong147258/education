@@ -109,25 +109,31 @@
                 <span class="assertive">¥7000元</span>
             </div>
         </div>
-        <div class="button-bar">
-            <button ng-class="{'button-energized':dispalyStates[0]}" class="button button-full button-clear button-stable" ng-click="tabChange(0)">
+        <div class="button-bar" style="padding:0 5px;">
+            <button ng-class="{'button-energized':dispalyStates[0]}" class="button button-full button-clear button-stable button-outline" ng-click="tabChange(0)" style="padding:0 10px;">
                 支付宝收款
             </button>
-            <button ng-class="{'button-energized':dispalyStates[1]}" class="button button-full button-clear button-stable" ng-click="tabChange(1)">
+            <button ng-class="{'button-energized':dispalyStates[1]}" class="button button-full button-clear button-stable button-outline" ng-click="tabChange(1)" style="padding:0 10px;">
                 微信收款
             </button>
-            <button ng-class="{'button-energized':dispalyStates[2]}" class="button button-full button-clear button-stable" ng-click="tabChange(2)">
-                网银收款
+            <button ng-class="{'button-energized':dispalyStates[2]}" class="button button-full button-clear button-stable button-outline" ng-click="tabChange(2)" style="padding:0 10px;">
+                现金支付
             </button>
         </div>
-        <div ng-show="dispalyStates[0]">
-            1
+        <div ng-show="dispalyStates[0]" class="code-box">
+            <img src="././images/qr.png" alt="" />
         </div>
-        <div ng-show="dispalyStates[1]">
-            2
+        <div ng-show="dispalyStates[1]" class="code-box">
+            <img src="././images/qr.png" alt="" />
         </div>
         <div ng-show="dispalyStates[2]">
-            3
+            <div class="row">
+                <div class="col">
+                    <a class="button button-block button-energized" style="margin-top:-10px;">
+                        确认已收到现金
+                    </a>
+                </div>
+            </div>
         </div>
     </ion-content>
 </ion-view>

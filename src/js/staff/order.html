@@ -13,85 +13,45 @@
             </button>
         </div>
         <div ng-show="displayStates[0]">
-            <div class="row-bottom m10" ng-click="showConfirm()">
+            <div class="row-bottom m10" ng-click="showConfirm()" ng-repeat="item in equipmentList">
                 <div class="row">
                     <div class="col">
-                        预约单号:13161995317
+                        预约单号:{{item.sn}}
                     </div>
                     <div class="col">
-                        姓名:李晓明
+                        姓名:{{item.link_name}}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        手机号码:13161995317
+                        手机号码:{{item.mobile}}
                     </div>
                     <div class="col">
-                        预约状态:未安装
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        预约时间:2016-08-11
-                    </div>
-                </div>
-            </div>
-            <div class="row-bottom m10" ng-click="showConfirm()">
-                <div class="row">
-                    <div class="col">
-                        预约单号:13161995317
-                    </div>
-                    <div class="col">
-                        姓名:李晓明
+                        预约状态:{{item.status}}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        手机号码:13161995317
-                    </div>
-                    <div class="col">
-                        预约状态:未安装
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        预约时间:2016-08-11
+                        预约时间:{{item.created_at | date:'yyyy-MM-dd HH:mm:ss'}}
                     </div>
                 </div>
             </div>
         </div>
         <div ng-show="displayStates[1]">
-            <div class="row-bottom m10">
+            <div class="row-bottom m10" ng-repeat="item in serviceList">
                 <div class="row">
                     <div class="col">
-                        订单生成时间:2016-08-11 12:00:00
+                        订单生成时间:{{item.created_at | date:'yyyy-MM-dd HH:mm:ss'}}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        订单金额:800元
+                        订单金额:{{item.total_fee}}元
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        订单状态:待支付
-                    </div>
-                </div>
-            </div>
-            <div class="row-bottom m10">
-                <div class="row">
-                    <div class="col">
-                        订单生成时间:2016-08-11 12:00:00
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        订单金额:800元
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        订单状态:待支付
+                        订单状态:{{item.status}}
                     </div>
                 </div>
             </div>

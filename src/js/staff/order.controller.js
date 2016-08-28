@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('StaffOrderController', ['$rootScope', '$scope', '$state', '$ionicPopup', function($rootScope, $scope, $state, $ionicPopup) {
+    .controller('StaffOrderController', ['$rootScope', '$scope', '$state', '$ionicPopup', 'StaffService', function($rootScope, $scope, $state, $ionicPopup, StaffService) {
         $rootScope.showHeaderBar = false;
         // 返回
         $scope.back = function() {
@@ -12,6 +12,11 @@ angular.module('education')
                 $scope.displayStates[key] = false;
             });
             $scope.displayStates[index] = true;
+            if (index) {
+                obj.getServiceList();
+            } else {
+                obj.getEquipmentList();
+            }
         };
         $scope.showConfirm = function() {
             var myPopup = $ionicPopup.show({
@@ -22,21 +27,51 @@ angular.module('education')
                     text: '已完成安装',
                     type: 'button-energized',
                     onTap: function(e) {
-                        alert(3);
+                        StaffService.updateEquipmentStatus({}, function(data) {
+                            if (data.success == 'Y') {
+                                obj.getEquipmentList();
+                            }
+                        }, function(error) {
+                            console.error(error);
+                        });
                     }
                 }, {
                     text: '客户取消',
                     type: 'button-energized',
                     onTap: function(e) {
-                        alert(2);
+                        StaffService.updateEquipmentStatus({}, function(data) {
+                            if (data.success == 'Y') {
+                                obj.getEquipmentList();
+                            }
+                        }, function(error) {
+                            console.error(error);
+                        });
                     }
                 }, {
                     text: '关闭',
-                    type: 'button-dark',
-                    onTap: function(e) {
-                        alert(1);
-                    }
+                    type: 'button-dark'
                 }]
             });
         };
+        var obj = {
+            getServiceList: function() {
+                StaffService.getServiceList({}, function(data) {
+                    if (data.success == 'Y') {
+                        $scope.serviceList = data.data;
+                    }
+                }, function(error) {
+                    console.error(error);
+                });
+            },
+            getEquipmentList: function() {
+                StaffService.getEquipmentList({}, function(data) {
+                    if (data.success == 'Y') {
+                        $scope.equipmentList = data.data;
+                    }
+                }, function(error) {
+                    console.error(error);
+                });
+            }
+        };
+        obj.getEquipmentList();
     }]);

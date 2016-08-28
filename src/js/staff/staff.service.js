@@ -22,30 +22,51 @@ angular.module('education')
                     token: CONFIG.token
                 }
             },
-            authTeacher:{
+            authTeacher: {
                 method: 'post',
                 url: CONFIG.urlPrefix + '/v1/manage/auth/teacher',
                 headers: {
                     token: CONFIG.token
                 }
             },
-            authOrganization:{
+            authOrganization: {
                 method: 'post',
                 url: CONFIG.urlPrefix + '/v1/manage/auth/institution',
                 headers: {
                     token: CONFIG.token
                 }
             },
-            getOrganizationDetails:{
+            getOrganizationDetails: {
                 method: 'get',
                 url: CONFIG.urlPrefix + '/v1/institution/detail/:id',
                 headers: {
                     token: CONFIG.token
                 }
             },
-            orderService:{
+            orderService: {
                 method: 'post',
                 url: CONFIG.urlPrefix + '/v1/order/server/add',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            getServiceList: {
+                method: 'get',
+                url: CONFIG.urlPrefix + '/v1/order/server/lists',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            getEquipmentList: {
+                method: 'get',
+                url: CONFIG.urlPrefix + '/v1/order/equipment/lists',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            updateEquipmentStatus:{
+                method: 'post',
+                url: CONFIG.urlPrefix + '',
                 headers: {
                     token: CONFIG.token
                 }

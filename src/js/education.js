@@ -120,7 +120,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
                     }
                 }
             }).state('studentOrderDetails', {
-                url: '/student/order/details',
+                url: '/student/order/details?id',
                 cache: false,
                 views: {
                     baseContent: {

@@ -254,7 +254,6 @@
     height: 15px;
     background: orange;
     width: 0;
-
 }
 .popup-buttons .button {
     padding: 0;
@@ -277,6 +276,10 @@
     width: 100%;
     max-width: 100%;
     height: auto;
+}
+.code-box {
+    text-align: center;
+    padding-bottom: 5px;
 }
 .mp50 {
     margin-top: 50px;
