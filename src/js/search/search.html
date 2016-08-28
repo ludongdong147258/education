@@ -1,0 +1,88 @@
+<ion-view title="搜索页">
+    <ion-header-bar class="bar-light">
+        <a class="button button-icon icon ion-chevron-left energized" ng-click="back()"></a>
+        <label class="item item-input item-light search-input">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="text" placeholder="搜索教师手机号、姓名" ng-model="searchText" ng-change="textChange()">
+        </label>
+        <button class="button icon-left ion-ios-search-strong button-energized" style="margin-left:10px;" ng-click="search()">搜索</button>
+    </ion-header-bar>
+    <ion-content>
+        <ion-refresher pulling-text="下拉刷新" on-refresh="refresh()"></ion-refresher>
+        <div class="list" ng-hide="showHistory">
+            <a class="item item-thumbnail-left" ng-repeat="item in teacherList" ui-sref="teacherDetails({id:item.id})">
+                <img ng-src="{{item.avatar}}">
+                <div class="row teacher-row">
+                    <div class="col col-67">
+                        <h3>{{item.truename}}</h3>
+                    </div>
+                    <div class="col">
+                        <i class="icon ion-star energized" ng-repeat="star in item.stars"></i>
+                    </div>
+                </div>
+                <div class="row teacher-row">
+                    <div class="col col-67">
+                        <h3>学校:{{item.school_name}}</h3>
+                    </div>
+                    <div class="col">
+                        <h3>教龄:{{item.worked_year}}年</h3>
+                    </div>
+                </div>
+                <div class="row teacher-row">
+                    <div class="col col-67">
+                        <h3>年级:{{item.grade}}</h3>
+                    </div>
+                    <div class="col">
+                        <h3>科目:{{item.subject}}</h3>
+                    </div>
+                </div>
+                <div>{{item.introduction}}</div>
+            </a>
+        </div>
+        <span class="search-tip" ng-show="teacherList.length == 0 && !showHistory">未查询到相关信息</span>
+        <div ng-show="showHistory">
+            <div class="list" ng-show="histories.length > 0">
+                <div class="item item-divider">
+                    搜索历史
+                </div>
+                <a class="item" ng-repeat="item in histories track by $index" ng-click="setSearchText(item)">
+                    {{item}}
+                </a>
+            </div>
+            <button class="button button-block button-clear button-energized" ng-click="clearHistory()" ng-show="histories.length > 0">
+               清空搜索历史
+            </button>
+            <div class="list">
+                <a class="item item-thumbnail-left" ng-repeat="item in recommendList" ui-sref="teacherDetails({id:item.id})">
+                    <img ng-src="{{item.avatar}}">
+                    <div class="row teacher-row">
+                        <div class="col col-67">
+                            <h3>{{item.truename}}</h3>
+                        </div>
+                        <div class="col">
+                            <i class="icon ion-star energized" ng-repeat="star in item.stars"></i>
+                        </div>
+                    </div>
+                    <div class="row teacher-row">
+                        <div class="col col-67">
+                            <h3>学校:{{item.school_name}}</h3>
+                        </div>
+                        <div class="col">
+                            <h3>教龄:{{item.worked_year}}年</h3>
+                        </div>
+                    </div>
+                    <div class="row teacher-row">
+                        <div class="col col-67">
+                            <h3>年级:{{item.grade}}</h3>
+                        </div>
+                        <div class="col">
+                            <h3>科目:{{item.subject}}</h3>
+                        </div>
+                    </div>
+                    <div>{{item.introduction}}</div>
+                </a>
+            </div>
+        </div>
+        <ion-infinite-scroll ng-if="hasMoreData" on-infinite="loadMore()" distance="5%"></ion-infinite-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,17 @@
+<ion-view title="京南课堂">
+    <ion-content>
+        <a ui-sref="news" class="button button-light button-outline button-more">更多平台新闻</a>
+    </ion-content>
+    <ion-footer-bar class="bar-light">
+        <div class="button-bar footer-bar" ng-hide="isLogin">
+            <a class="button button-energized" ui-sref="register({tabIndex:0})">学生注册</a>
+            <a class="button button-energized" ui-sref="register({tabIndex:1})">教师注册</a>
+            <a class="button button-energized" ui-sref="register({tabIndex:2})">机构注册</a>
+        </div>
+        <div class="button-bar footer-bar home-footer-bar" ng-show="isLogin">
+            <a class="button button-energized" ui-sref="studentOrderHardWare">预定智能硬件</a>
+            <a class="button button-energized" ui-sref="studentInfo">补全学生资料</a>
+            <a class="button button-energized" ui-sref="reference">邀请老师/同学加入</a>
+        </div>
+    </ion-footer-bar>
+</ion-view>

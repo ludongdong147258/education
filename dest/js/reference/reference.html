@@ -1,0 +1,152 @@
+<ion-view title="我的推荐">
+    <ion-header-bar align-title="center" class="bar-energized">
+        <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
+        <h1 class="title">我的推荐</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="button-bar">
+            <button class="button button-full button-clear" ng-class="{'button-energized':displayStates[0],'button-stable':displayStates[1],'button-border-bottom':displayStates[0],'button-border-default':displayStates[1]}" ng-click="tabChange(0)">
+                我的推荐码
+            </button>
+            <button class="button button-full button-clear" ng-class="{'button-stable':displayStates[0],'button-energized':displayStates[1],'button-border-bottom':displayStates[1],'button-border-default':displayStates[0]}" ng-click="tabChange(1)">
+                我的推荐记录
+            </button>
+        </div>
+        <div ng-show="displayStates[0]">
+            <h5 class="text-center">我的推荐码</h5>
+            <div class="row row-center">
+                <div class="col">
+                    <img ng-src="././images/qr.png" alt="" />
+                </div>
+            </div>
+            <h5 class="text-center">我的推荐链接</h5>
+            <div class="row row-center">
+                <div class="col reference-link">
+                    <a ng-href="http://www.baidu.com">http://www.baidu.com</a>
+                </div>
+            </div>
+            <div class="row reference-tip">
+                <div class="col">
+                    推荐您的同学或老师通过浏览器打开推荐链接并注册成功后,您的账号即可获得推荐奖励
+                </div>
+            </div>
+        </div>
+        <div ng-show="displayStates[1]">
+            <div class="row-bottom">
+                <div class="row">
+                    <div class="col">
+                        注册时间:2016-08-01
+                    </div>
+                    <div class="col">
+                        账户类型:学生
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        手机号:13161995317
+                    </div>
+                    <div class="col">
+                        姓名:张君宝
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        获得奖励:2次免费课时
+                    </div>
+                </div>
+            </div>
+            <div class="row-bottom">
+                <div class="row">
+                    <div class="col">
+                        注册时间:2016-08-01
+                    </div>
+                    <div class="col">
+                        账户类型:学生
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        手机号:13161995317
+                    </div>
+                    <div class="col">
+                        姓名:张君宝
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        获得奖励:2次免费课时
+                    </div>
+                </div>
+            </div>
+            <div class="row-bottom">
+                <div class="row">
+                    <div class="col">
+                        注册时间:2016-08-01
+                    </div>
+                    <div class="col">
+                        账户类型:学生
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        手机号:13161995317
+                    </div>
+                    <div class="col">
+                        姓名:张君宝
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        获得奖励:2次免费课时
+                    </div>
+                </div>
+            </div>
+            <div class="row-bottom">
+                <div class="row">
+                    <div class="col">
+                        注册时间:2016-08-01
+                    </div>
+                    <div class="col">
+                        账户类型:学生
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        手机号:13161995317
+                    </div>
+                    <div class="col">
+                        姓名:张君宝
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        获得奖励:2次免费课时
+                    </div>
+                </div>
+            </div>
+            <div class="row-bottom">
+                <div class="row">
+                    <div class="col">
+                        注册时间:2016-08-01
+                    </div>
+                    <div class="col">
+                        账户类型:学生
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        手机号:13161995317
+                    </div>
+                    <div class="col">
+                        姓名:张君宝
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        获得奖励:2次免费课时
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,133 @@
+<ion-view title="订单详情">
+    <ion-header-bar align-title="center" class="bar-energized">
+        <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
+        <h1 class="title">订单详情</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="item row-header">
+            订单基本信息
+        </div>
+        <div class="row">
+            <div class="col">
+                订单经办人:
+            </div>
+            <div class="col">
+                李晓明
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                订单号码:
+            </div>
+            <div class="col">
+                123456
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                订单时间:
+            </div>
+            <div class="col">
+                2016-08-28
+            </div>
+        </div>
+        <div class="item row-header">
+            学生个人信息
+        </div>
+        <div class="row">
+            <div class="col">
+                年级:
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                科目:
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                学习情况:
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                预约教师:
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="item row-header">
+            选购付费服务
+        </div>
+        <div class="row">
+            <div class="col">
+                辅导仪上门安装:
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                作业辅导服务:
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                预习、复习服务:
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                补习服务:
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <strong>总价</strong>
+            </div>
+            <div class="col">
+                <span class="assertive">¥7000元</span>
+            </div>
+        </div>
+        <div class="button-bar">
+            <button ng-class="{'button-energized':dispalyStates[0]}" class="button button-full button-clear button-stable" ng-click="tabChange(0)">
+                支付宝收款
+            </button>
+            <button ng-class="{'button-energized':dispalyStates[1]}" class="button button-full button-clear button-stable" ng-click="tabChange(1)">
+                微信收款
+            </button>
+            <button ng-class="{'button-energized':dispalyStates[2]}" class="button button-full button-clear button-stable" ng-click="tabChange(2)">
+                网银收款
+            </button>
+        </div>
+        <div ng-show="dispalyStates[0]">
+            1
+        </div>
+        <div ng-show="dispalyStates[1]">
+            2
+        </div>
+        <div ng-show="dispalyStates[2]">
+            3
+        </div>
+    </ion-content>
+</ion-view>

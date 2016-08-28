@@ -1,0 +1,36 @@
+<ion-view title="添加教师账号">
+    <ion-header-bar align-title="center" class="bar-energized">
+        <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
+        <h1 class="title">添加教师账号</h1>
+    </ion-header-bar>
+    <ion-content>
+        <label class="item item-input">
+            <input type="text" placeholder="教师姓名" ng-model="teacherInfo.truename">
+        </label>
+        <label class="item item-input">
+            <input type="number" placeholder="手机号(账号)" ng-model="teacherInfo.mobile">
+        </label>
+        <label class="item item-input">
+            <input type="password" placeholder="初始登录密码" ng-model="teacherInfo.password">
+        </label>
+        <div class="row">
+            <div class="col">
+                <button ng-class="{'button-energized':(teacherInfo.sex == 1)}" class="button button-outline button-block button-stable button-line-height" ng-click="changeSex(1)">
+                    男
+                </button>
+            </div>
+            <div class="col">
+                <button ng-click="changeSex(2)" ng-class="{'button-energized':(teacherInfo.sex == 2)}" class="button button-stable button-outline button-block button-line-height">
+                    女
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="button button-energized button-block register-button" ng-click="addTeacher()">
+                    添加老师
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

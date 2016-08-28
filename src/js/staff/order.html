@@ -1,0 +1,100 @@
+<ion-view title="我的订单">
+    <ion-header-bar align-title="center" class="bar-energized">
+        <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
+        <h1 class="title">我的订单</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="button-bar">
+            <button class="button button-full button-clear" ng-class="{'button-energized':displayStates[0],'button-stable':displayStates[1],'button-border-bottom':displayStates[0],'button-border-default':displayStates[1]}" ng-click="tabChange(0)">
+                智能硬件预约
+            </button>
+            <button class="button button-full button-clear" ng-class="{'button-stable':displayStates[0],'button-energized':displayStates[1],'button-border-bottom':displayStates[1],'button-border-default':displayStates[0]}" ng-click="tabChange(1)">
+                课堂服务购买
+            </button>
+        </div>
+        <div ng-show="displayStates[0]">
+            <div class="row-bottom m10" ng-click="showConfirm()">
+                <div class="row">
+                    <div class="col">
+                        预约单号:13161995317
+                    </div>
+                    <div class="col">
+                        姓名:李晓明
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        手机号码:13161995317
+                    </div>
+                    <div class="col">
+                        预约状态:未安装
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        预约时间:2016-08-11
+                    </div>
+                </div>
+            </div>
+            <div class="row-bottom m10" ng-click="showConfirm()">
+                <div class="row">
+                    <div class="col">
+                        预约单号:13161995317
+                    </div>
+                    <div class="col">
+                        姓名:李晓明
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        手机号码:13161995317
+                    </div>
+                    <div class="col">
+                        预约状态:未安装
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        预约时间:2016-08-11
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-show="displayStates[1]">
+            <div class="row-bottom m10">
+                <div class="row">
+                    <div class="col">
+                        订单生成时间:2016-08-11 12:00:00
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        订单金额:800元
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        订单状态:待支付
+                    </div>
+                </div>
+            </div>
+            <div class="row-bottom m10">
+                <div class="row">
+                    <div class="col">
+                        订单生成时间:2016-08-11 12:00:00
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        订单金额:800元
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        订单状态:待支付
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

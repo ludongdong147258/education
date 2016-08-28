@@ -1,0 +1,37 @@
+<ion-view title="登录京南课堂账号" class="login-background">
+    <ion-header-bar align-title="center" class="bar-energized">
+        <!-- <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a> -->
+        <h1 class="title">登录京南课堂账号</h1>
+    </ion-header-bar>
+    <ion-content scroll="false">
+        <div class="login-box">
+            <label class="item item-input">
+                <input type="number" placeholder="请输入登录账号" ng-model="loginInfo.mobile">
+            </label>
+            <label class="item item-input">
+                <input type="password" placeholder="请输入登录密码" ng-model="loginInfo.password">
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label" style="color:#fff;">
+                    账号类型
+                </div>
+                <select ng-model="loginInfo.type">
+                    <option value="student">学生</option>
+                    <option value="teacher">老师</option>
+                    <option value="institution">机构</option>
+                    <option value="manage">工作人员</option>
+                </select>
+            </label>
+            <div class="login-forget-pwd">
+                <a ui-sref="findpwd">忘记密码?</a>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="button button-energized button-block register-button" ng-click="login()">
+                        登录
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

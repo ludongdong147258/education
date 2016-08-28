@@ -1,0 +1,30 @@
+<ion-view title="找回密码">
+    <ion-header-bar align-title="center" class="bar-energized">
+        <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
+        <h1 class="title">找回密码</h1>
+    </ion-header-bar>
+    <ion-content>
+        <label class="item item-input">
+            <input type="number" placeholder="输入手机号" ng-model="findpwdInfo.mobile">
+        </label>
+        <div class="item item-input-inset">
+            <label class="item-input-wrapper register-code">
+                <input type="text" placeholder="输入验证码" ng-model="findpwdInfo.smscode">
+            </label>
+            <button ng-disabled="btnState" class="button button-small button-energized" ng-click="getSmsCode()">
+                <span ng-hide="btnState">获取验证码</span>
+                <span ng-show="btnState">{{count}}秒之后重新获取</span>
+            </button>
+        </div>
+        <label class="item item-input">
+            <input type="password" placeholder="设置新密码" ng-model="findpwdInfo.password">
+        </label>
+        <div class="row">
+            <div class="col">
+                <button class="button button-energized button-block register-button" ng-click="saveNewPwd()">
+                    保存新密码
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

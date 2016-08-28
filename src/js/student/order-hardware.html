@@ -1,0 +1,223 @@
+<ion-view title="预约智能硬件">
+    <ion-header-bar align-title="center" class="bar-energized">
+        <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
+        <h1 class="title">预约智能硬件</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="row order-row">
+            <div class="col">
+                <h4 class="item">预约信息</h4>
+            </div>
+            <div class="col col-67">
+                <h4 class="item">预约账号:{{user.mobile}}</h4>
+            </div>
+        </div>
+        <label class="item item-input border-top">
+            <span class="input-label">日期</span>
+            <input type="date" ng-model="hardwareInfo.time">
+        </label>
+        <div class="row row-bottom">
+            <div class="col">
+                <label class="item item-select">
+                    <select ng-options="item.key for item in provinces" ng-model="province" ng-change="changeProvince(province)">
+                        <option value="">省份</option>
+                    </select>
+                </label>
+            </div>
+            <div class="col">
+                <label class="item item-select">
+                    <select ng-options="item.key for item in cities" ng-model="city" ng-change="changeCity(city)">
+                        <option value="">城市</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <label class="item item-input">
+            <span class="input-label">上门安装地址</span>
+            <input type="text" placeholder="上门安装地址" ng-model="hardwareInfo.address_detail">
+        </label>
+        <label class="item item-input">
+            <span class="input-label">联系人姓名</span>
+            <input type="text" placeholder="联系人姓名" ng-model="hardwareInfo.link_name">
+        </label>
+        <label class="item item-input border-bottom">
+            <span class="input-label">联系电话</span>
+            <input type="number" placeholder="如与账号相同可不填" ng-model="hardwareInfo.mobile">
+        </label>
+        <!-- <div class="row order-row">
+            <div class="col">
+                <h4 class="item">学生基本信息</h4>
+            </div>
+        </div>
+        <label class="item item-input border-top">
+            <span class="input-label">学生姓名</span>
+            <input type="text" placeholder="学生姓名">
+        </label>
+        <div class="button-bar padding-horizontal">
+            <button class="button button-block button-energized button-outline">
+                男
+            </button>
+            <button class="button button-block button-stable button-outline button-small">
+                女
+            </button>
+        </div>
+        <label class="item item-input border-bottom">
+            <span class="input-label">年龄</span>
+            <input type="number" placeholder="年龄">
+        </label>
+        <div class="row order-row" style="margin-bottom:10px;">
+            <div class="col">
+                <h4 class="item">所在年级</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="button button-energized button-outline button-line-height">
+                    小学3年级
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-outline button-line-height">
+                    小学4年级
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-outline button-line-height">
+                    小学5年级
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-outline button-line-height">
+                    小学6年级
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height">
+                    初一
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height">
+                    初二
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height">
+                    初三
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height">
+                    高一
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height">
+                    高二
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height">
+                    高三
+                </button>
+            </div>
+            <div class="col">
+            </div>
+            <div class="col">
+            </div>
+        </div>
+        <div class="row order-row" style="margin-bottom:10px;">
+            <div class="col">
+                <h4 class="item">需辅导科目(多选,至少选一项)</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="button button-energized button-block button-outline button-line-height">
+                    语文
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height">
+                    数学
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height">
+                    英语
+                </button>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+        <div class="row order-row" style="margin-bottom:10px;">
+            <div class="col">
+                <h4 class="item">目前学习状况(多选,至少选一项)</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="button button-energized button-block button-outline button-line-height">
+                    培优拔高
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height">
+                    基础薄弱
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height">
+                    效率低下
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="button button-energized button-block button-outline button-line-height">
+                    粗心马虎
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height">
+                    生搬硬套
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height">
+                    眼高手低
+                </button>
+            </div>
+        </div> -->
+        <div class="row order-row" style="margin-bottom:10px;">
+            <div class="col">
+                <h4 class="item">预约教师</h4>
+                <h4 class="item">平台推荐教师,客服将在1个工作日内电话您推荐结果</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="button button-stable button-block button-outline button-line-height" ng-click="changeType(1)" ng-class="{'button-energized':displayStates[0]}">
+                    平台推荐
+                </button>
+            </div>
+            <div class="col">
+                <button ng-click="changeType(2)" ng-class="{'button-energized':displayStates[1]}" class="button button-stable button-block button-outline button-line-height" ui-sref="teacher({type:'student'})">
+                    指定老师
+                </button>
+            </div>
+            <div class="col"></div>
+        </div>
+        <label class="item item-input border-top" ng-if="displayStates[1]">
+            <span class="input-label">所选老师</span>
+            {{name}}
+        </label>
+        <div class="button-bar">
+            <button class="button button-energized" ng-click="saveOrder()">免费预约智能硬件上门安装</button>
+        </div>
+    </ion-content>
+</ion-view>

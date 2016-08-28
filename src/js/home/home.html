@@ -1,0 +1,15 @@
+<ion-view title="京南课堂" class="background">
+    <ion-content scroll="false">
+        <a ui-sref="news" class="button button-light button-outline button-more button-small">更多平台新闻</a>
+    </ion-content>
+    <ion-footer-bar class="bar-light">
+        <div class="button-bar footer-bar" ng-hide="user">
+            <a class="button button-energized" ui-sref="register({tabIndex:0})">学生注册</a>
+            <a class="button button-energized" ui-sref="register({tabIndex:1})">教师注册</a>
+            <a class="button button-energized" ui-sref="register({tabIndex:2})">机构注册</a>
+        </div>
+        <div class="button-bar footer-bar home-footer-bar" ng-show="user">
+            <a class="button button-energized" ng-repeat="item in listItems" ng-click="hasHardWare(item.state,$event)" ui-sref="{{item.state}}">{{item.name}}</a>
+        </div>
+    </ion-footer-bar>
+</ion-view>
