@@ -38,11 +38,13 @@ angular.module('education')
                         localStorage.setItem("user", JSON.stringify(user));
                         CONFIG.user = user;
                         $rootScope.user = user;
-                        $timeout(function(){
+                        $timeout(function() {
                             $state.go('news', null, {
                                 reload: true
                             });
-                        },1000);
+                        }, 1000);
+                    } else {
+                        $rootScope.showMessage(data.msg);
                     }
                 }, function(error) {
                     $ionicLoading.hide();

@@ -2,7 +2,7 @@ angular.module('education')
     .controller('PersonalController', ['$rootScope', '$scope', '$state', 'CONFIG', function($rootScope, $scope, $state, CONFIG) {
         $rootScope.showHeaderBar = false;
         $scope.back = function() {
-            window.history.back();
+            $state.go('news');
         };
         if ($rootScope.user) {
             if (!$rootScope.user.avatar) {

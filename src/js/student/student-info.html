@@ -44,28 +44,28 @@
         </div>
         <div class="row">
             <div class="col" ng-repeat="item in grades" ng-if="$index <= 3">
-                <button ng-class="{'button-energized':(personalInfo.grade == item.key)}" class="button button-stable button-outline button-line-height" ng-click="changeGrade(item.key)">
+                <button ng-class="{'button-energized':(personalInfo.grade == item.key)}" class="button button-stable button-outline button-block button-line-height" ng-click="changeGrade(item.key)">
                     {{item.val}}
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col" ng-repeat="item in grades" ng-if="$index > 3 && $index < 7">
-                <button ng-class="{'button-energized':(personalInfo.grade == item.key)}" class="button button-stable button-outline button-line-height" ng-click="changeGrade(item.key)">
+                <button ng-class="{'button-energized':(personalInfo.grade == item.key)}" class="button button-stable button-outline button-block button-line-height" ng-click="changeGrade(item.key)">
                     {{item.val}}
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col" ng-repeat="item in grades" ng-if="$index > 6 && $index < 10">
-                <button ng-class="{'button-energized':(personalInfo.grade == item.key)}" class="button button-stable button-outline button-line-height" ng-click="changeGrade(item.key)">
+                <button ng-class="{'button-energized':(personalInfo.grade == item.key)}" class="button button-stable button-outline button-block button-line-height" ng-click="changeGrade(item.key)">
                     {{item.val}}
                 </button>
             </div>
         </div>
         <div class="row">
             <div class="col" ng-repeat="item in grades" ng-if="$index > 9 && $index < 13">
-                <button ng-class="{'button-energized':(personalInfo.grade == item.key)}" class="button button-stable button-outline button-line-height" ng-click="changeGrade(item.key)">
+                <button ng-class="{'button-energized':(personalInfo.grade == item.key)}" class="button button-stable button-outline button-block button-line-height" ng-click="changeGrade(item.key)">
                     {{item.val}}
                 </button>
             </div>

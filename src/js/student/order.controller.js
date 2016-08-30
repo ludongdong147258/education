@@ -2,7 +2,7 @@ angular.module('education')
     .controller('StudentOrderController', ['$rootScope', '$scope', '$state','StudentService', function($rootScope, $scope, $state,StudentService) {
         $rootScope.showHeaderBar = false;
         $scope.back = function() {
-            window.history.back();
+            $state.go('personal');
         };
         var obj = {
             getOrderList:function(){

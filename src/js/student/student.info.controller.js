@@ -3,7 +3,7 @@ angular.module('education')
         $rootScope.showHeaderBar = false;
         // 返回
         $scope.back = function() {
-            window.history.back();
+            $state.go('personal');
         };
         $scope.states = [];
         $scope.grades = [];
@@ -79,17 +79,18 @@ angular.module('education')
             $scope.personalInfo.grade = grade;
         };
         $scope.changeState = function(item) {
-            var index = $scope.personalInfo.state.indexOf(item.key);
             var state = $scope.personalInfo.state;
-            item.isSelected = !item.isSelected;
             if (!state) {
                 state = [];
             }
+            var index = state.indexOf(item.key);
+            item.isSelected = !item.isSelected;
             if (index == -1 && item.isSelected) {
                 state.push(item.key);
             } else {
                 state.splice(index, 1);
             }
+            $scope.personalInfo.state = state;
         };
         obj.getGrades();
         obj.getStates();

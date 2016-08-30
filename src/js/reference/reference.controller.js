@@ -3,7 +3,7 @@ angular.module('education')
         $rootScope.showHeaderBar = false;
         // 返回
         $scope.back = function(){
-            window.history.back();
+            $state.go('personal');
         };
         $scope.displayStates = [true,false];
         $scope.invitedList = [];
