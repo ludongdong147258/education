@@ -71,35 +71,32 @@
     <ion-side-menus ng-controller="MainController">
         <ion-side-menu-content>
             <ion-nav-view name="baseContent">
-                <ion-header-bar class="bar-light" ng-show="showHeaderBar">
-                    <label class="item item-input item-light" style="width:100%;border-radius:5px;">
-                        <i class="icon ion-search placeholder-icon"></i>
-                        <input type="text" placeholder="搜索教师手机号、姓名" ng-focus="goToSearch()">
-                    </label>
-                    <button class="button button-icon button-clear icon ion-navicon button-energized" ng-click="toggleRight()">
+                <ion-header-bar align-title="center" class="bar-energized" ng-show="showHeaderBar">
+                    <h1 class="title">{{appTitle}}</h1>
+                    <button class="button button-icon button-clear icon ion-navicon button-light" ng-click="toggleRight()">
                     </button>
                 </ion-header-bar>
             </ion-nav-view>
         </ion-side-menu-content>
         <ion-side-menu side="right">
-            <ul class="list nav-list">
-                <li class="item" ng-click="toggleRight()">
-                    <a ui-sref="home" class="energized">首页</a>
-                </li>
+            <ul class="list nav-list menu">
                 <li class="item" ng-click="toggleRight()" ng-show="user">
                     <a ui-sref="personal" class="energized"><i class="icon"></i>个人中心</a>
                 </li>
                 <li class="item" ng-click="toggleRight()">
-                    <a ui-sref="news" class="energized">京南动态</a>
+                    <a ui-sref="news" class="energized"><i class="news-icon"></i>京南动态</a>
                 </li>
                 <li class="item" ng-click="toggleRight()">
-                    <a ui-sref="teacher" class="energized">搜索教师</a>
+                    <a ui-sref="teacher" class="energized"><i class="view-icon"></i>浏览师资</a>
+                </li>
+                <li class="item" ng-click="toggleRight()">
+                    <a ui-sref="search" class="energized"><i class="search-icon"></i>搜索教师</a>
                 </li>
                 <li class="item" ng-click="toggleRight()" ng-hide="user">
-                    <a ui-sref="register" class="energized">账号注册</a>
+                    <a ui-sref="register" class="energized"><i class="register-icon"></i>账号注册</a>
                 </li>
                 <li class="item" ng-click="toggleRight()" ng-hide="user">
-                    <a ui-sref="login" class="energized">账号登录</a>
+                    <a ui-sref="login" class="energized"><i class="login-icon"></i>账号登录</a>
                 </li>
                 <li class="item" ng-click="toggleRight()" ng-show="user">
                     <a ui-sref="login" class="energized" ng-click="logout()">退出登录</a>{{user.username}}({{user.id}})

@@ -38,7 +38,7 @@ angular.module('education')
         };
         // 返回
         $scope.back = function() {
-            window.history.back();
+            $state.go('news');
         };
         $scope.displayStates = [true, false, false];
         // tab切换

@@ -2,7 +2,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
     .config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         $ionicConfigProvider.views.maxCache(5); // 不缓存页面
         $ionicConfigProvider.templates.maxPrefetch(0); // 不进行预加载界面
-        $urlRouterProvider.otherwise('/home');
+        $urlRouterProvider.otherwise('/news');
         $stateProvider.state('home', {
                 url: '/home',
                 cache: false,
@@ -259,6 +259,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
             });
     }])
     .controller('MainController', ['$rootScope', '$scope', '$state', '$ionicSideMenuDelegate', '$ionicModal', '$ionicPopup', '$timeout', '$ionicLoading', '$ionicPopover', function($rootScope, $scope, $state, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $ionicPopover) {
+        $rootScope.appTitle = '京南动态';
         $rootScope.showHeaderBar = true;
         $rootScope.showMessage = function(msg, delayTime) {
             delayTime = delayTime || 1000;
@@ -300,4 +301,12 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
         teacher: '老师',
         institution: '机构',
         manage: '工作人员'
-    });
+    }).directive('scrollHeight', ['$window', function($window) {
+        return {
+            restrict: 'AE',
+            link: function(scope, element, attr) {
+                element[0].style.height = ($window.innerHeight - 44) + 'px';
+                element.attr('scroll',false);
+            }
+        }
+    }]);

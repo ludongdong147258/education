@@ -284,3 +284,26 @@
 .mp50 {
     margin-top: 50px;
 }
+.menu i {
+    margin-bottom: -3px;
+    margin-right: 5px;
+    background-size: cover;
+    height: 16px;
+    width: 16px;
+    display: inline-block
+}
+.menu .login-icon {
+    background: url(../images/login.png);
+}
+.menu .register-icon {
+    background: url(../images/register.png);
+}
+.menu .search-icon {
+    background: url(../images/search.png);
+}
+.menu .news-icon {
+    background: url(../images/news.png);
+}
+.menu .view-icon {
+    background: url(../images/view.png);
+}

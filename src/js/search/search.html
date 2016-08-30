@@ -1,11 +1,11 @@
-<ion-view title="搜索页">
-    <ion-header-bar class="bar-light">
+<ion-view title="搜索教师">
+    <ion-header-bar class="bar-energized">
         <a class="button button-icon icon ion-chevron-left energized" ng-click="back()"></a>
         <label class="item item-input item-light search-input">
             <i class="icon ion-search placeholder-icon"></i>
             <input type="text" placeholder="搜索教师手机号、姓名" ng-model="searchText" ng-change="textChange()">
         </label>
-        <button class="button icon-left ion-ios-search-strong button-energized" style="margin-left:10px;" ng-click="search()">搜索</button>
+        <button class="button icon-left ion-ios-search-strong button-light" style="margin-left:10px;" ng-click="search()">搜索</button>
     </ion-header-bar>
     <ion-content>
         <ion-refresher pulling-text="下拉刷新" on-refresh="refresh()"></ion-refresher>

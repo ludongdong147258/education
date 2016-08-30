@@ -1,12 +1,12 @@
 angular.module('education')
     .controller('TeacherController', ['$rootScope', '$scope', 'TeacherService','$stateParams', function($rootScope, $scope, TeacherService,$stateParams) {
         $scope.type = $stateParams.type;
-        $rootScope.showHeaderBar = true;
+        $rootScope.showHeaderBar = false;
         if($scope.type){
             $rootScope.showHeaderBar = false;
         }
         $scope.back = function(){
-            window.history.back();
+            $state.go('news');
         };
         $scope.teacherList = [];
         $scope.subjects = [];

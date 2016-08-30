@@ -1,5 +1,5 @@
 <ion-view title="京南动态">
-    <ion-content>
+    <ion-content scroll-height>
         <ion-refresher pulling-text="下拉刷新" on-refresh="refreshNews()"></ion-refresher>
         <div class="button-bar news-bar">
             <a class="button button-clear" ng-class="{'button-energized':showNewsList,'button-stable':showOutcomeList,'button-border-bottom':showNewsList}" ng-click="changeTab(0)">京南新闻</a>
@@ -21,7 +21,7 @@
         </div>
         <ion-infinite-scroll ng-if="hasMoreData" on-infinite="loadMore()" distance="5%"></ion-infinite-scroll>
     </ion-content>
-    <ion-footer-bar class="bar-light">
+    <!-- <ion-footer-bar class="bar-light">
         <div class="button-bar footer-bar" ng-hide="user.isLogin">
             <a class="button button-energized" ui-sref="register({tabIndex:0})">学生注册</a>
             <a class="button button-energized" ui-sref="register({tabIndex:1})">教师注册</a>
@@ -32,5 +32,5 @@
             <a class="button button-energized" ui-sref="studentInfo">补全学生资料</a>
             <a class="button button-energized" ui-sref="reference">邀请老师/同学加入</a>
         </div>
-    </ion-footer-bar>
+    </ion-footer-bar> -->
 </ion-view>

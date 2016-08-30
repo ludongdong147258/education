@@ -3,7 +3,7 @@ angular.module('education')
         $rootScope.showHeaderBar = false;
         // 返回
         $scope.back = function() {
-            window.history.back();
+            $state.go('news');
         };
         var params = {
             page: 1
