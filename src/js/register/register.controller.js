@@ -1,6 +1,5 @@
 angular.module('education')
     .controller('RegisterController', ['$rootScope', '$scope', '$state', '$stateParams', 'RegisterService', 'LoginService', '$timeout','CONFIG', function($rootScope, $scope, $state, $stateParams, RegisterService, LoginService, $timeout,CONFIG) {
-        $rootScope.showHeaderBar = false;
         var obj = {
             validateInput: function(type) {
                 if (!$scope.registerInfo[type].mobile) {
@@ -69,7 +68,7 @@ angular.module('education')
                             CONFIG.user = user;
                             $rootScope.user = user;
                             $rootScope.showMessage('注册成功!');
-                            $state.go('home');
+                            $state.go('news',null,{reload:true});
                         } else if (data.success == 'N') {
                             for (var prop in data.msg) {
                                 $rootScope.showMessage(data.msg[prop]);

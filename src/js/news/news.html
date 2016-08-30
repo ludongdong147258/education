@@ -1,4 +1,9 @@
 <ion-view title="京南动态">
+    <ion-header-bar align-title="center" class="bar-energized">
+        <h1 class="title">京南动态</h1>
+        <button class="button button-icon button-clear icon ion-navicon button-light" ng-click="toggleRight()">
+        </button>
+    </ion-header-bar>
     <ion-content scroll-height>
         <ion-refresher pulling-text="下拉刷新" on-refresh="refreshNews()"></ion-refresher>
         <div class="button-bar news-bar">

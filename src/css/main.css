@@ -219,21 +219,7 @@
 }
 .search-input {
     border-radius: 5px;
-}
-@media screen and (max-width: 420px) {
-    .search-input {
-        width: 73%;
-    }
-}
-@media screen and (max-width: 380px) {
-    .search-input {
-        width: 70%;
-    }
-}
-@media screen and (max-width: 321px) {
-    .search-input {
-        width: 65%;
-    }
+    width: 95%;
 }
 .ml10 {
     margin-left: 10px;
@@ -306,4 +292,13 @@
 }
 .menu .view-icon {
     background: url(../images/view.png);
+}
+.menu .self-icon {
+    background: url(../images/self.png);
+}
+.menu .yuding-icon {
+    background: url(../images/yuding.png);
+}
+.menu .exit-icon {
+    background: url(../images/exit.png);
 }

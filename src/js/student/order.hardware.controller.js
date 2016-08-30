@@ -1,39 +1,20 @@
 angular.module('education')
-    .controller('StudentOrderHardWareController', ['$rootScope', '$scope', '$state', 'StudentService','$stateParams', function($rootScope, $scope, $state, StudentService,$stateParams) {
-        $rootScope.showHeaderBar = false;
+    .controller('StudentOrderHardWareController', ['$rootScope', '$scope', '$state', 'StudentService', '$stateParams', '$timeout',function($rootScope, $scope, $state, StudentService, $stateParams, $timeout) {
         // 返回
         $scope.back = function() {
-            $state.go('home');
+            localStorage.removeItem('hardwareInfo');
+            $state.go('news');
         };
-        if(localStorage.getItem('hardwareInfo')){
-            $scope.hardwareInfo = JSON.parse(localStorage.getItem('hardwareInfo'));
-            if($scope.hardwareInfo.time) {
-                $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
-            }
-            if($scope.hardwareInfo.province){
-                $scope.province = $scope.hardwareInfo.province;
-            }
-            if($scope.hardwareInfo.city){
-                $scope.city = $scope.hardwareInfo.city;
-            }
-        } else {
-            $scope.hardwareInfo = {recommend_type:1};
-            $scope.displayStates = [true,false];
-            $scope.province = {
-                key: ''
-            };
-            $scope.city = {
-                key: '',
-                id: ''
-            };
-        }
+        $scope.hardwareInfo = {
+            recommend_type: 1
+        };
+        $scope.displayStates = [true, false];
         var id = $stateParams.id;
-        $scope.name = $stateParams.name;
+
         if(id){
+            $scope.name = $stateParams.name;
             $scope.hardwareInfo.recommend_type = 2;
-        }
-        if($scope.hardwareInfo.recommend_type == 2){
-            $scope.displayStates = [false,true];
+            $scope.displayStates = [false, true];
         }
         // 免费预约
         $scope.saveOrder = function() {
@@ -44,17 +25,24 @@ angular.module('education')
                 }
                 $scope.hardwareInfo.address_id = $scope.city.id;
                 $scope.hardwareInfo.member_type = $rootScope.user.role;
-                $scope.hardwareInfo.teacher_id = id;
+                if(id){
+                    $scope.hardwareInfo.teacher_id = id;
+                }
                 StudentService.orderHardWare($scope.hardwareInfo, function(data) {
                     if (data.success == 'Y') {
-                        $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!');
-                        $state.go('home');
                         localStorage.removeItem('hardwareInfo');
+                        $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 5000);
+                        $timeout(function() {
+                            $state.go('news');
+                        }, 3000);
+                    } else {
+                        angular.forEach(data.msg, function(val, key) {
+                            $rootScope.showMessage(data.msg[key]);
+                        });
                     }
                 }, function(error) {
                     console.error(error);
                     $rootScope.showMessage('预定失败!');
-                    localStorage.removeItem('hardwareInfo');
                 });
             }
         };
@@ -75,6 +63,30 @@ angular.module('education')
                                 tempKey = item.province;
                             }
                         });
+                        var hardwareInfo = localStorage.getItem('hardwareInfo');
+                        if(hardwareInfo){
+                            $scope.hardwareInfo = angular.fromJson(hardwareInfo);
+                            angular.forEach($scope.provinces,function(val,index){
+                                if(val.key == $scope.hardwareInfo.province.key){
+                                    $scope.province = $scope.provinces[index];
+                                    return;
+                                }
+                            });
+                            $scope.changeProvince($scope.province);
+                            angular.forEach($scope.cities,function(val,index){
+                                if(val.key == $scope.hardwareInfo.city.key){
+                                    $scope.city = $scope.cities[index];
+                                    return;
+                                }
+                            });
+                            $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
+                        } else {
+                            $scope.province = {key:''};
+                            $scope.city = {
+                                key: '',
+                                id: ''
+                            };
+                        }
                     }
                 }, function(error) {
                     console.log(error);
@@ -102,8 +114,8 @@ angular.module('education')
                     $rootScope.showMessage("联系人姓名不能为空!");
                     return false;
                 }
-                if($scope.hardwareInfo.member_type == 2){
-                    if(!$scope.name){
+                if ($scope.hardwareInfo.recommend_type == 2) {
+                    if (!$scope.name) {
                         $rootScope.showMessage("所选老师不能为空!");
                         return false;
                     }
@@ -120,7 +132,8 @@ angular.module('education')
                     $scope.cities.push({
                         key: item.city,
                         id: item.id
-                    });}
+                    });
+                }
             });
         };
         $scope.changeCity = function(curItem) {
@@ -128,10 +141,11 @@ angular.module('education')
         };
         $scope.changeType = function(num) {
             $scope.hardwareInfo.recommend_type = num;
-            if(num == 1){
-                $scope.displayStates = [true,false];
-            }else{
-                $scope.displayStates = [false,true];
+            if (num == 1) {
+                $scope.displayStates = [true, false];
+            } else {
+                $scope.displayStates = [false, true];
+                $state.go('search',{type:'student'});
                 $scope.hardwareInfo.province = $scope.province;
                 $scope.hardwareInfo.city = $scope.city;
                 localStorage.setItem('hardwareInfo',JSON.stringify($scope.hardwareInfo));

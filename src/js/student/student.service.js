@@ -33,14 +33,14 @@ angular.module('education')
                     token: CONFIG.token
                 }
             },
-            hasHardWare:{
+            hasHardWare: {
                 url: CONFIG.urlPrefix + '/v1/order/equipment/has',
                 method: 'get',
                 headers: {
                     token: CONFIG.token
                 }
             },
-            getOrderList:{
+            getOrderList: {
                 url: CONFIG.urlPrefix + '/v1/order/server/lists',
                 method: 'get',
                 headers: {
@@ -48,4 +48,18 @@ angular.module('education')
                 }
             }
         });
-    }]);
+    }]).factory('HardWareService', function() {
+        var service = {
+            setTeaherInfo: function(teacherId, name) {
+                this.teacherId = teacherId;
+                this.name = name;
+            },
+            getTeacherInfo: function() {
+                return {
+                    teacherId: this.teacherId,
+                    name: this.name
+                }
+            }
+        };
+        return service;
+    });

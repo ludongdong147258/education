@@ -34,7 +34,7 @@
         </div>
         <label class="item item-input">
             <span class="input-label">上门安装地址</span>
-            <input type="text" placeholder="上门安装地址" ng-model="hardwareInfo.address_detail">
+            <input type="text" placeholder="上门安装地址(至少5个字符)" ng-model="hardwareInfo.address_detail">
         </label>
         <label class="item item-input">
             <span class="input-label">联系人姓名</span>
@@ -206,7 +206,7 @@
                 </button>
             </div>
             <div class="col">
-                <button ng-click="changeType(2)" ng-class="{'button-energized':displayStates[1]}" class="button button-stable button-block button-outline button-line-height" ui-sref="teacher({type:'student'})">
+                <button ng-click="changeType(2)" ng-class="{'button-energized':displayStates[1]}" class="button button-stable button-block button-outline button-line-height">
                     指定老师
                 </button>
             </div>
@@ -216,8 +216,10 @@
             <span class="input-label">所选老师</span>
             {{name}}
         </label>
-        <div class="button-bar">
-            <button class="button button-energized" ng-click="saveOrder()">免费预约智能硬件上门安装</button>
+        <div class="row">
+            <div class="col">
+                <button class="button button-block button-energized" ng-click="saveOrder()">免费预约智能硬件上门安装</button>
+            </div>
         </div>
     </ion-content>
 </ion-view>

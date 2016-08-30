@@ -31,7 +31,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
                     }
                 }
             }).state('teacher', {
-                url: '/teacher?type',
+                url: '/teacher',
                 cache: false,
                 views: {
                     baseContent: {
@@ -102,14 +102,6 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
                         controller: 'StudentInfoController'
                     }
                 }
-                // ,
-                // resolve:{
-                //     grades:['StudentService',function(StudentService){
-                //         return StudentService.getGrades({},function(data){
-                //             return data.data;
-                //         });
-                //     }]
-                // }
             }).state('studentOrderHardWare', {
                 url: '/student/orderHardWare?id&name',
                 cache: false,
@@ -239,7 +231,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
                 }
             })
             .state('search', {
-                url: '/search',
+                url: '/search?type',
                 cache: false,
                 views: {
                     baseContent: {
@@ -259,8 +251,6 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
             });
     }])
     .controller('MainController', ['$rootScope', '$scope', '$state', '$ionicSideMenuDelegate', '$ionicModal', '$ionicPopup', '$timeout', '$ionicLoading', '$ionicPopover', function($rootScope, $scope, $state, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $ionicPopover) {
-        $rootScope.appTitle = '京南动态';
-        $rootScope.showHeaderBar = true;
         $rootScope.showMessage = function(msg, delayTime) {
             delayTime = delayTime || 1000;
             $ionicLoading.show({
@@ -280,6 +270,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
             $rootScope.user = null;
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            $state.go('news');
         };
     }]).run(['$rootScope', '$ionicLoading', 'CONFIG', function($rootScope, $ionicLoading, CONFIG) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -306,7 +297,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
             restrict: 'AE',
             link: function(scope, element, attr) {
                 element[0].style.height = ($window.innerHeight - 44) + 'px';
-                element.attr('scroll',false);
+                element.attr('scroll', false);
             }
         }
     }]);

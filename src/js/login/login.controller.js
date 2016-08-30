@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService','CONFIG', function($rootScope, $scope, $state, LoginService,CONFIG) {
+    .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService', 'CONFIG', '$ionicLoading', '$timeout', function($rootScope, $scope, $state, LoginService, CONFIG, $ionicLoading, $timeout) {
         $rootScope.showHeaderBar = false;
         var obj = {
             validateInput: function() {
@@ -24,19 +24,28 @@ angular.module('education')
         $scope.login = function() {
             var flag = obj.validateInput();
             if (flag) {
+                $ionicLoading.show({
+                    template: '登录中...'
+                });
                 LoginService.login($scope.loginInfo, function(data) {
                     if (data.success == 'Y') {
+                        $ionicLoading.hide();
                         CONFIG.token = data.data.token;
                         $rootScope.showMessage('登录成功!');
                         var user = data.data.user;
                         user.role = $scope.loginInfo.type;
-                        localStorage.setItem("token",data.data.token);
-                        localStorage.setItem("user",JSON.stringify(user));
+                        localStorage.setItem("token", data.data.token);
+                        localStorage.setItem("user", JSON.stringify(user));
                         CONFIG.user = user;
                         $rootScope.user = user;
-                        $state.go('home');
+                        $timeout(function(){
+                            $state.go('news', null, {
+                                reload: true
+                            });
+                        },1000);
                     }
                 }, function(error) {
+                    $ionicLoading.hide();
                     $rootScope.showMessage('登录失败!');
                 });
             }

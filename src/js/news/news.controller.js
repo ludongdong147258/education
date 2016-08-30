@@ -1,6 +1,5 @@
 angular.module('education')
     .controller('NewsController', ['$rootScope', '$scope', 'NewsService', function($rootScope, $scope, NewsService) {
-        $rootScope.showHeaderBar = true;
         $scope.showNewsList = true;
         $scope.showOutcomeList = false;
         $scope.newsList = [];
@@ -52,4 +51,38 @@ angular.module('education')
             $scope.newsList.length = 0;
             obj.loadNews();
         };
+        if ($rootScope.user) {
+            switch ($rootScope.user.role) {
+                case 'student':
+                    $rootScope.listItems = [{
+                        state: 'studentOrderHardWare',
+                        name: '预约智能硬件',
+                        class: 'yuding-icon'
+                    }];
+                    break;
+                case 'teacher':
+                    $rootScope.listItems = [{
+                        state: 'teacherOrderHardWare',
+                        name: '预约智能硬件',
+                        class: 'yuding-icon'
+                    }];
+                    break;
+                case 'institution':
+                    $rootScope.listItems = [{
+                        state: 'teacherOrderHardWare',
+                        name: '预约智能硬件',
+                        class: 'yuding-icon'
+                    }];
+                    break;
+                case 'manage':
+                    $rootScope.listItems = [{
+                        state: 'staffOrderService',
+                        name: '提交订单'
+                    }, {
+                        state: 'examineList',
+                        name: '审核教师/机构'
+                    }];
+                    break;
+            }
+        }
     }]);
