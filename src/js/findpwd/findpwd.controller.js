@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('FindpwdController', ['$rootScope', '$scope', '$state', 'FindpwdService', '$timeout',function($rootScope, $scope, $state, FindpwdService, $timeout) {
+    .controller('FindpwdController', ['$rootScope', '$scope', '$state', 'FindpwdService', '$timeout', 'RegisterService', function($rootScope, $scope, $state, FindpwdService, $timeout, RegisterService) {
         $rootScope.showHeaderBar = false;
         $scope.findpwdInfo = {};
         var obj = {
@@ -33,7 +33,9 @@ angular.module('education')
                 FindpwdService.saveNewPwd($scope.findpwdInfo, function(data) {
                     if (data.success == 'Y') {
                         $rootScope.showMessage('保存成功!');
-                        $state.go('login');
+                        $timeout(function() {
+                            $state.go('login');
+                        }, 1000);
                     }
                 }, function(error) {
                     $rootScope.showMessage('保存失败!');
@@ -47,7 +49,17 @@ angular.module('education')
                 return false;
             }
             $scope.btnState = true;
-            reduceCount();
+            RegisterService.getSmsCode({
+                mobile: $scope.findpwdInfo.mobile
+            }, function(data) {
+                if (data.success == 'Y') {
+                    reduceCount();
+                    $rootScope.showMessage('验证码发送成功!');
+                }
+            }, function(error) {
+                $rootScope.showMessage('验证码发送失败!');
+                console.log(error);
+            });
         };
 
         function reduceCount() {
