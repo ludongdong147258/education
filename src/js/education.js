@@ -32,7 +32,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
                 }
             }).state('teacher', {
                 url: '/teacher',
-                cache: false,
+                // cache: false,
                 views: {
                     baseContent: {
                         templateUrl: './js/teacher/teacher.html',
@@ -246,6 +246,14 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
                     baseContent: {
                         templateUrl: './js/updatepwd/updatepwd.html',
                         controller: 'UpdatepwdController'
+                    }
+                }
+            }).state('recommend', {
+                url: '/recommend',
+                views: {
+                    baseContent: {
+                        templateUrl: './js/recommend/recommend.html',
+                        controller: 'RecommendController'
                     }
                 }
             });
