@@ -1,12 +1,11 @@
 angular.module('education')
     .controller('TeacherInfoController', ['$rootScope', '$scope', '$state', 'TeacherService', 'Upload', '$stateParams','CONFIG','$timeout', function($rootScope, $scope, $state, TeacherService, Upload, $stateParams,CONFIG,$timeout) {
-        $rootScope.showHeaderBar = false;
         $scope.appTitle = '我的资料';
         if ($stateParams.id) {
             $scope.appTitle = '机构教师资料编辑';
         }
         $scope.back = function() {
-            window.history.back();
+            $state.go('personal');
         };
         $scope.dispalyStates = [true, false, false];
         $scope.grades = [];
@@ -31,16 +30,7 @@ angular.module('education')
                 }, function(data) {
                     if (data.success == 'Y') {
                         $scope.personalInfo = data.data;
-                        if($scope.personalInfo.bankcard) {
-                            $scope.personalInfo.bankcard = Number($scope.personalInfo.bankcard);
-                        }
-                        if($scope.personalInfo.certificate_url){
-                            $scope.f = {};
-                            $scope.f.progress = 100;
-                        }
-                        that.setGrades($scope.personalInfo.grades);
-                        that.setSubjects($scope.personalInfo.subjects);
-                        that.setTimes($scope.personalInfo.work_time);
+                        that.handleTeacherInfo($scope.personalInfo);
                     }
                 }, function(error) {
                     console.error(error);
@@ -51,20 +41,33 @@ angular.module('education')
                 TeacherService.getPersonalInfo({}, function(data) {
                     if (data.success == 'Y') {
                         $scope.personalInfo = data.data;
-                        if($scope.personalInfo.bankcard) {
-                            $scope.personalInfo.bankcard = Number($scope.personalInfo.bankcard);
-                        }
-                        if($scope.personalInfo.certificate_url){
-                            $scope.f = {};
-                            $scope.f.progress = 100;
-                        }
-                        that.setGrades($scope.personalInfo.grades);
-                        that.setSubjects($scope.personalInfo.subjects);
-                        that.setTimes($scope.personalInfo.work_time);
+                        that.handleTeacherInfo($scope.personalInfo);
                     }
                 }, function(error) {
                     console.error(error);
                 });
+            },
+            handleTeacherInfo:function(teacherInfo){
+                var that = this;
+                if(teacherInfo.bankcard) {
+                    teacherInfo.bankcard = Number(teacherInfo.bankcard);
+                }
+                if(teacherInfo.age){
+                    teacherInfo.age = Number(teacherInfo.age);
+                }
+                if(teacherInfo.worked_year){
+                    teacherInfo.worked_year = Number(teacherInfo.worked_year);
+                }
+                if(teacherInfo.extra_server_fee){
+                    teacherInfo.extra_server_fee = parseFloat(teacherInfo.extra_server_fee);
+                }
+                if(teacherInfo.certificate_url){
+                    $scope.f = {};
+                    $scope.f.progress = 100;
+                }
+                that.setGrades(teacherInfo.grades);
+                that.setSubjects(teacherInfo.subjects);
+                that.setTimes(teacherInfo.work_time);
             },
             getGrades: function() {
                 TeacherService.getGrades({}, function(data) {

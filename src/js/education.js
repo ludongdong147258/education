@@ -283,7 +283,6 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
     }]).run(['$rootScope', '$ionicLoading', 'CONFIG', function($rootScope, $ionicLoading, CONFIG) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             $ionicLoading.show({
-                template: '<i class="icon ion-load-a"></i>'
             });
         });
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {

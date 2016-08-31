@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('StudentInfoController', ['$rootScope', '$scope', '$state', 'StudentService', function($rootScope, $scope, $state, StudentService) {
+    .controller('StudentInfoController', ['$rootScope', '$scope', '$state', 'StudentService','$timeout', function($rootScope, $scope, $state, StudentService,$timeout) {
         $rootScope.showHeaderBar = false;
         // 返回
         $scope.back = function() {
@@ -11,7 +11,6 @@ angular.module('education')
         $scope.saveInfo = function() {
             StudentService.updatePersonalInfo($scope.personalInfo, function(data) {
                 if (data.success == 'Y') {
-                    $scope.personalInfo = data.data;
                     $rootScope.showMessage('保存成功!');
                 }
             }, function(error) {
