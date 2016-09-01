@@ -74,15 +74,6 @@ angular.module('education')
                         class: 'yuding-icon'
                     }];
                     break;
-                case 'manage':
-                    $rootScope.listItems = [{
-                        state: 'staffOrderService',
-                        name: '提交订单'
-                    }, {
-                        state: 'examineList',
-                        name: '审核教师/机构'
-                    }];
-                    break;
             }
         }
     }]);

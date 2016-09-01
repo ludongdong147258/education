@@ -3,7 +3,7 @@ angular.module('education')
         $rootScope.showHeaderBar = false;
         // 返回
         $scope.back = function() {
-            window.history.back();
+            $state.go('personal');
         };
         $scope.displayStates = [true, false];
         // tab 切换
@@ -18,7 +18,7 @@ angular.module('education')
                 obj.getEquipmentList();
             }
         };
-        $scope.showConfirm = function() {
+        $scope.showConfirm = function(id) {
             var myPopup = $ionicPopup.show({
                 template: '硬件安装完成后<br/>请将状态更改为[已完成安装]<br/>如果客户取消安装<br/>请将状态更改为[客户取消]',
                 title: '更改智能硬件上门安装状态',
@@ -27,7 +27,7 @@ angular.module('education')
                     text: '已完成安装',
                     type: 'button-energized',
                     onTap: function(e) {
-                        StaffService.updateEquipmentStatus({}, function(data) {
+                        StaffService.updateEquipmentStatus({id:item.id,status:1}, function(data) {
                             if (data.success == 'Y') {
                                 obj.getEquipmentList();
                             }
@@ -39,7 +39,7 @@ angular.module('education')
                     text: '客户取消',
                     type: 'button-energized',
                     onTap: function(e) {
-                        StaffService.updateEquipmentStatus({}, function(data) {
+                        StaffService.updateEquipmentStatus({{id:item.id,status:3}}, function(data) {
                             if (data.success == 'Y') {
                                 obj.getEquipmentList();
                             }

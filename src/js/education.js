@@ -193,7 +193,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
                     }
                 }
             }).state('staffOrderDetails', {
-                url: '/staff/order/details',
+                url: '/staff/order/details?id',
                 cache: false,
                 views: {
                     baseContent: {

@@ -13,7 +13,7 @@
             </button>
         </div>
         <div ng-show="displayStates[0]">
-            <div class="row-bottom m10" ng-click="showConfirm()" ng-repeat="item in equipmentList">
+            <div class="row-bottom m10" ng-click="showConfirm(item.id)" ng-repeat="item in equipmentList">
                 <div class="row">
                     <div class="col">
                         预约单号:{{item.sn}}
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div ng-show="displayStates[1]">
-            <div class="row-bottom m10" ng-repeat="item in serviceList">
+            <div class="row-bottom m10" ng-repeat="item in serviceList" ui-sref="staffOrderDetails({id:item.id})">
                 <div class="row">
                     <div class="col">
                         订单生成时间:{{item.created_at | date:'yyyy-MM-dd HH:mm:ss'}}
