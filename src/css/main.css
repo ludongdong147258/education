@@ -231,8 +231,8 @@
     margin-top: 10px;
 }
 .progress {
-    display: inline-block;
     width: 100%;
+    display: inline-block;
     border: 1px groove #CCC;
     border-radius: 5px;
 }

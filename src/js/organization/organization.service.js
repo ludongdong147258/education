@@ -29,7 +29,7 @@ angular.module('education')
                 }
             },
             getOrganizationInfo:{
-                url:CONFIG.urlPrefix+'/v1/institution/detail',
+                url:CONFIG.urlPrefix+'/v1/account/detail',
                 method:'get',
                 headers:{
                     token:CONFIG.token

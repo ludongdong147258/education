@@ -1,8 +1,8 @@
 angular.module('education')
-    .controller('OrganizationInfoController', ['$rootScope', '$scope', '$state', 'OrganizationService', function($rootScope, $scope, $state,OrganizationService ) {
+    .controller('OrganizationInfoController', ['$rootScope', '$scope', '$state', 'OrganizationService', 'Upload','CONFIG', function($rootScope, $scope, $state, OrganizationService, Upload,CONFIG) {
         $rootScope.showHeaderBar = false;
         $scope.back = function() {
-            window.history.back();
+            $state.go('personal');
         };
         $scope.dispalyStates = [true, false, false];
         $scope.organizationInfo = {};
@@ -23,7 +23,7 @@ angular.module('education')
             $scope.dispalyStates[curIndex] = true;
         };
         var obj = {
-            getOrganizationInfo:function(){
+            getOrganizationInfo: function() {
                 OrganizationService.getOrganizationInfo({}, function(data) {
                     if (data.success == 'Y') {
                         $scope.organizationInfo = data.data;
@@ -39,7 +39,7 @@ angular.module('education')
             $scope.errFile = errFiles && errFiles[0];
             if (file) {
                 file.upload = Upload.upload({
-                    url: '/v1/common/upload',
+                    url: CONFIG.urlPrefix+'/v1/common/upload',
                     data: {
                         file: file
                     }

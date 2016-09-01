@@ -2,7 +2,7 @@ angular.module('education')
     .controller('OrganizationManagerController', ['$rootScope', '$scope', '$state', 'OrganizationService', '$ionicPopup', function($rootScope, $scope, $state, OrganizationService, $ionicPopup) {
         $rootScope.showHeaderBar = false;
         $scope.back = function() {
-            window.history.back();
+            $state.go('personal');
         };
         $scope.teacherList = [];
         var obj = {

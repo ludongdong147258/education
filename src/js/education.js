@@ -256,6 +256,14 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
                         controller: 'RecommendController'
                     }
                 }
+            }).state('organizationOrderHardWare', {
+                url: '/organization/orderHardWare',
+                views: {
+                    baseContent: {
+                        templateUrl: './js/organization/order-hardware.html',
+                        controller: 'InstitutionOrderHardWareController'
+                    }
+                }
             });
     }])
     .controller('MainController', ['$rootScope', '$scope', '$state', '$ionicSideMenuDelegate', '$ionicModal', '$ionicPopup', '$timeout', '$ionicLoading', '$ionicPopover', function($rootScope, $scope, $state, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $ionicPopover) {

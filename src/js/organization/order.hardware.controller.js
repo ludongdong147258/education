@@ -1,5 +1,10 @@
 angular.module('education')
-    .controller('TeacherOrderHardWareController', ['$rootScope', '$scope', '$state', '$timeout', 'StudentService', function($rootScope, $scope, $state, $timeout, StudentService) {
+    .controller('InstitutionOrderHardWareController', ['$rootScope', '$scope', '$state', '$timeout', 'StudentService', function($rootScope, $scope, $state, $timeout, StudentService) {
+        $scope.city = {
+            key: '',
+            id: ''
+        };
+        $scope.province = {key:''};
         // 返回
         $scope.back = function() {
             $state.go('news');
@@ -31,11 +36,6 @@ angular.module('education')
             }
         };
         $scope.hardwareInfo = {recommend_type:1};
-        $scope.city = {
-            key: '',
-            id: ''
-        };
-        $scope.province = {key:''};
         var addresses = [];
         $scope.provinces = [];
         $scope.cities = [];

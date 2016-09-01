@@ -17,11 +17,19 @@
             <span class="input-label">法人姓名</span>
             <input type="text" placeholder="未填写" ng-model="organizationInfo.legal_person">
         </label>
-        <button type="file" class="button button-stable button-block button-outline" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-height="1000" ngf-max-size="5MB">
-            上传企业营业执照照片</button>
-        <span class="progress" ng-show="f.progress >= 0">
-                <div style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
-            </span>
+        <div class="row">
+            <div class="col">
+                <button type="file" class="button button-stable button-block button-outline" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-height="1000" ngf-max-size="5MB">
+                    上传企业营业执照照片</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="progress" ng-show="f.progress >= 0">
+                        <div style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
+                    </span>
+            </div>
+        </div>
         <div class="row order-row">
             <div class="col">
                 <h4 class="item">机构介绍</h4>
@@ -58,8 +66,10 @@
             <span class="input-label">银行卡号</span>
             <input type="number" placeholder="未填写" ng-model="organizationInfo.bankcard">
         </label> -->
-        <div class="button-bar">
-            <button class="button button-energized button-block" ng-click="saveInfo()">保存更改</button>
+        <div class="row">
+            <div class="col">
+                <button class="button button-energized button-block" ng-click="saveInfo()">保存更改</button>
+            </div>
         </div>
     </ion-content>
 </ion-view>

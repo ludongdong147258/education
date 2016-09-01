@@ -69,7 +69,7 @@ angular.module('education')
                     break;
                 case 'institution':
                     $rootScope.listItems = [{
-                        state: 'teacherOrderHardWare',
+                        state: 'organizationOrderHardWare',
                         name: '预约智能硬件',
                         class: 'yuding-icon'
                     }];

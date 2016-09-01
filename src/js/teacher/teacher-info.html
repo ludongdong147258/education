@@ -27,11 +27,19 @@
             <div class="col"></div>
             <div class="col"></div>
         </div>
-        <button type="file" class="button button-stable button-block button-outline" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-height="1000" ngf-max-size="5MB">
-            上传本人身份证或教职资质照片</button>
-        <span class="progress" ng-show="f.progress >= 0">
-                <div style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
-            </span>
+        <div class="row">
+            <div class="col">
+                <button type="file" class="button button-stable button-block button-outline" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-height="1000" ngf-max-size="5MB">
+                    上传本人身份证或教职资质照片</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="progress" ng-show="f.progress >= 0">
+                        <div style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
+                    </span>
+            </div>
+        </div>
         <label class="item item-input border-bottom">
             <span class="input-label">年龄</span>
             <input type="number" placeholder="未填写" ng-model="personalInfo.age">

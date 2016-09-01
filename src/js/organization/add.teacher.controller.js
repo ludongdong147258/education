@@ -1,8 +1,8 @@
 angular.module('education')
-    .controller('OrganizationAddTeacherController', ['$rootScope', '$scope', '$state', 'OrganizationService', function($rootScope, $scope, $state, OrganizationService) {
+    .controller('OrganizationAddTeacherController', ['$rootScope', '$scope', '$state', 'OrganizationService','$timeout', function($rootScope, $scope, $state, OrganizationService,$timeout) {
         $rootScope.showHeaderBar = false;
         $scope.back = function() {
-            window.history.back();
+            $state.go('organizationManager');
         };
         $scope.teacherInfo = {
             sex: 1
@@ -13,7 +13,9 @@ angular.module('education')
                 OrganizationService.addTeacher($scope.teacherInfo, function(data) {
                     if (data.success == 'Y') {
                         $rootScope.showMessage('新增成功!');
-                        $state.go('organizationManager');
+                        $timeout(function(){
+                            $state.go('organizationManager');
+                        },1000);
                     }
                 }, function(error) {
                     console.error(error);
