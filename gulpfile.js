@@ -86,7 +86,7 @@ gulp.task('js', function() {
         .pipe(rename({
             suffix: '.min'
         }))
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(gulp.dest('dest/js'))
         .pipe(notify({
             message: 'js task ok'

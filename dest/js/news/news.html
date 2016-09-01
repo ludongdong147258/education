@@ -1,64 +1,41 @@
 <ion-view title="京南动态">
-    <ion-content>
+    <ion-header-bar align-title="center" class="bar-energized">
+        <h1 class="title">京南动态</h1>
+        <button class="button button-icon button-clear icon ion-navicon button-light" ng-click="toggleRight()">
+        </button>
+    </ion-header-bar>
+    <ion-content scroll-height>
+        <ion-refresher pulling-text="下拉刷新" on-refresh="refreshNews()"></ion-refresher>
         <div class="button-bar news-bar">
             <a class="button button-clear" ng-class="{'button-energized':showNewsList,'button-stable':showOutcomeList,'button-border-bottom':showNewsList}" ng-click="changeTab(0)">京南新闻</a>
             <a class="button button-clear" ng-class="{'button-energized':showOutcomeList,'button-stable':showNewsList,'button-border-bottom':showOutcomeList}" ng-click="changeTab(1)">教学成果</a>
         </div>
-        <div class="list" ng-if="showNewsList">
-            <a class="item item-thumbnail-left" ui-sref="newsDetails">
-                <img ng-src="././images/cover.png">
-                <h2>Pretty Hate Machine</h2>
-                <p>Nine Inch Nails</p>
-            </a>
-            <a class="item item-thumbnail-left" ui-sref="newsDetails">
-                <img ng-src="././images/cover.png">
-                <h2>Pretty Hate Machine</h2>
-                <p>Nine Inch Nails</p>
-            </a>
-            <a class="item item-thumbnail-left" ui-sref="newsDetails">
-                <img ng-src="././images/cover.png">
-                <h2>Pretty Hate Machine</h2>
-                <p>Nine Inch Nails</p>
-            </a>
-            <a class="item item-thumbnail-left" ui-sref="newsDetails">
-                <img ng-src="././images/cover.png">
-                <h2>Pretty Hate Machine</h2>
-                <p>Nine Inch Nails</p>
-            </a>
-            <a class="item item-thumbnail-left" ui-sref="newsDetails">
-                <img ng-src="././images/cover.png">
-                <h2>Pretty Hate Machine</h2>
-                <p>Nine Inch Nails</p>
+        <div class="list" ng-if="showNewsList" ng-repeat="item in newsList">
+            <a class="item item-thumbnail-left" ui-sref="newsDetails({id:item.id})">
+                <img ng-src="{{item.thumbnail}}">
+                <h2>{{item.title}}</h2>
+                <p>{{item.description}}</p>
             </a>
         </div>
-        <div class="list" ng-if="showOutcomeList">
-            <a class="item item-thumbnail-left" ui-sref="newsDetails">
-                <img ng-src="././images/test.png">
-                <h2>Pretty Hate Machine</h2>
-                <p>Nine Inch Nails</p>
-            </a>
-            <a class="item item-thumbnail-left" ui-sref="newsDetails">
-                <img ng-src="././images/test.png">
-                <h2>Pretty Hate Machine</h2>
-                <p>Nine Inch Nails</p>
-            </a>
-            <a class="item item-thumbnail-left" ui-sref="newsDetails">
-                <img ng-src="././images/test.png">
-                <h2>Pretty Hate Machine</h2>
-                <p>Nine Inch Nails</p>
+        <div class="list" ng-if="showOutcomeList" ng-repeat="item in newsList">
+            <a class="item item-thumbnail-left" ui-sref="newsDetails({id:item.id})">
+                <img ng-src="{{item.thumbnail}}">
+                <h2>{{item.title}}</h2>
+                <p>{{item.description}}</p>
             </a>
         </div>
+        <ion-infinite-scroll ng-if="hasMoreData" on-infinite="loadMore()" distance="5%"></ion-infinite-scroll>
     </ion-content>
-    <ion-footer-bar class="bar-light">
-        <div class="button-bar footer-bar" ng-hide="isLogin">
+    <!-- <ion-footer-bar class="bar-light">
+        <div class="button-bar footer-bar" ng-hide="user.isLogin">
             <a class="button button-energized" ui-sref="register({tabIndex:0})">学生注册</a>
             <a class="button button-energized" ui-sref="register({tabIndex:1})">教师注册</a>
             <a class="button button-energized" ui-sref="register({tabIndex:2})">机构注册</a>
         </div>
-        <div class="button-bar footer-bar home-footer-bar" ng-show="isLogin">
+        <div class="button-bar footer-bar home-footer-bar" ng-show="user.isLogin">
             <a class="button button-energized" ui-sref="studentOrderHardWare">预定智能硬件</a>
             <a class="button button-energized" ui-sref="studentInfo">补全学生资料</a>
             <a class="button button-energized" ui-sref="reference">邀请老师/同学加入</a>
         </div>
-    </ion-footer-bar>
+    </ion-footer-bar> -->
 </ion-view>

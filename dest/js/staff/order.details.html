@@ -1,0 +1,136 @@
+<ion-view title="订单详情">
+    <ion-header-bar align-title="center" class="bar-energized">
+        <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
+        <h1 class="title">订单详情</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="item row-header">
+            订单基本信息&nbsp;&nbsp;<span class="assertive">{{orderInfo.status}}</span>
+        </div>
+        <div class="row">
+            <div class="col">
+                订单经办人:
+            </div>
+            <div class="col">
+                {{orderInfo.manage_name}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                订单号码:
+            </div>
+            <div class="col">
+                {{orderInfo.sn}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                订单时间:
+            </div>
+            <div class="col">
+                {{orderInfo.created_at}}
+            </div>
+        </div>
+        <div class="item row-header">
+            学生个人信息
+        </div>
+        <div class="row">
+            <div class="col">
+                年级:{{orderInfo.grade}}
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                学习情况:
+            </div>
+            <div class="col">
+                {{orderInfo.student_state}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                预约教师:
+            </div>
+            <div class="col">
+                {{orderInfo.teacher_name}}
+            </div>
+        </div>
+        <div class="item row-header">
+            选购付费服务
+        </div>
+        <div class="row">
+            <div class="col">
+                辅导仪上门安装:
+            </div>
+            <div class="col">
+                ¥{{orderInfo.equipment_fee*orderInfo.equipment}}元
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                作业辅导服务:
+            </div>
+            <div class="col">
+                x
+                {{orderInfo.homework_server}}个月 ¥{{orderInfo.homework_server*orderInfo.homework_fee}}元
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                预习、复习服务:
+            </div>
+            <div class="col">
+                x
+                {{orderInfo.prepare_server}}个月 ¥{{orderInfo.prepare_server*orderInfo.prepare_fee}}元
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                补习服务:
+            </div>
+            <div class="col">
+                x
+                {{orderInfo.extra_server}}个小时 ¥{{orderInfo.teacher_extra_server_fee*orderInfo.extra_server}}元
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-50">
+                <strong>总价:<strong/>
+                </div>
+                <div class="col">
+                    <span class="assertive">¥{{orderInfo.total_fee}}元</span>
+                </div>
+            </div>
+        <div ng-if="orderInfo.status == 1">
+            <div class="button-bar" style="padding:0 5px;">
+                <button ng-class="{'button-energized':dispalyStates[0]}" class="button button-full button-clear button-stable button-outline" ng-click="tabChange(0)" style="padding:0 10px;">
+                    支付宝收款
+                </button>
+                <button ng-class="{'button-energized':dispalyStates[1]}" class="button button-full button-clear button-stable button-outline" ng-click="tabChange(1)" style="padding:0 10px;">
+                    微信收款
+                </button>
+                <button ng-class="{'button-energized':dispalyStates[2]}" class="button button-full button-clear button-stable button-outline" ng-click="tabChange(2)" style="padding:0 10px;">
+                    现金支付
+                </button>
+            </div>
+            <div ng-show="dispalyStates[0]" class="code-box">
+                <img src="././images/zfb.jpg" alt="支付宝支付" />
+            </div>
+            <div ng-show="dispalyStates[1]" class="code-box">
+                <img src="././images/wx.jpg" alt="微信支付" />
+            </div>
+            <div ng-show="dispalyStates[2]">
+                <div class="row">
+                    <div class="col">
+                        <a class="button button-block button-energized" ng-click="confirm()" style="margin-top:-10px;">
+                            确认已收到现金
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

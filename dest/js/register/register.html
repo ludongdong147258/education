@@ -1,32 +1,33 @@
 <ion-view title="注册京南课堂">
-    <ion-header-bar align-title="center" class="bar-positive">
+    <ion-header-bar align-title="center" class="bar-energized">
         <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
         <h1 class="title">注册京南课堂</h1>
     </ion-header-bar>
     <ion-content scroll="false">
         <div class="button-bar register-bar">
-            <a class="button" ng-class="{'button-positive':displayStates[0],'button-stable':!displayStates[0]}" ng-click="tabChange(0)">学生注册</a>
-            <a class="button" ng-class="{'button-positive':displayStates[1],'button-stable':!displayStates[1]}" ng-click="tabChange(1)">老师注册</a>
-            <a class="button" ng-class="{'button-positive':displayStates[2],'button-stable':!displayStates[2]}" ng-click="tabChange(2)">机构注册</a>
+            <a class="button button-outline" ng-class="{'button-energized':displayStates[0],'button-stable':!displayStates[0]}" ng-click="tabChange(0)">学生注册</a>
+            <a class="button button-outline" ng-class="{'button-energized':displayStates[1],'button-stable':!displayStates[1]}" ng-click="tabChange(1)">老师注册</a>
+            <a class="button button-outline" ng-class="{'button-energized':displayStates[2],'button-stable':!displayStates[2]}" ng-click="tabChange(2)">机构注册</a>
         </div>
         <div class="list" ng-show="displayStates[0]">
             <label class="item item-input">
-                <input type="text" placeholder="输入手机号">
+                <input type="number" placeholder="输入手机号" ng-model="registerInfo.student.mobile">
             </label>
             <div class="item item-input-inset">
                 <label class="item-input-wrapper register-code">
-                    <input type="text" placeholder="输入验证码">
+                    <input type="text" placeholder="输入验证码" ng-model="registerInfo.student.smscode">
                 </label>
-                <button class="button button-small button-positive">
-                    获取验证码
+                <button ng-disabled="btnStates[0]" class="button button-small button-energized" ng-click="getSmsCode()">
+                    <span ng-hide="btnStates[0]">获取验证码</span>
+                    <span ng-show="btnStates[0]">{{counts[0]}}秒之后重新获取</span>
                 </button>
             </div>
             <label class="item item-input">
-                <input type="password" placeholder="设置登录密码">
+                <input type="password" placeholder="设置登录密码" ng-model="registerInfo.student.password">
             </label>
             <div class="row">
                 <div class="col">
-                    <button class="button button-positive button-block register-button" ng-click="registerStudentInfo()">
+                    <button class="button button-energized button-block register-button" ng-click="submitRegisterInfo()">
                         提交注册
                     </button>
                 </div>
@@ -34,22 +35,23 @@
         </div>
         <div class="list" ng-show="displayStates[1]">
             <label class="item item-input">
-                <input type="text" placeholder="输入手机号">
+                <input type="number" placeholder="输入手机号" ng-model="registerInfo.teacher.mobile">
             </label>
             <div class="item item-input-inset">
                 <label class="item-input-wrapper register-code">
-                    <input type="text" placeholder="输入验证码">
+                    <input type="text" placeholder="输入验证码" ng-model="registerInfo.teacher.smscode">
                 </label>
-                <button class="button button-small button-positive">
-                    获取验证码
+                <button ng-disabled="btnStates[1]" class="button button-small button-energized" ng-click="getSmsCode()">
+                    <span ng-hide="btnStates[1]">获取验证码</span>
+                    <span ng-show="btnStates[1]">{{counts[1]}}秒之后重新获取</span>
                 </button>
             </div>
             <label class="item item-input">
-                <input type="password" placeholder="设置登录密码">
+                <input type="password" placeholder="设置登录密码" ng-model="registerInfo.teacher.password">
             </label>
             <div class="row">
                 <div class="col">
-                    <button class="button button-positive button-block register-button">
+                    <button class="button button-energized button-block register-button" ng-click="submitRegisterInfo()">
                         提交注册
                     </button>
                 </div>
@@ -57,22 +59,23 @@
         </div>
         <div class="list" ng-show="displayStates[2]">
             <label class="item item-input">
-                <input type="text" placeholder="输入手机号">
+                <input type="number" placeholder="输入手机号" ng-model="registerInfo.institution.mobile">
             </label>
             <div class="item item-input-inset">
                 <label class="item-input-wrapper register-code">
-                    <input type="text" placeholder="输入验证码">
+                    <input type="text" placeholder="输入验证码" ng-model="registerInfo.institution.smscode">
                 </label>
-                <button class="button button-small button-positive">
-                    获取验证码
+                <button ng-disabled="btnStates[2]" class="button button-small button-energized" ng-click="getSmsCode()">
+                    <span ng-hide="btnStates[2]">获取验证码</span>
+                    <span ng-show="btnStates[2]">{{counts[2]}}秒之后重新获取</span>
                 </button>
             </div>
             <label class="item item-input">
-                <input type="password" placeholder="设置登录密码">
+                <input type="password" placeholder="设置登录密码" ng-model="registerInfo.institution.password">
             </label>
             <div class="row">
                 <div class="col">
-                    <button class="button button-positive button-block register-button">
+                    <button class="button button-energized button-block register-button" ng-click="submitRegisterInfo()">
                         提交注册
                     </button>
                 </div>

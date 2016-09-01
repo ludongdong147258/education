@@ -9818,18 +9818,18 @@ a.button {
 .footer-bar .button:first-child, .footer-bar .button:last-child {
     border-radius: 4px;
 }
-.footer-bar .button:first-child,.footer-bar .button:nth-child(2) {
+.footer-bar .button:first-child, .footer-bar .button:nth-child(2) {
     margin-right: 5px;
 }
-.home-footer-bar > .button {
+.home-footer-bar>.button {
     padding: 1px 0px;
     overflow: auto;
     width: 100%;
 }
-.home-footer-bar .button:first-child,.home-footer-bar .button:nth-child(2){
+.home-footer-bar .button:first-child, .home-footer-bar .button:nth-child(2) {
     margin-right: 2px;
 }
-.register-bar{
+.register-bar {
     padding: 10px;
 }
 .register-bar .button {
@@ -9837,10 +9837,12 @@ a.button {
     padding: 1px 5px;
 }
 .button-more {
-    position: fixed;
+    position: absolute;
     left: 50%;
-    bottom: -350px;
-    margin-left: -61px;
+    bottom: 50px;
+    margin-left: -60px;
+    width: 120px;
+    font-size: 14px
 }
 .logo {
     width: 100%;
@@ -9848,21 +9850,21 @@ a.button {
     height: auto;
 }
 .teacher-row {
-    padding:5px 0;
+    padding: 5px 0;
 }
 .teacher-row .col {
-    padding:5px 0;
+    padding: 5px 0;
 }
 .teacher-row .col:last-child {
     margin-left: 10px;
 }
-.teacher-row .col:last-child h3{
+.teacher-row .col:last-child h3 {
     text-align: right;
 }
 .teacher-image {
     text-align: center;
 }
-.row-center .col,.text-center {
+.row-center .col, .text-center {
     text-align: center;
 }
 .teacher-experience {
@@ -9870,41 +9872,44 @@ a.button {
     text-indent: 2em;
     text-align: justify;
 }
-.bar .button.button-icon:before{
+.bar .button.button-icon:before {
     font-size: 24px;
 }
 .register-buttton {
     padding: 0 10px;
 }
 .register-code {
-    background:#fff;
-    padding-left:0;
+    background: #fff;
+    padding-left: 0;
 }
-.button-line-height{
+.button-line-height {
     line-height: 1;
 }
 .order-row {
     padding: 0;
 }
 .order-row .col {
-    background: #ece7e7;
+    background: #f2f2f2;
 }
 .order-row h4 {
     border: none;
     padding: 5px 16px;
-    background: #ece7e7;
-    color:#979797;
+    background: #f2f2f2;
+    color: #808080;
     font-size: 12px;
 }
 .row-bottom {
     border-bottom: 1px solid #ddd;
 }
-.news-bar .button:first-child,.news-bar .button:last-child {
+.news-bar .button:first-child, .news-bar .button:last-child {
     border-radius: 0;
 }
 .login-forget-pwd {
     text-align: right;
     margin: 10px 10px 0 0;
+}
+.login-forget-pwd a {
+    color: #fff;
 }
 .nav-list li a {
     text-decoration: none;
@@ -9915,17 +9920,17 @@ a.button {
 .button-border-default {
     border-bottom: 1px solid #ddd !important;
 }
-.personal-avatar{
+.personal-avatar {
     text-align: center;
 }
 .personal-avatar img {
     border-radius: 50%;
 }
 .icon-arrow-right {
-    color:#d4cdcd;
+    color: #d4cdcd;
 }
 .reference-link {
-    background:#f7f5f5;
+    background: #f7f5f5;
     border-radius: 5px;
 }
 .reference-link a {
@@ -9936,12 +9941,189 @@ a.button {
     text-align: center;
     margin-top: 10px;
 }
-.border-top{
-    border-top:none;
+.border-top {
+    border-top: none;
 }
-.border-bottom{
+.border-bottom {
     border-bottom: none;
 }
 .button.button-save {
-    background: #9B9B9B;
+    background: #a9a9a9;
+}
+.row-align {
+    align-items: center;
+}
+.m10 {
+    margin: 0 10px;
+}
+.mp10 {
+    margin-top: 10px;
+}
+.order-title {
+    margin: 0 10px;
+    color: #808080;
+}
+.col-title h4 {
+    margin: 0;
+    padding: 0;
+}
+.col-desc {
+    color: #808080;
+    font-size: 14px;
+}
+.col-button .button {
+    padding: 0px;
+}
+.background {
+    background: url('../images/background.jpg') no-repeat;
+    background-size: cover;
+}
+.login-background {
+    background: url('../images/login-bg.jpg') no-repeat;
+    background-size: cover;
+}
+@media screen and (max-width:768px) {
+    .login-box {
+        margin-top: 300px;
+    }
+}
+@media screen and (max-width:420px) {
+    .login-box {
+        margin-top: 250px;
+    }
+}
+@media screen and (max-width:380px) {
+    .login-box {
+        margin-top: 200px;
+    }
+}
+@media screen and (max-width:321px) {
+    .login-box {
+        margin-top: 150px;
+    }
+}
+.login-box .item {
+    margin: 0 20px;
+    background-color: transparent;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    color: #fff;
+}
+.login-box .item input {
+    color: #fff;
+}
+.login-box input::-webkit-input-placeholder {
+    color: #fff !important;
+}
+.login-box input:-moz-placeholder {
+    color: #fff !important;
+}
+.login-box input::-moz-placeholder {
+    color: #fff !important;
+}
+.login-box input:-ms-input-placeholder {
+    color: #fff !important;
+}
+.login-box .item select {
+    background-color: transparent;
+    color: #fff;
+}
+.mr10 {
+    margin: 0 10px 10px 10px;
+}
+.search-input {
+    border-radius: 5px;
+    width: 95%;
+}
+.ml10 {
+    margin-left: 10px;
+}
+.search-tip {
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
+.progress {
+    width: 100%;
+    display: inline-block;
+    border: 1px groove #CCC;
+    border-radius: 5px;
+}
+.progress div {
+    height: 15px;
+    background: orange;
+    width: 0;
+}
+.popup-buttons .button {
+    padding: 0;
+    font-size: 14px;
+}
+.popup-body {
+    text-align: center;
+}
+.row-header {
+    border: none;
+    border-bottom: 1px solid #ddd;
+    margin: 0 10px;
+    font-size: 14px;
+    padding: 5px 0px
+}
+.img-box {
+    max-height: 350px;
+}
+.img-box img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+.code-box {
+    text-align: center;
+    padding-bottom: 5px;
+}
+.code-box img {
+    width: 200px;
+    height: 200px;
+}
+.mp50 {
+    margin-top: 50px;
+}
+.menu i {
+    margin-bottom: -3px;
+    margin-right: 5px;
+    background-size: cover;
+    height: 16px;
+    width: 16px;
+    display: inline-block
+}
+.menu .login-icon {
+    background: url(../images/login.png);
+}
+.menu .register-icon {
+    background: url(../images/register.png);
+}
+.menu .search-icon {
+    background: url(../images/search.png);
+}
+.menu .news-icon {
+    background: url(../images/news.png);
+}
+.menu .view-icon {
+    background: url(../images/view.png);
+}
+.menu .self-icon {
+    background: url(../images/self.png);
+}
+.menu .yuding-icon {
+    background: url(../images/yuding.png);
+}
+.menu .exit-icon {
+    background: url(../images/exit.png);
+}
+.menu .recommend-icon {
+    background: url(../images/recommend.png);
+}
+.qrcode {
+    display: block;
+    margin: 0 auto;
 }

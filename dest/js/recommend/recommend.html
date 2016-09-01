@@ -1,0 +1,38 @@
+<ion-view title="平台推荐">
+    <ion-header-bar class="bar-energized" align-title="center">
+        <a class="button button-icon icon ion-chevron-left energized" ng-click="back()"></a>
+        <h1 class="title">平台推荐</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="list">
+            <a class="item item-thumbnail-left" ng-repeat="item in recommendList" ui-sref="teacherDetails({id:item.id})">
+                <img ng-src="{{item.avatar}}">
+                <div class="row teacher-row">
+                    <div class="col col-67">
+                        <h3>{{item.truename}}</h3>
+                    </div>
+                    <div class="col">
+                        <i class="icon ion-star energized" ng-repeat="star in item.stars"></i>
+                    </div>
+                </div>
+                <div class="row teacher-row">
+                    <div class="col col-67">
+                        <h3>学校:{{item.school_name}}</h3>
+                    </div>
+                    <div class="col">
+                        <h3>教龄:{{item.worked_year}}年</h3>
+                    </div>
+                </div>
+                <div class="row teacher-row">
+                    <div class="col col-67">
+                        <h3>年级:{{item.grade}}</h3>
+                    </div>
+                    <div class="col">
+                        <h3>科目:{{item.subject}}</h3>
+                    </div>
+                </div>
+                <div>{{item.introduction}}</div>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>

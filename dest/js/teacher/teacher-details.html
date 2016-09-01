@@ -1,50 +1,45 @@
 <ion-view title="教师详情">
-    <ion-header-bar align-title="center" class="bar-positive">
+    <ion-header-bar align-title="center" class="bar-energized">
       <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
       <h1 class="title">教师详情</h1>
     </ion-header-bar>
     <ion-content>
         <div class="item teacher-image">
-            <img ng-src="././images/cover.png" />
-            <h2>张君宝</h2>
+            <img ng-src="{{teacherInfo.avatar}}" />
+            <h2>{{teacherInfo.truename}}</h2>
         </div>
         <div>
+            <!-- <div class="row row-center">
+                <div class="col">
+                    {{teacherInfo.sex == 1 ? '男':'女'}}
+                </div>
+                <div class="col">
+                    {{teacherInfo.age}}岁
+                </div>
+                <div class="col">
+                    <i class="icon ion-star energized" ng-repeat="num in teacherInfo.stars"></i>
+                </div>
+            </div> -->
             <div class="row row-center">
                 <div class="col">
-                    男
-                </div>
-                <div class="col">
-                    30岁
-                </div>
-                <div class="col">
-                    <i class="icon ion-star"></i><i class="icon ion-star"></i><i class="icon ion-star"></i><i class="icon ion-star"></i><i class="icon ion-star"></i>
+                    {{teacherInfo.school_name}}&nbsp;&nbsp;{{teacherInfo.profession_title}}
                 </div>
             </div>
             <div class="row row-center">
                 <div class="col">
-                    湖北省随州市第一中学
-                </div>
-                <div class="col">
-                    特级教师
+                    年级:{{teacherInfo.grade}}&nbsp;&nbsp;|&nbsp;&nbsp;科目:{{teacherInfo.subject}}&nbsp;&nbsp;|&nbsp;&nbsp;教龄:{{teacherInfo.worked_year}}年
                 </div>
             </div>
             <div class="row row-center">
                 <div class="col">
-                    年级:初中
-                </div>
-                <div class="col">
-                    科目:语文
-                </div>
-                <div class="col">
-                    教龄:12年
+                    <i class="icon ion-star energized" ng-repeat="num in teacherInfo.stars"></i>
                 </div>
             </div>
         </div>
         <div class="item">
             <h2>教职经历</h2>
         </div>
-        <p class="teacher-experience">
-            经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历经历
-        </p>
+        <div class="" ng-bind-html="teacherInfo.introduction">
+        </div>
     </ion-content>
 </ion-view>

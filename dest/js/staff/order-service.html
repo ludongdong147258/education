@@ -1,0 +1,122 @@
+<ion-view title="京南课堂教学服务预定">
+    <ion-header-bar align-title="center" class="bar-energized">
+        <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
+        <h1 class="title">京南课堂教学服务预定</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="row order-row">
+            <div class="col">
+                <h4 class="item">学生账号</h4>
+            </div>
+        </div>
+        <label class="item item-input border-top">
+            <span class="input-label">手机号</span>
+            <input type="tel" placeholder="未填写" ng-blur="getTeacherFee()" ng-model="serviceInfo.mobile">
+        </label>
+        <div class="row-bottom">
+            <div class="row">
+                <div class="col col-67 col-title">
+                    <h4>京南课堂智能辅导仪</h4>
+                </div>
+                <div class="col col-desc">
+                    费用¥{{feeInfo.equipment_fee}}/套
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-25">
+                    <button class="button button-block button-stable  button-outline" ng-class="{'button-energized':displayStates[0]}" ng-click="changeFDYPrice(1)">
+                        一套
+                    </button>
+                </div>
+                <div class="col col-25">
+                    <button class="button button-block button-stable button-outline" ng-click="changeFDYPrice(0)" ng-class="{'button-energized':displayStates[1]}">
+                        已有
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row-bottom">
+            <div class="row">
+                <div class="col col-67 col-title">
+                    <h4>作业辅导服务<span class="col-desc">(必选,3个月起)</span></h4>
+                </div>
+                <div class="col col-desc">
+                    费用¥{{feeInfo.homework_fee}}/月
+                </div>
+            </div>
+            <div class="row row-align">
+                <div class="col col-67 col-button">
+                    <div class="button-bar">
+                        <button class="button button-block button-small button-icon button-outline button-energized icon ion-minus-round" ng-click="changeZYPrice(0)">
+                        </button>
+                        <button class="button button-block button-outline button-energized">
+                            {{serviceInfo.homework_server}}个月
+                        </button>
+                        <button class="button button-block button-icon button-outline button-energized icon ion-plus-round" ng-click="changeZYPrice(1)">
+                        </button>
+                    </div>
+                </div>
+                <div class="col col-offset-10">
+                    <span class="assertive">¥{{feeInfo.homework_fee*serviceInfo.homework_server}}元</span>
+                </div>
+            </div>
+        </div>
+        <div class="row-bottom">
+            <div class="row">
+                <div class="col col-67 col-title">
+                    <h4>预习/复习服务<span class="col-desc">(可选)</span></h4>
+                </div>
+                <div class="col col-desc">
+                    费用¥{{feeInfo.prepare_fee}}/月
+                </div>
+            </div>
+            <div class="row row-align">
+                <div class="col col-67 col-button">
+                    <div class="button-bar">
+                        <button class="button button-block button-small button-icon button-outline button-energized icon ion-minus-round" ng-click="changeFYPrice(0)">
+                        </button>
+                        <button class="button button-block button-outline button-energized">
+                            {{serviceInfo.prepare_server}}个月
+                        </button>
+                        <button class="button button-block button-icon button-outline button-energized icon ion-plus-round" ng-click="changeFYPrice(1)">
+                        </button>
+                    </div>
+                </div>
+                <div class="col col-offset-10">
+                    <span class="assertive">¥{{feeInfo.prepare_fee*serviceInfo.prepare_server}}元</span>
+                </div>
+            </div>
+        </div>
+        <div class="row-bottom">
+            <div class="row">
+                <div class="col col-67 col-title">
+                    <h4>补习服务<span class="col-desc">(可选)</span></h4>
+                </div>
+                <div class="col col-desc">
+                    费用¥{{teacherFee}}/时
+                </div>
+            </div>
+            <div class="row row-align">
+                <div class="col col-67 col-button">
+                    <div class="button-bar">
+                        <button class="button button-block button-small button-icon button-outline button-energized icon ion-minus-round" ng-click="changeBYPrice(0)">
+                        </button>
+                        <button class="button button-block button-outline button-energized">
+                            {{serviceInfo.extra_server}}小时
+                        </button>
+                        <button class="button button-block button-icon button-outline button-energized icon ion-plus-round" ng-click="changeBYPrice(1)">
+                        </button>
+                    </div>
+                </div>
+                <div class="col col-offset-10">
+                    <span class="assertive">¥{{teacherFee*serviceInfo.extra_server}}元</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="button button-block button-energized" ng-click="createOrder()">生成订单</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

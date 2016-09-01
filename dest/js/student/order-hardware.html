@@ -9,46 +9,42 @@
                 <h4 class="item">预约信息</h4>
             </div>
             <div class="col col-67">
-                <h4 class="item">预约账号:13161995317</h4>
+                <h4 class="item">预约账号:{{user.mobile}}</h4>
             </div>
         </div>
         <label class="item item-input border-top">
             <span class="input-label">日期</span>
-            <input type="date">
+            <input type="date" ng-model="hardwareInfo.time">
         </label>
         <div class="row row-bottom">
             <div class="col">
                 <label class="item item-select">
-                    <select>
-                        <option selected>北京</option>
-                        <option>上海</option>
-                        <option>广州</option>
+                    <select ng-options="item.key for item in provinces" ng-model="province" ng-change="changeProvince(province)">
+                        <option value="">省份</option>
                     </select>
                 </label>
             </div>
             <div class="col">
                 <label class="item item-select">
-                    <select>
-                        <option selected>朝阳</option>
-                        <option>海淀</option>
-                        <option>昌平</option>
+                    <select ng-options="item.key for item in cities" ng-model="city" ng-change="changeCity(city)">
+                        <option value="">城市</option>
                     </select>
                 </label>
             </div>
         </div>
         <label class="item item-input">
             <span class="input-label">上门安装地址</span>
-            <input type="text" placeholder="上门安装地址">
+            <input type="text" placeholder="上门安装地址(至少5个字符)" ng-model="hardwareInfo.address_detail">
         </label>
         <label class="item item-input">
             <span class="input-label">联系人姓名</span>
-            <input type="text" placeholder="联系人姓名">
+            <input type="text" placeholder="联系人姓名" ng-model="hardwareInfo.link_name">
         </label>
         <label class="item item-input border-bottom">
             <span class="input-label">联系电话</span>
-            <input type="number" placeholder="如与账号相同可不填">
+            <input type="number" placeholder="如与账号相同可不填" ng-model="hardwareInfo.mobile">
         </label>
-        <div class="row order-row">
+        <!-- <div class="row order-row">
             <div class="col">
                 <h4 class="item">学生基本信息</h4>
             </div>
@@ -196,7 +192,7 @@
                     眼高手低
                 </button>
             </div>
-        </div>
+        </div> -->
         <div class="row order-row" style="margin-bottom:10px;">
             <div class="col">
                 <h4 class="item">预约教师</h4>
@@ -205,20 +201,25 @@
         </div>
         <div class="row">
             <div class="col">
-                <button class="button button-energized button-block button-outline button-line-height">
+                <button class="button button-stable button-block button-outline button-line-height" ng-click="changeType(1)" ng-class="{'button-energized':displayStates[0]}">
                     平台推荐
                 </button>
             </div>
             <div class="col">
-                <button class="button button-stable button-block button-outline button-line-height">
+                <button ng-click="changeType(2)" ng-class="{'button-energized':displayStates[1]}" class="button button-stable button-block button-outline button-line-height">
                     指定老师
                 </button>
             </div>
-            <div class="col">
-            </div>
+            <div class="col"></div>
         </div>
-        <div class="button-bar">
-            <button class="button button-energized" ng-click="saveOrder()">免费预约智能硬件上门安装</button>
+        <label class="item item-input border-top" ng-if="displayStates[1]">
+            <span class="input-label">所选老师</span>
+            {{name}}
+        </label>
+        <div class="row">
+            <div class="col">
+                <button class="button button-block button-energized" ng-click="saveOrder()">免费预约智能硬件上门安装</button>
+            </div>
         </div>
     </ion-content>
 </ion-view>

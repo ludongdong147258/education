@@ -10,17 +10,17 @@
             </div>
         </div>
         <label class="item item-input border-top">
-            <span class="input-label">学生姓名</span>
-            <input type="text" placeholder="未填写">
+            <span class="input-label">姓名</span>
+            <input type="text" placeholder="未填写" ng-model="personalInfo.truename">
         </label>
         <div class="row">
             <div class="col">
-                <button class="button button-energized button-outline button-block button-line-height">
+                <button ng-class="{'button-energized':(personalInfo.sex == 1)}" class="button button-outline button-block button-stable button-line-height" ng-click="changeSex(1)">
                     男
                 </button>
             </div>
             <div class="col">
-                <button class="button button-stable button-outline button-block button-line-height">
+                <button ng-click="changeSex(2)" ng-class="{'button-energized':(personalInfo.sex == 2)}" class="button button-stable button-outline button-block button-line-height">
                     女
                 </button>
             </div>
@@ -31,11 +31,11 @@
         </div>
         <label class="item item-input">
             <span class="input-label">年龄</span>
-            <input type="number" placeholder="未填写">
+            <input type="number" placeholder="未填写" ng-model="personalInfo.age">
         </label>
         <label class="item item-input border-bottom">
             <span class="input-label">学校</span>
-            <input type="text" placeholder="未填写">
+            <input type="text" placeholder="未填写" ng-model="personalInfo.school_name">
         </label>
         <div class="row order-row" style="margin-bottom:10px;">
             <div class="col">
@@ -43,63 +43,31 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <button class="button button-energized button-outline button-line-height">
-                    小学3年级
-                </button>
-            </div>
-            <div class="col">
-                <button class="button button-stable button-outline button-line-height">
-                    小学4年级
-                </button>
-            </div>
-            <div class="col">
-                <button class="button button-stable button-outline button-line-height">
-                    小学5年级
-                </button>
-            </div>
-            <div class="col">
-                <button class="button button-stable button-outline button-line-height">
-                    小学6年级
+            <div class="col" ng-repeat="item in grades" ng-if="$index <= 3">
+                <button ng-class="{'button-energized':(personalInfo.grade == item.key)}" class="button button-stable button-outline button-block button-line-height" ng-click="changeGrade(item.key)">
+                    {{item.val}}
                 </button>
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <button class="button button-stable button-block button-outline button-line-height">
-                    初一
-                </button>
-            </div>
-            <div class="col">
-                <button class="button button-stable button-block button-outline button-line-height">
-                    初二
-                </button>
-            </div>
-            <div class="col">
-                <button class="button button-stable button-block button-outline button-line-height">
-                    初三
-                </button>
-            </div>
-            <div class="col">
-                <button class="button button-stable button-block button-outline button-line-height">
-                    高一
+            <div class="col" ng-repeat="item in grades" ng-if="$index > 3 && $index < 7">
+                <button ng-class="{'button-energized':(personalInfo.grade == item.key)}" class="button button-stable button-outline button-block button-line-height" ng-click="changeGrade(item.key)">
+                    {{item.val}}
                 </button>
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <button class="button button-stable button-block button-outline button-line-height">
-                    高二
+            <div class="col" ng-repeat="item in grades" ng-if="$index > 6 && $index < 10">
+                <button ng-class="{'button-energized':(personalInfo.grade == item.key)}" class="button button-stable button-outline button-block button-line-height" ng-click="changeGrade(item.key)">
+                    {{item.val}}
                 </button>
             </div>
-            <div class="col">
-                <button class="button button-stable button-block button-outline button-line-height">
-                    高三
+        </div>
+        <div class="row">
+            <div class="col" ng-repeat="item in grades" ng-if="$index > 9 && $index < 13">
+                <button ng-class="{'button-energized':(personalInfo.grade == item.key)}" class="button button-stable button-outline button-block button-line-height" ng-click="changeGrade(item.key)">
+                    {{item.val}}
                 </button>
-            </div>
-            <div class="col">
-            </div>
-            <div class="col">
             </div>
         </div>
         <div class="row order-row" style="margin-bottom:10px;">
@@ -108,41 +76,28 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <button class="button button-energized button-block button-outline button-line-height">
-                    培优拔高
-                </button>
-            </div>
-            <div class="col">
-                <button class="button button-stable button-block button-outline button-line-height">
-                    基础薄弱
-                </button>
-            </div>
-            <div class="col">
-                <button class="button button-stable button-block button-outline button-line-height">
-                    效率低下
+            <div class="col" ng-repeat="item in states" ng-if="$index <= 2">
+                <button ng-class="{'button-energized':item.isSelected}" class="button button-stable button-block button-outline button-line-height" ng-click="changeState(item)">
+                    {{item.val}}
                 </button>
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <button class="button button-energized button-block button-outline button-line-height">
-                    粗心马虎
+            <div class="col" ng-repeat="item in states" ng-if="$index >2">
+                <button ng-class="{'button-energized':item.isSelected}" class="button button-stable button-block button-outline button-line-height" ng-click="changeState(item)">
+                    {{item.val}}
                 </button>
             </div>
-            <div class="col">
-                <button class="button button-stable button-block button-outline button-line-height">
-                    生搬硬套
-                </button>
-            </div>
-            <div class="col">
-                <button class="button button-stable button-block button-outline button-line-height">
-                    眼高手低
+        </div>
+        <div class="row">
+            <div class="col" ng-repeat="item in states" ng-if="$index >5">
+                <button ng-class="{'button-energized':item.isSelected}" class="button button-stable button-block button-outline button-line-height" ng-click="changeState(item)">
+                    {{item.val}}
                 </button>
             </div>
         </div>
         <div class="button-bar">
-            <button class="button button-dark button-block button-save" ng-click="saveInfo()">保存更改</button>
+            <button class="button button-energized button-block" ng-click="saveInfo()">保存更改</button>
         </div>
     </ion-content>
 </ion-view>

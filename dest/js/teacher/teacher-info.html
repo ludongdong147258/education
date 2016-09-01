@@ -1,0 +1,192 @@
+<ion-view title="{{appTitle}}">
+    <ion-header-bar align-title="center" class="bar-energized">
+        <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
+        <h1 class="title">{{appTitle}}</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="row order-row">
+            <div class="col">
+                <h4 class="item">个人基本信息</h4>
+            </div>
+        </div>
+        <label class="item item-input border-top">
+            <span class="input-label">教师姓名</span>
+            <input type="text" placeholder="未填写" ng-model="personalInfo.truename">
+        </label>
+        <div class="row">
+            <div class="col">
+                <button ng-class="{'button-energized':(personalInfo.sex == 1)}" class="button button-outline button-block button-stable button-line-height" ng-click="changeSex(1)">
+                    男
+                </button>
+            </div>
+            <div class="col">
+                <button ng-click="changeSex(2)" ng-class="{'button-energized':(personalInfo.sex == 2)}" class="button button-stable button-outline button-block button-line-height">
+                    女
+                </button>
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button type="file" class="button button-stable button-block button-outline" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-height="1000" ngf-max-size="5MB">
+                    上传本人身份证或教职资质照片</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="progress" ng-show="f.progress >= 0">
+                        <div style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
+                    </span>
+            </div>
+        </div>
+        <label class="item item-input border-bottom">
+            <span class="input-label">年龄</span>
+            <input type="number" placeholder="未填写" ng-model="personalInfo.age">
+        </label>
+        <div class="row order-row">
+            <div class="col">
+                <h4 class="item">职业信息</h4>
+            </div>
+        </div>
+        <label class="item item-input border-top">
+            <span class="input-label">所属学校</span>
+            <input type="text" placeholder="未填写" ng-model="personalInfo.school_name">
+        </label>
+        <label class="item item-input">
+            <span class="input-label">职称</span>
+            <input type="text" placeholder="未填写" ng-model="personalInfo.profession_title">
+        </label>
+        <label class="item item-input border-bottom">
+            <span class="input-label">教龄(年)</span>
+            <input type="number" placeholder="未填写" ng-model="personalInfo.worked_year">
+        </label>
+        <label class="item item-input border-bottom">
+            <span class="input-label">补习费用(元)</span>
+            <input type="number" placeholder="未填写" ng-model="personalInfo.extra_server_fee">
+        </label>
+        <div class="row order-row" style="margin-bottom:10px;">
+            <div class="col">
+                <h4 class="item">可授课年级</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" ng-repeat="item in grades" ng-if="$index <= 3">
+                <button ng-class="{'button-energized':item.isSelected}" class="button button-stable button-outline button-line-height" ng-click="changeGrade(item)">
+                    {{item.val}}
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" ng-repeat="item in grades" ng-if="$index > 3 && $index < 7">
+                <button ng-class="{'button-energized':item.isSelected}" class="button button-stable button-outline button-block button-line-height" ng-click="changeGrade(item)">
+                    {{item.val}}
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" ng-repeat="item in grades" ng-if="$index > 6 && $index < 10">
+                <button ng-class="{'button-energized':item.isSelected}" class="button button-stable button-outline button-block button-line-height" ng-click="changeGrade(item)">
+                    {{item.val}}
+                </button>
+            </div>
+        </div>
+        <div class="row order-row">
+            <div class="col">
+                <h4 class="item">可授课科目</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" ng-repeat="item in subjects" ng-if="$index <= 2">
+                <button ng-class="{'button-energized':item.isSelected}" class="button button-stable button-block button-outline button-line-height" ng-click="changeSubject(item)">
+                    {{item.val}}
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" ng-repeat="item in subjects" ng-if="$index >2 && $index < 6">
+                <button ng-class="{'button-energized':item.isSelected}" class="button button-stable button-block button-outline button-line-height" ng-click="changeSubject(item)">
+                    {{item.val}}
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" ng-repeat="item in subjects" ng-if="$index >5 && $index < 9">
+                <button ng-class="{'button-energized':item.isSelected}" class="button button-stable button-block button-outline button-line-height" ng-click="changeSubject(item)">
+                    {{item.val}}
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" ng-repeat="item in subjects" ng-if="$index >8 && $index < 12">
+                <button ng-class="{'button-energized':item.isSelected}" class="button button-stable button-block button-outline button-line-height" ng-click="changeSubject(item)">
+                    {{item.val}}
+                </button>
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+        <div class="row order-row">
+            <div class="col">
+                <h4 class="item">可授课时间</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" ng-repeat="item in worktimes" ng-if="$index <= 3">
+                <button ng-class="{'button-energized':item.isSelected}" class="button button-stable button-block button-outline button-line-height" ng-click="changeTime(item)">
+                    {{item.val}}
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" ng-repeat="item in worktimes" ng-if="$index >3">
+                <button ng-class="{'button-energized':item.isSelected}" class="button button-stable button-block button-outline button-line-height" ng-click="changeTime(item)">
+                    {{item.val}}
+                </button>
+            </div>
+        </div>
+        <div class="row order-row">
+            <div class="col">
+                <h4 class="item">教学能力介绍</h4>
+            </div>
+        </div>
+        <label class="item item-input border-top">
+            <textarea placeholder="个人简介" rows="5" ng-model="personalInfo.profile"></textarea>
+        </label>
+        <label class="item item-input">
+            <textarea placeholder="教职履历" rows="8" ng-model="personalInfo.introduction"></textarea>
+        </label>
+        <div class="row order-row" style="margin-top:10px;">
+            <div class="col">
+                <h4 class="item">收款信息</h4>
+            </div>
+        </div>
+        <div class="button-bar">
+            <button ng-class="{'button-energized':dispalyStates[0]}" class="button button-full button-clear button-stable" ng-click="tabChange(0)">
+                支付宝收款
+            </button>
+            <button ng-class="{'button-energized':dispalyStates[1]}" class="button button-full button-clear button-stable" ng-click="tabChange(1)">
+                微信收款
+            </button>
+            <button ng-class="{'button-energized':dispalyStates[2]}" class="button button-full button-clear button-stable" ng-click="tabChange(2)">
+                网银收款
+            </button>
+        </div>
+        <label class="item item-input" ng-show="dispalyStates[0]">
+            <span class="input-label">支付宝账号</span>
+            <input type="text" placeholder="未填写" ng-model="personalInfo.alipay">
+        </label>
+        <label class="item item-input" ng-show="dispalyStates[1]">
+            <span class="input-label">微信账号</span>
+            <input type="text" placeholder="未填写" ng-model="personalInfo.wechatpay">
+        </label>
+        <label class="item item-input" ng-show="dispalyStates[2]">
+            <span class="input-label">银行卡号</span>
+            <input type="number" placeholder="未填写" ng-model="personalInfo.bankcard">
+        </label>
+        <div class="button-bar">
+            <button class="button button-energized button-block" ng-click="saveInfo()">保存更改</button>
+        </div>
+    </ion-content>
+</ion-view>

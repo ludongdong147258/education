@@ -1,0 +1,60 @@
+<ion-view title="我的订单">
+    <ion-header-bar align-title="center" class="bar-energized">
+        <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
+        <h1 class="title">我的订单</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="button-bar">
+            <button class="button button-full button-clear" ng-class="{'button-energized':displayStates[0],'button-stable':displayStates[1],'button-border-bottom':displayStates[0],'button-border-default':displayStates[1]}" ng-click="tabChange(0)">
+                智能硬件预约
+            </button>
+            <button class="button button-full button-clear" ng-class="{'button-stable':displayStates[0],'button-energized':displayStates[1],'button-border-bottom':displayStates[1],'button-border-default':displayStates[0]}" ng-click="tabChange(1)">
+                课堂服务购买
+            </button>
+        </div>
+        <div ng-show="displayStates[0]">
+            <div class="row-bottom m10" ng-click="showConfirm(item,$event)" ng-repeat="item in equipmentList">
+                <div class="row">
+                    <div class="col">
+                        预约单号:{{item.sn}}
+                    </div>
+                    <div class="col">
+                        姓名:{{item.link_name}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        手机号码:{{item.mobile}}
+                    </div>
+                    <div class="col">
+                        预约状态:{{item.status}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        预约时间:{{item.created_at | date:'yyyy-MM-dd HH:mm:ss'}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-show="displayStates[1]">
+            <div class="row-bottom m10" ng-repeat="item in serviceList" ui-sref="staffOrderDetails({id:item.id})">
+                <div class="row">
+                    <div class="col">
+                        订单生成时间:{{item.created_at | date:'yyyy-MM-dd HH:mm:ss'}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        订单金额:{{item.total_fee}}元
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        订单状态:{{item.status}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
