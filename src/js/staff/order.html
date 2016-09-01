@@ -13,7 +13,7 @@
             </button>
         </div>
         <div ng-show="displayStates[0]">
-            <div class="row-bottom m10" ng-click="showConfirm(item.id)" ng-repeat="item in equipmentList">
+            <div class="row-bottom m10" ng-click="showConfirm(item,$event)" ng-repeat="item in equipmentList">
                 <div class="row">
                     <div class="col">
                         预约单号:{{item.sn}}

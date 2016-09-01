@@ -66,7 +66,7 @@ angular.module('education')
             },
             updateEquipmentStatus:{
                 method: 'post',
-                url: CONFIG.urlPrefix + '/v1/orer/equipment/auth',
+                url: CONFIG.urlPrefix + '/v1/order/equipment/auth',
                 headers: {
                     token: CONFIG.token
                 }
@@ -74,6 +74,20 @@ angular.module('education')
             getOrderDetails:{
                 method: 'get',
                 url: CONFIG.urlPrefix + '/v1/order/server/details',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            getStaticFee:{
+                method: 'get',
+                url: CONFIG.urlPrefix + '/v1/order/static/fee',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            getTeacherFee:{
+                method: 'get',
+                url: CONFIG.urlPrefix + '/v1/order/teacher/fee',
                 headers: {
                     token: CONFIG.token
                 }

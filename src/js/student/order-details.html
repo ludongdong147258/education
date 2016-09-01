@@ -4,13 +4,13 @@
         <h1 class="title">订单详情</h1>
     </ion-header-bar>
     <ion-content>
-        <h5 class="row-bottom padding-vertical order-title">订单基本信息</h5>
+        <h5 class="row-bottom padding-vertical order-title">订单基本信息&nbsp;&nbsp;<span class="assertive">{{orderInfo.status}}</span></h5>
         <div class="row">
             <div class="col">
                 订单号码:
             </div>
             <div class="col">
-                12345678912345678
+                {{orderInfo.sn}}
             </div>
         </div>
         <div class="row">
@@ -18,7 +18,7 @@
                 订单经办人:
             </div>
             <div class="col">
-                李晓明(ID1234567)
+                {{orderInfo.manage_name}}
             </div>
         </div>
         <div class="row">
@@ -26,7 +26,7 @@
                 订单生成时间:
             </div>
             <div class="col">
-                2016-08-11 15:27:00
+                {{orderInfo.created_at | date 'yyyy-MM-dd HH:mm:ss'}}
             </div>
         </div>
         <div class="row">
@@ -34,7 +34,7 @@
                 订单支付时间:
             </div>
             <div class="col">
-                2016-08-11 15:27:00
+                {{orderInfo.updated_at | date 'yyyy-MM-dd HH:mm:ss'}}
             </div>
         </div>
         <h5 class="row-bottom padding-vertical order-title">学生个人情况</h5>
@@ -43,15 +43,7 @@
                 年级:
             </div>
             <div class="col">
-                高三
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                科目:
-            </div>
-            <div class="col">
-                语文、数学、英语
+                {{orderInfo.grade}}
             </div>
         </div>
         <div class="row">
@@ -59,7 +51,7 @@
                 学习情况:
             </div>
             <div class="col">
-                基础薄弱、效率低下
+                {{orderInfo.student_state}}
             </div>
         </div>
         <div class="row">
@@ -67,7 +59,7 @@
                 预约教师:
             </div>
             <div class="col">
-                平台推荐
+                {{orderInfo.teacher_name}}
             </div>
         </div>
         <h5 class="row-bottom padding-vertical order-title">选购付费服务</h5>
@@ -76,7 +68,7 @@
                 辅导仪上门安装:
             </div>
             <div class="col">
-                ¥5000元
+                ¥{{orderInfo.equipment_fee*orderInfo.equipment}}元
             </div>
         </div>
         <div class="row">
@@ -84,7 +76,8 @@
                 作业辅导服务:
             </div>
             <div class="col">
-                x 5个月 ¥1500元
+                x
+                {{orderInfo.homework_server}}个月 ¥{{orderInfo.homework_server*orderInfo.homework_fee}}元
             </div>
         </div>
         <div class="row">
@@ -92,7 +85,8 @@
                 预习、复习服务:
             </div>
             <div class="col">
-                x 5个月 ¥2500元
+                x
+                {{orderInfo.prepare_server}}个月 ¥{{orderInfo.prepare_server*orderInfo.prepare_fee}}元
             </div>
         </div>
         <div class="row">
@@ -100,22 +94,38 @@
                 补习服务:
             </div>
             <div class="col">
-                x 5个月 ¥2500元
+                x
+                {{orderInfo.extra_server}}个小时 ¥{{orderInfo.teacher_extra_server_fee*orderInfo.extra_server}}元
             </div>
         </div>
         <div class="row">
             <div class="col col-50">
                 <strong>总价:<strong/>
+                </div>
+                <div class="col">
+                    <span class="assertive">¥{{orderInfo.total_fee}}元</span>
+                </div>
             </div>
-            <div class="col">
-                <span class="assertive">¥7000元</span>
+            <div ng-if="orderInfo.status == 1">
+                <div class="button-bar" style="padding:0 5px;">
+                    <button ng-class="{'button-energized':dispalyStates[0]}" class="button button-full button-clear button-stable button-outline" ng-click="tabChange(0)" style="padding:0 10px;">
+                        支付宝收款
+                    </button>
+                    <button ng-class="{'button-energized':dispalyStates[1]}" class="button button-full button-clear button-stable button-outline" ng-click="tabChange(1)" style="padding:0 10px;">
+                        微信收款
+                    </button>
+                </div>
+                <div ng-show="dispalyStates[0]" class="code-box">
+                    <img src="././images/zfb.jpg" alt="支付宝支付" />
+                </div>
+                <div ng-show="dispalyStates[1]" class="code-box">
+                    <img src="././images/wx.jpg" alt="微信支付" />
+                </div>
             </div>
-        </div>
-    </ion-content>
-    <ion-footer-bar>
-        <div class="button-bar footer-bar">
-            <a class="button button-energized">微信支付</a>
-            <a class="button button-energized">支付宝支付</a>
-        </div>
-    </ion-footer-bar>
-</ion-view>
+            <div class="row" ng-if="orderInfo.status == 2">
+                <div class="col">
+                    <a href="tel:{{15028663777}}" class="button button-energized">联系客服电话</a>
+                </div>
+            </div>
+        </ion-content>
+    </ion-view>

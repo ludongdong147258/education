@@ -7,7 +7,7 @@
 .footer-bar .button:first-child, .footer-bar .button:nth-child(2) {
     margin-right: 5px;
 }
-.home-footer-bar> .button {
+.home-footer-bar>.button {
     padding: 1px 0px;
     overflow: auto;
     width: 100%;
@@ -267,6 +267,10 @@
     text-align: center;
     padding-bottom: 5px;
 }
+.code-box img {
+    width: 200px;
+    height: 200px;
+}
 .mp50 {
     margin-top: 50px;
 }
@@ -304,4 +308,8 @@
 }
 .menu .recommend-icon {
     background: url(../images/recommend.png);
+}
+.qrcode {
+    display: block;
+    margin: 0 auto;
 }

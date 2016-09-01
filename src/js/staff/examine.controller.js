@@ -5,7 +5,7 @@ angular.module('education')
         $scope.showOrganizationList = false;
         // 返回
         $scope.back = function() {
-            window.history.back();
+            $state.go('personal');
         };
         $scope.teacherList = [];
         $scope.organizationList = [];

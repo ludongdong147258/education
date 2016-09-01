@@ -63,6 +63,9 @@ angular.module('education')
                             CONFIG.token = data.data.token;
                             var user = data.data.user;
                             user.role = type;
+                            if(user.invite_code){
+                                localStorage.setItem("code",user.invite_code);
+                            }
                             localStorage.setItem("token",data.data.token);
                             localStorage.setItem("user",JSON.stringify(user));
                             CONFIG.user = user;

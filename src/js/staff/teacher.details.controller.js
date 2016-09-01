@@ -1,9 +1,8 @@
 angular.module('education')
-    .controller('ExamineTeacherController', ['$rootScope', '$scope', 'StaffService', '$state', '$stateParams', 'TeacherService', '$ionicPopup', function($rootScope, $scope, StaffService, $state, $stateParams, TeacherService, $ionicPopup) {
-        $rootScope.showHeaderBar = false;
+    .controller('ExamineTeacherController', ['$rootScope', '$scope', 'StaffService', '$state', '$stateParams', 'TeacherService', '$ionicPopup','$timeout', function($rootScope, $scope, StaffService, $state, $stateParams, TeacherService, $ionicPopup,$timeout) {
         // 返回
         $scope.back = function() {
-            window.history.back();
+            $state.go('examineList');
         };
         var grade = {};
         var subject = {};
@@ -93,7 +92,9 @@ angular.module('education')
                     }, function(data) {
                         if (data.success == 'Y') {
                             $rootScope.showMessage('审核成功!');
-                            $state.go('examineList');
+                            $timeout(function(){
+                                $state.go('examineList');
+                            },1000);
                         }
                     }, function(error) {
                         $rootScope.showMessage('审核失败!');

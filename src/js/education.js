@@ -1,4 +1,4 @@
-angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
+angular.module('education', ['ngResource', 'ionic', 'ngFileUpload','monospaced.qrcode'])
     .config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         $ionicConfigProvider.views.maxCache(5); // 不缓存页面
         $ionicConfigProvider.templates.maxPrefetch(0); // 不进行预加载界面
@@ -291,9 +291,13 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload'])
     }]).run(['$rootScope', '$ionicLoading', 'CONFIG', function($rootScope, $ionicLoading, CONFIG) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             $ionicLoading.show({
+                template:'<ion-spinner icon="ios-small"></ion-spinner>'
             });
         });
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+            $ionicLoading.hide();
+        });
+        $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
             $ionicLoading.hide();
         });
         if (CONFIG.user) {

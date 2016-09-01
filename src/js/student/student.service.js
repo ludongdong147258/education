@@ -46,6 +46,13 @@ angular.module('education')
                 headers: {
                     token: CONFIG.token
                 }
+            },
+            getOrderDetails:{
+                method: 'get',
+                url: CONFIG.urlPrefix + '/v1/order/server/details',
+                headers: {
+                    token: CONFIG.token
+                }
             }
         });
     }]).factory('HardWareService', function() {

@@ -20,4 +20,8 @@ angular.module('education')
                 });
             }
         };
+        obj.getOrderDetails();
+        $scope.confirm = function(){
+            
+        };
     }]);

@@ -18,40 +18,48 @@ angular.module('education')
                 obj.getEquipmentList();
             }
         };
-        $scope.showConfirm = function(id) {
-            var myPopup = $ionicPopup.show({
-                template: '硬件安装完成后<br/>请将状态更改为[已完成安装]<br/>如果客户取消安装<br/>请将状态更改为[客户取消]',
-                title: '更改智能硬件上门安装状态',
-                scope: $scope,
-                buttons: [{
-                    text: '已完成安装',
-                    type: 'button-energized',
-                    onTap: function(e) {
-                        StaffService.updateEquipmentStatus({id:item.id,status:1}, function(data) {
-                            if (data.success == 'Y') {
-                                obj.getEquipmentList();
-                            }
-                        }, function(error) {
-                            console.error(error);
-                        });
-                    }
-                }, {
-                    text: '客户取消',
-                    type: 'button-energized',
-                    onTap: function(e) {
-                        StaffService.updateEquipmentStatus({{id:item.id,status:3}}, function(data) {
-                            if (data.success == 'Y') {
-                                obj.getEquipmentList();
-                            }
-                        }, function(error) {
-                            console.error(error);
-                        });
-                    }
-                }, {
-                    text: '关闭',
-                    type: 'button-dark'
-                }]
-            });
+        $scope.showConfirm = function(item, event) {
+            if (item.status == '待上门安装') {
+                var myPopup = $ionicPopup.show({
+                    template: '硬件安装完成后<br/>请将状态更改为[已完成安装]<br/>如果客户取消安装<br/>请将状态更改为[客户取消]',
+                    title: '更改智能硬件上门安装状态',
+                    scope: $scope,
+                    buttons: [{
+                        text: '已完成安装',
+                        type: 'button-energized',
+                        onTap: function(e) {
+                            StaffService.updateEquipmentStatus({
+                                id: item.id,
+                                status: 2
+                            }, function(data) {
+                                if (data.success == 'Y') {
+                                    obj.getEquipmentList();
+                                }
+                            }, function(error) {
+                                console.error(error);
+                            });
+                        }
+                    }, {
+                        text: '客户取消',
+                        type: 'button-energized',
+                        onTap: function(e) {
+                            StaffService.updateEquipmentStatus({
+                                id: item.id,
+                                status: 3
+                            }, function(data) {
+                                if (data.success == 'Y') {
+                                    obj.getEquipmentList();
+                                }
+                            }, function(error) {
+                                console.error(error);
+                            });
+                        }
+                    }, {
+                        text: '关闭',
+                        type: 'button-dark'
+                    }]
+                });
+            }
         };
         var obj = {
             getServiceList: function() {

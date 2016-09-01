@@ -16,13 +16,13 @@
             <h5 class="text-center">我的推荐码</h5>
             <div class="row row-center">
                 <div class="col">
-                    <img ng-src="././images/qr.png" alt="" />
+                    <qrcode version="{{qrcodeInfo.v}}" error-correction-level="{{qrcodeInfo.e}}" size="{{qrcodeInfo.s}}" data="{{qrcodeInfo.link}}"></qrcode>
                 </div>
             </div>
             <h5 class="text-center">我的推荐链接</h5>
             <div class="row row-center">
                 <div class="col reference-link">
-                    <a ng-href="http://www.baidu.com">http://www.baidu.com</a>
+                    <a ng-href="{{qrcodeInfo.link}}">{{qrcodeInfo.link}}</a>
                 </div>
             </div>
             <div class="row reference-tip">
