@@ -5,7 +5,11 @@ angular.module('education')
             $scope.appTitle = '机构教师资料编辑';
         }
         $scope.back = function() {
-            $state.go('personal');
+            if ($stateParams.id) {
+                $state.go('organizationManager');
+            }else{
+                $state.go('personal');
+            }
         };
         $scope.dispalyStates = [true, false, false];
         $scope.grades = [];

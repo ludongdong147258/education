@@ -1,4 +1,4 @@
-angular.module('education', ['ngResource', 'ionic', 'ngFileUpload','monospaced.qrcode'])
+angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.qrcode'])
     .config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         $ionicConfigProvider.views.maxCache(5); // 不缓存页面
         $ionicConfigProvider.templates.maxPrefetch(0); // 不进行预加载界面
@@ -282,7 +282,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload','monospaced.q
     }]).run(['$rootScope', '$ionicLoading', 'CONFIG', function($rootScope, $ionicLoading, CONFIG) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             $ionicLoading.show({
-                template:'<ion-spinner icon="ios-small"></ion-spinner>'
+                template: '<ion-spinner icon="ios-small"></ion-spinner>'
             });
         });
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -295,7 +295,8 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload','monospaced.q
             $rootScope.user = JSON.parse(CONFIG.user);
         }
     }]).constant('CONFIG', {
-        urlPrefix: 'http://101.200.131.30:8020',
+        // urlPrefix: 'http://101.200.131.30:8020',
+        urlPrefix:'',
         token: localStorage.getItem('token'),
         user: localStorage.getItem('user'),
         student: '学生',
@@ -310,7 +311,31 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload','monospaced.q
                 element.attr('scroll', false);
             }
         }
-    }]);
+    }]).factory('ValidateService', function() {
+        var service = {
+            checkPwd: function(pwd) {
+                var reg = /^[0-9 | A-Z | a-z]{6,10}$/;
+                return reg.test(pwd);
+            },
+            checkPhone: function(phone) {
+                var reg = /^1[0-9]{10}$/;
+                return reg.test(phone);
+            },
+            checkSmsCode: function(code) {
+                var reg = /^[0-9]{6}$/;
+                return reg.test(code);
+            },
+            checkAddress: function(address) {
+                var reg = /^[0-9a-zA-Z\u4e00-\u9fa5]{5,30}$/;
+                return reg.test(address);
+            },
+            checkName:function(name){
+                var reg = /^[\u4e00-\u9fa5]{2,7}$/;
+                return reg.test(name);
+            }
+        };
+        return service
+    });
 
 angular.module('education')
     .filter('TypeFilter', ['CONFIG', function() {
@@ -320,7 +345,7 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('FindpwdController', ['$rootScope', '$scope', '$state', 'FindpwdService', '$timeout', 'RegisterService', function($rootScope, $scope, $state, FindpwdService, $timeout, RegisterService) {
+    .controller('FindpwdController', ['$rootScope', '$scope', '$state', 'FindpwdService', '$timeout', 'RegisterService','ValidateService', function($rootScope, $scope, $state, FindpwdService, $timeout, RegisterService,ValidateService) {
         $rootScope.showHeaderBar = false;
         $scope.findpwdInfo = {};
         var obj = {
@@ -329,12 +354,24 @@ angular.module('education')
                     $rootScope.showMessage('请输入手机号!');
                     return false;
                 }
+                if(!ValidateService.checkPhone($scope.findpwdInfo.mobile)){
+                    $rootScope.showMessage('手机号码格式不正确!');
+                    return false;
+                }
                 if (!$scope.findpwdInfo.smscode) {
                     $rootScope.showMessage('请输入验证码!');
                     return false;
                 }
+                if(!ValidateService.checkSmsCode($scope.findpwdInfo.smscode)){
+                    $rootScope.showMessage('短信验证码格式不正确!');
+                    return false;
+                }
                 if (!$scope.findpwdInfo.password) {
                     $rootScope.showMessage('请输入新密码!');
+                    return false;
+                }
+                if(!ValidateService.checkPwd($scope.findpwdInfo.password)){
+                    $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
                     return false;
                 }
                 return true;
@@ -367,6 +404,10 @@ angular.module('education')
         $scope.getSmsCode = function() {
             if (!$scope.findpwdInfo.mobile) {
                 $rootScope.showMessage('请填写手机号!');
+                return false;
+            }
+            if(!ValidateService.checkPhone($scope.findpwdInfo.mobile)){
+                $rootScope.showMessage('手机号码格式不正确!');
                 return false;
             }
             $scope.btnState = true;
@@ -486,7 +527,7 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService', 'CONFIG', '$ionicLoading', '$timeout', function($rootScope, $scope, $state, LoginService, CONFIG, $ionicLoading, $timeout) {
+    .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService', 'CONFIG', '$ionicLoading', '$timeout','ValidateService', function($rootScope, $scope, $state, LoginService, CONFIG, $ionicLoading, $timeout,ValidateService) {
         $rootScope.showHeaderBar = false;
         var obj = {
             validateInput: function() {
@@ -494,10 +535,18 @@ angular.module('education')
                     $rootScope.showMessage('请输入手机号!');
                     return false;
                 };
+                if(!ValidateService.checkPhone($scope.loginInfo.mobile)){
+                    $rootScope.showMessage('手机号码格式不正确!');
+                    return false;
+                }
                 if (!$scope.loginInfo.password) {
                     $rootScope.showMessage('请输入密码!');
                     return false;
                 };
+                if(!ValidateService.checkPwd($scope.loginInfo.password)){
+                    $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
+                    return false;
+                }
                 return true;
             }
         };
@@ -626,6 +675,9 @@ angular.module('education')
                         class: 'yuding-icon'
                     }];
                     break;
+                case 'manage':
+                    $rootScope.listItems = [];
+                    break;    
             }
         }
     }]);
@@ -668,7 +720,7 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('OrganizationAddTeacherController', ['$rootScope', '$scope', '$state', 'OrganizationService','$timeout', function($rootScope, $scope, $state, OrganizationService,$timeout) {
+    .controller('OrganizationAddTeacherController', ['$rootScope', '$scope', '$state', 'OrganizationService','$timeout','ValidateService', function($rootScope, $scope, $state, OrganizationService,$timeout,ValidateService) {
         $rootScope.showHeaderBar = false;
         $scope.back = function() {
             $state.go('organizationManager');
@@ -701,12 +753,24 @@ angular.module('education')
                     $rootScope.showMessage('教师姓名不能为空!');
                     return false;
                 }
+                if(!ValidateService.checkName($scope.teacherInfo.truename)){
+                    $rootScope.showMessage('教师姓名2-7个中文字符!');
+                    return false;
+                }
                 if (!$scope.teacherInfo.mobile) {
                     $rootScope.showMessage('手机号码不能为空!');
                     return false;
                 }
+                if(!ValidateService.checkPhone($scope.teacherInfo.mobile)){
+                    $rootScope.showMessage('手机号码格式不正确!');
+                    return false;
+                }
                 if (!$scope.teacherInfo.password) {
                     $rootScope.showMessage('密码不能为空!');
+                    return false;
+                }
+                if(!ValidateService.checkPwd($scope.teacherInfo.password)){
+                    $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
                     return false;
                 }
                 return true;
@@ -715,7 +779,7 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('InstitutionOrderHardWareController', ['$rootScope', '$scope', '$state', '$timeout', 'StudentService', function($rootScope, $scope, $state, $timeout, StudentService) {
+    .controller('InstitutionOrderHardWareController', ['$rootScope', '$scope', '$state', '$timeout', 'StudentService','ValidateService', function($rootScope, $scope, $state, $timeout, StudentService,ValidateService) {
         $scope.city = {
             key: '',
             id: ''
@@ -741,9 +805,13 @@ angular.module('education')
                             $state.go('news');
                         }, 3000);
                     } else {
-                        angular.forEach(data.msg, function(val, key) {
-                            $rootScope.showMessage(data.msg[key]);
-                        });
+                        if(angular.isObject(data.msg)){
+                            angular.forEach(data.msg, function(val, key) {
+                                $rootScope.showMessage(data.msg[key]);
+                            });
+                        }else{
+                            $rootScope.showMessage('预定失败!');
+                        }
                     }
                 }, function(error) {
                     console.error(error);
@@ -792,9 +860,23 @@ angular.module('education')
                     $rootScope.showMessage("上门安装地址不能为空!");
                     return false;
                 }
+                if(!ValidateService.checkAddress(hardwareInfo.address_detail)){
+                    $rootScope.showMessage("地址5-30个字符!");
+                    return false;
+                }
                 if (!hardwareInfo.link_name) {
                     $rootScope.showMessage("联系人姓名不能为空!");
                     return false;
+                }
+                if(!ValidateService.checkName(hardwareInfo.link_name)){
+                    $rootScope.showMessage("联系人姓名2-7位中文字符!");
+                    return false;
+                }
+                if(hardwareInfo.mobile){
+                    if(!ValidateService.checkPhone(hardwareInfo.mobile)){
+                        $rootScope.showMessage("手机号码格式不正确!");
+                        return false;
+                    }
                 }
                 return true;
             }
@@ -1121,19 +1203,31 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('RegisterController', ['$rootScope', '$scope', '$state', '$stateParams', 'RegisterService', 'LoginService', '$timeout','CONFIG', function($rootScope, $scope, $state, $stateParams, RegisterService, LoginService, $timeout,CONFIG) {
+    .controller('RegisterController', ['$rootScope', '$scope', '$state', '$stateParams', 'RegisterService', 'LoginService', '$timeout','CONFIG','ValidateService', function($rootScope, $scope, $state, $stateParams, RegisterService, LoginService, $timeout,CONFIG,ValidateService) {
         var obj = {
             validateInput: function(type) {
                 if (!$scope.registerInfo[type].mobile) {
                     $rootScope.showMessage('请填写手机号!');
                     return false;
                 }
+                if(!ValidateService.checkPhone($scope.registerInfo[type].mobile)){
+                    $rootScope.showMessage('手机号码格式不正确!');
+                    return false;
+                }
                 if (!$scope.registerInfo[type].smscode) {
                     $rootScope.showMessage('请填写短信验证码!');
                     return false;
                 }
+                if(!ValidateService.checkSmsCode($scope.registerInfo[type].smscode)){
+                    $rootScope.showMessage('短信验证码格式不正确!');
+                    return false;
+                }
                 if (!$scope.registerInfo[type].password) {
                     $rootScope.showMessage('请填写密码!');
+                    return false;
+                }
+                if(!ValidateService.checkPwd($scope.registerInfo[type].password)){
+                    $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
                     return false;
                 }
                 return true;
@@ -1209,6 +1303,10 @@ angular.module('education')
         $scope.getSmsCode = function() {
             if (!$scope.registerInfo[types[curIndex]].mobile) {
                 $rootScope.showMessage('请填写手机号!');
+                return false;
+            }
+            if(!ValidateService.checkPhone($scope.registerInfo[types[curIndex]].mobile)){
+                $rootScope.showMessage('手机号码格式不正确!');
                 return false;
             }
             $scope.btnStates[curIndex] = true;
@@ -1383,377 +1481,6 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('StudentOrderController', ['$rootScope', '$scope', '$state','StudentService', function($rootScope, $scope, $state,StudentService) {
-        $rootScope.showHeaderBar = false;
-        $scope.back = function() {
-            $state.go('personal');
-        };
-        var obj = {
-            getOrderList:function(){
-                StudentService.getOrderList({},function(data){
-                    if(data.success == 'Y'){
-                        $scope.orderList = data.data;
-                    }
-                });
-            }
-        };
-        obj.getOrderList();
-    }]);
-
-angular.module('education')
-    .controller('StudentOrderDetailsController', ['$rootScope', '$scope', '$state', '$stateParams', 'StudentService', function($rootScope, $scope, $state, $stateParams, StudentService) {
-        // 返回
-        $scope.back = function() {
-            $state.go('studentOrder');
-        };
-        $scope.dispalyStates = [true, false];
-        $scope.tabChange = function(curIndex) {
-            angular.forEach($scope.dispalyStates, function(val, index) {
-                $scope.dispalyStates[index] = false;
-            });
-            $scope.dispalyStates[curIndex] = true;
-        };
-        var obj = {
-            getOrderInfo: function() {
-                StudentService.getOrderDetails({
-                    id: $stateParams.id
-                }, function(data) {
-                    if (data.success == 'Y') {
-                        $scope.orderInfo = data.data;
-                    }
-                });
-            }
-        };
-        obj.getOrderInfo();
-    }]);
-
-angular.module('education')
-    .controller('StudentOrderHardWareController', ['$rootScope', '$scope', '$state', 'StudentService', '$stateParams', '$timeout',function($rootScope, $scope, $state, StudentService, $stateParams, $timeout) {
-        // 返回
-        $scope.back = function() {
-            localStorage.removeItem('hardwareInfo');
-            $state.go('news');
-        };
-        $scope.hardwareInfo = {
-            recommend_type: 1
-        };
-        $scope.displayStates = [true, false];
-        var id = $stateParams.id;
-
-        if(id){
-            $scope.name = $stateParams.name;
-            $scope.hardwareInfo.recommend_type = 2;
-            $scope.displayStates = [false, true];
-        }
-        // 免费预约
-        $scope.saveOrder = function() {
-            var flag = obj.validateInput();
-            if (flag) {
-                if (!$scope.hardwareInfo.mobile) {
-                    $scope.hardwareInfo.mobile = parseInt($rootScope.user.mobile);
-                }
-                $scope.hardwareInfo.address_id = $scope.city.id;
-                $scope.hardwareInfo.member_type = $rootScope.user.role;
-                if(id){
-                    $scope.hardwareInfo.teacher_id = id;
-                }
-                StudentService.orderHardWare($scope.hardwareInfo, function(data) {
-                    if (data.success == 'Y') {
-                        localStorage.removeItem('hardwareInfo');
-                        $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 5000);
-                        $timeout(function() {
-                            $state.go('news');
-                        }, 3000);
-                    } else {
-                        angular.forEach(data.msg, function(val, key) {
-                            $rootScope.showMessage(data.msg[key]);
-                        });
-                    }
-                }, function(error) {
-                    console.error(error);
-                    $rootScope.showMessage('预定失败!');
-                });
-            }
-        };
-        var addresses = [];
-        $scope.provinces = [];
-        $scope.cities = [];
-        var obj = {
-            getAddressList: function() {
-                StudentService.getAddressList({}, function(data) {
-                    if (data.success == 'Y') {
-                        addresses = data.data;
-                        var tempKey = '';
-                        angular.forEach(data.data, function(item, index) {
-                            if (tempKey != item.province) {
-                                $scope.provinces.push({
-                                    key: item.province
-                                });
-                                tempKey = item.province;
-                            }
-                        });
-                        var hardwareInfo = localStorage.getItem('hardwareInfo');
-                        if(hardwareInfo){
-                            $scope.hardwareInfo = angular.fromJson(hardwareInfo);
-                            angular.forEach($scope.provinces,function(val,index){
-                                if(val.key == $scope.hardwareInfo.province.key){
-                                    $scope.province = $scope.provinces[index];
-                                    return;
-                                }
-                            });
-                            $scope.changeProvince($scope.province);
-                            angular.forEach($scope.cities,function(val,index){
-                                if(val.key == $scope.hardwareInfo.city.key){
-                                    $scope.city = $scope.cities[index];
-                                    return;
-                                }
-                            });
-                            $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
-                        } else {
-                            $scope.province = {key:''};
-                            $scope.city = {
-                                key: '',
-                                id: ''
-                            };
-                        }
-                    }
-                }, function(error) {
-                    console.log(error);
-                });
-            },
-            validateInput: function() {
-                var hardwareInfo = $scope.hardwareInfo;
-                if (!hardwareInfo.time) {
-                    $rootScope.showMessage("日期不能为空!");
-                    return false;
-                }
-                if (!$scope.province.key) {
-                    $rootScope.showMessage("省份不能为空!");
-                    return false;
-                }
-                if (!$scope.city.key) {
-                    $rootScope.showMessage("城市不能为空!");
-                    return false;
-                }
-                if (!hardwareInfo.address_detail) {
-                    $rootScope.showMessage("上门安装地址不能为空!");
-                    return false;
-                }
-                if (!hardwareInfo.link_name) {
-                    $rootScope.showMessage("联系人姓名不能为空!");
-                    return false;
-                }
-                if ($scope.hardwareInfo.recommend_type == 2) {
-                    if (!$scope.name) {
-                        $rootScope.showMessage("所选老师不能为空!");
-                        return false;
-                    }
-                }
-                return true;
-            }
-        };
-        obj.getAddressList();
-        $scope.changeProvince = function(curItem) {
-            $scope.province = curItem;
-            $scope.cities = [];
-            angular.forEach(addresses, function(item) {
-                if (item.province == curItem.key) {
-                    $scope.cities.push({
-                        key: item.city,
-                        id: item.id
-                    });
-                }
-            });
-        };
-        $scope.changeCity = function(curItem) {
-            $scope.city = curItem;
-        };
-        $scope.changeType = function(num) {
-            $scope.hardwareInfo.recommend_type = num;
-            if (num == 1) {
-                $scope.displayStates = [true, false];
-            } else {
-                $scope.displayStates = [false, true];
-                $state.go('search',{type:'student'});
-                $scope.hardwareInfo.province = $scope.province;
-                $scope.hardwareInfo.city = $scope.city;
-                localStorage.setItem('hardwareInfo',JSON.stringify($scope.hardwareInfo));
-            }
-        };
-    }]);
-
-angular.module('education')
-    .controller('StudentInfoController', ['$rootScope', '$scope', '$state', 'StudentService','$timeout', function($rootScope, $scope, $state, StudentService,$timeout) {
-        $rootScope.showHeaderBar = false;
-        // 返回
-        $scope.back = function() {
-            $state.go('personal');
-        };
-        $scope.states = [];
-        $scope.grades = [];
-        // 保存更改
-        $scope.saveInfo = function() {
-            StudentService.updatePersonalInfo($scope.personalInfo, function(data) {
-                if (data.success == 'Y') {
-                    $rootScope.showMessage('保存成功!');
-                }
-            }, function(error) {
-                console.error(error);
-            });
-        };
-        $scope.personalInfo = {};
-        var obj = {
-            getPersonalInfo: function() {
-                StudentService.getPersonalInfo({}, function(data) {
-                    if (data.success == 'Y') {
-                        var data = data.data;
-                        if(data.age){
-                            data.age = parseInt(data.age);
-                        }
-                        $scope.personalInfo = data;
-                        if($scope.personalInfo.state){
-                            angular.forEach($scope.personalInfo.state,function(val){
-                                angular.forEach($scope.states,function(item){
-                                    if(item.key == val) {
-                                        item.isSelected = true;
-                                    }
-                                })
-                            });
-                        }
-                    }
-                }, function(error) {
-                    console.error(error);
-                });
-            },
-            getStates: function() {
-                StudentService.getStates({}, function(data) {
-                    if (data.success == 'Y') {
-                        angular.forEach(data.data, function(val, key) {
-                            $scope.states.push({
-                                key:key,
-                                val:val,
-                                isSelected: false
-                            });
-                        });
-                    }
-                }, function(error) {
-                    console.error(error);
-                });
-            },
-            getGrades: function() {
-                StudentService.getGrades({}, function(data) {
-                    if (data.success == 'Y') {
-                        angular.forEach(data.data, function(val, key) {
-                            $scope.grades.push({
-                                key:key,
-                                val:val
-                            });
-                        });
-                    }
-                }, function(error) {
-                    console.error(error);
-                });
-            }
-        };
-        $scope.changeSex = function(number) {
-            $scope.personalInfo.sex = number;
-        };
-        $scope.changeGrade = function(grade) {
-            $scope.personalInfo.grade = grade;
-        };
-        $scope.changeState = function(item) {
-            var state = $scope.personalInfo.state;
-            if (!state) {
-                state = [];
-            }
-            var index = state.indexOf(item.key);
-            item.isSelected = !item.isSelected;
-            if (index == -1 && item.isSelected) {
-                state.push(item.key);
-            } else {
-                state.splice(index, 1);
-            }
-            $scope.personalInfo.state = state;
-        };
-        obj.getGrades();
-        obj.getStates();
-        obj.getPersonalInfo();
-    }]);
-
-angular.module('education')
-    .factory('StudentService', ['$resource', 'CONFIG', function($resource, CONFIG) {
-        return $resource(CONFIG.urlPrefix + '/v1/account/detail', {}, {
-            getPersonalInfo: {
-                method: 'get',
-                headers: {
-                    token: CONFIG.token
-                }
-            },
-            updatePersonalInfo: {
-                method: 'post',
-                url: CONFIG.urlPrefix + '/v1/account/update',
-                headers: {
-                    token: CONFIG.token
-                }
-            },
-            getStates: {
-                url: CONFIG.urlPrefix + '/v1/student/state',
-                method: 'get'
-            },
-            getGrades: {
-                url: CONFIG.urlPrefix + '/v1/student/grades',
-                method: 'get'
-            },
-            getAddressList: {
-                url: CONFIG.urlPrefix + '/v1/address/lists',
-                method: 'get'
-            },
-            orderHardWare: {
-                url: CONFIG.urlPrefix + '/v1/order/equipment/add',
-                method: 'post',
-                headers: {
-                    token: CONFIG.token
-                }
-            },
-            hasHardWare: {
-                url: CONFIG.urlPrefix + '/v1/order/equipment/has',
-                method: 'get',
-                headers: {
-                    token: CONFIG.token
-                }
-            },
-            getOrderList: {
-                url: CONFIG.urlPrefix + '/v1/order/server/lists',
-                method: 'get',
-                headers: {
-                    token: CONFIG.token
-                }
-            },
-            getOrderDetails:{
-                method: 'get',
-                url: CONFIG.urlPrefix + '/v1/order/server/details',
-                headers: {
-                    token: CONFIG.token
-                }
-            }
-        });
-    }]).factory('HardWareService', function() {
-        var service = {
-            setTeaherInfo: function(teacherId, name) {
-                this.teacherId = teacherId;
-                this.name = name;
-            },
-            getTeacherInfo: function() {
-                return {
-                    teacherId: this.teacherId,
-                    name: this.name
-                }
-            }
-        };
-        return service;
-    });
-
-angular.module('education')
     .controller('ExamineController', ['$rootScope', '$scope', 'StaffService', '$state', function($rootScope, $scope, StaffService, $state) {
         $rootScope.showHeaderBar = false;
         $scope.showTeacherList = true;
@@ -1904,7 +1631,13 @@ angular.module('education')
                     id: $stateParams.id
                 }, function(data) {
                     if (data.success == 'Y') {
-                        $scope.orderInfo = data.data;
+                        var data = data.data;
+                        if(data.status == '1'){
+                            data.statusDisplay = '待支付';
+                        }else if(data.status == '2'){
+                            data.statusDisplay = '已支付';
+                        }
+                        $scope.orderInfo = data;
                     }
                 });
             }
@@ -1938,7 +1671,7 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('StaffOrderServiceController', ['$rootScope', '$scope', '$state', '$ionicPopup', 'StaffService','$timeout', function($rootScope, $scope, $state, $ionicPopup, StaffService,$timeout) {
+    .controller('StaffOrderServiceController', ['$rootScope', '$scope', '$state', '$ionicPopup', 'StaffService','$timeout','ValidateService', function($rootScope, $scope, $state, $ionicPopup, StaffService,$timeout,ValidateService) {
         var obj = {
             getStaticFee: function() {
                 StaffService.getStaticFee({}, function(data) {
@@ -1950,6 +1683,14 @@ angular.module('education')
         };
         obj.getStaticFee();
         $scope.getTeacherFee = function() {
+            if (!$scope.serviceInfo.mobile) {
+                $rootScope.showMessage('手机号不能为空!');
+                return;
+            }
+            if(!ValidateService.checkPhone($scope.serviceInfo.mobile)){
+                $rootScope.showMessage('手机号码格式不正确!');
+                return;
+            }
             StaffService.getTeacherFee({
                 mobile: $scope.serviceInfo.mobile
             }, function(data) {
@@ -1978,9 +1719,14 @@ angular.module('education')
                 $rootScope.showMessage('手机号不能为空!');
                 return;
             }
+            if(!ValidateService.checkPhone($scope.serviceInfo.mobile)){
+                $rootScope.showMessage('手机号码格式不正确!');
+                return;
+            }
             $ionicPopup.show({
-                template: '1、智能硬件产品质智能硬件产品质保及押金使用模式说明智能硬件产',
+                template: '1、智能硬件免费提供给使用者使用,采取押金方式提供;<br/>2、3个月内,硬件没有大的人为损害,使用者无条件自由退换押金;<br/>3、使用者长期使用期间,硬件产品的换代升级,提供新的硬件产品,为全免费置换模式;使用者无需另行支付或增加押金额;<br/>4、使用满1年后,使用者不再有硬件使用需求,在硬件产品没有大的人为损害情况下,且硬件产品具备使用条件,使用者可申请退换押金;<br/>5、智能硬件产品实行三年质保,终生保修(质保指由于质量缺陷造成的设备无法正常使用)过程中产生邮寄或路程费用由使用者承担。如因使用或保管不当原因导致产品出现以下情况，包括但不限于主板或芯片损坏、零部件损坏、烧坏、外观破损、人为损坏、或擅自拆装等现象，不属于质保范围;',
                 title: '智能硬件产品质保及押金使用模式说明',
+                cssClass:'service-popup',
                 scope: $scope,
                 buttons: [{
                     text: '取消',
@@ -2177,7 +1923,7 @@ angular.module('education')
             },
             getOrderDetails:{
                 method: 'get',
-                url: CONFIG.urlPrefix + '/v1/order/server/details',
+                url: CONFIG.urlPrefix + '/v1/order/server/detail',
                 headers: {
                     token: CONFIG.token
                 }
@@ -2313,7 +2059,410 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('TeacherOrderHardWareController', ['$rootScope', '$scope', '$state', '$timeout', 'StudentService', function($rootScope, $scope, $state, $timeout, StudentService) {
+    .controller('StudentOrderController', ['$rootScope', '$scope', '$state','StudentService', function($rootScope, $scope, $state,StudentService) {
+        $rootScope.showHeaderBar = false;
+        $scope.back = function() {
+            $state.go('personal');
+        };
+        var obj = {
+            getOrderList:function(){
+                StudentService.getOrderList({},function(data){
+                    if(data.success == 'Y'){
+                        $scope.orderList = data.data;
+                    }
+                });
+            }
+        };
+        obj.getOrderList();
+    }]);
+
+angular.module('education')
+    .controller('StudentOrderDetailsController', ['$rootScope', '$scope', '$state', '$stateParams', 'StudentService', function($rootScope, $scope, $state, $stateParams, StudentService) {
+        // 返回
+        $scope.back = function() {
+            $state.go('studentOrder');
+        };
+        $scope.dispalyStates = [true, false];
+        $scope.tabChange = function(curIndex) {
+            angular.forEach($scope.dispalyStates, function(val, index) {
+                $scope.dispalyStates[index] = false;
+            });
+            $scope.dispalyStates[curIndex] = true;
+        };
+        var obj = {
+            getOrderInfo: function() {
+                StudentService.getOrderDetails({
+                    id: $stateParams.id
+                }, function(data) {
+                    if (data.success == 'Y') {
+                        var data = data.data;
+                        if(data.status == '1'){
+                            data.statusDisplay = '待支付';
+                        }else if(data.status == '2'){
+                            data.statusDisplay = '已支付';
+                        }
+                        $scope.orderInfo = data;
+                    }
+                });
+            }
+        };
+        obj.getOrderInfo();
+    }]);
+
+angular.module('education')
+    .controller('StudentOrderHardWareController', ['$rootScope', '$scope', '$state', 'StudentService', '$stateParams', '$timeout',function($rootScope, $scope, $state, StudentService, $stateParams, $timeout) {
+        // 返回
+        $scope.back = function() {
+            localStorage.removeItem('hardwareInfo');
+            $state.go('news');
+        };
+        $scope.hardwareInfo = {
+            recommend_type: 1
+        };
+        $scope.displayStates = [true, false];
+        var id = $stateParams.id;
+
+        if(id){
+            $scope.name = $stateParams.name;
+            $scope.hardwareInfo.recommend_type = 2;
+            $scope.displayStates = [false, true];
+        }
+        // 免费预约
+        $scope.saveOrder = function() {
+            var flag = obj.validateInput();
+            if (flag) {
+                if (!$scope.hardwareInfo.mobile) {
+                    $scope.hardwareInfo.mobile = parseInt($rootScope.user.mobile);
+                }
+                $scope.hardwareInfo.address_id = $scope.city.id;
+                $scope.hardwareInfo.member_type = $rootScope.user.role;
+                if(id){
+                    $scope.hardwareInfo.teacher_id = id;
+                }
+                StudentService.orderHardWare($scope.hardwareInfo, function(data) {
+                    if (data.success == 'Y') {
+                        localStorage.removeItem('hardwareInfo');
+                        $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 5000);
+                        $timeout(function() {
+                            $state.go('news');
+                        }, 3000);
+                    } else {
+                        angular.forEach(data.msg, function(val, key) {
+                            $rootScope.showMessage(data.msg[key]);
+                        });
+                    }
+                }, function(error) {
+                    console.error(error);
+                    $rootScope.showMessage('预定失败!');
+                });
+            }
+        };
+        var addresses = [];
+        $scope.provinces = [];
+        $scope.cities = [];
+        var obj = {
+            getAddressList: function() {
+                StudentService.getAddressList({}, function(data) {
+                    if (data.success == 'Y') {
+                        addresses = data.data;
+                        var tempKey = '';
+                        angular.forEach(data.data, function(item, index) {
+                            if (tempKey != item.province) {
+                                $scope.provinces.push({
+                                    key: item.province
+                                });
+                                tempKey = item.province;
+                            }
+                        });
+                        var hardwareInfo = localStorage.getItem('hardwareInfo');
+                        if(hardwareInfo){
+                            $scope.hardwareInfo = angular.fromJson(hardwareInfo);
+                            angular.forEach($scope.provinces,function(val,index){
+                                if(val.key == $scope.hardwareInfo.province.key){
+                                    $scope.province = $scope.provinces[index];
+                                    return;
+                                }
+                            });
+                            $scope.changeProvince($scope.province);
+                            angular.forEach($scope.cities,function(val,index){
+                                if(val.key == $scope.hardwareInfo.city.key){
+                                    $scope.city = $scope.cities[index];
+                                    return;
+                                }
+                            });
+                            $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
+                        } else {
+                            $scope.province = {key:''};
+                            $scope.city = {
+                                key: '',
+                                id: ''
+                            };
+                        }
+                    }
+                }, function(error) {
+                    console.log(error);
+                });
+            },
+            validateInput: function() {
+                var hardwareInfo = $scope.hardwareInfo;
+                if (!hardwareInfo.time) {
+                    $rootScope.showMessage("日期不能为空!");
+                    return false;
+                }
+                if (!$scope.province.key) {
+                    $rootScope.showMessage("省份不能为空!");
+                    return false;
+                }
+                if (!$scope.city.key) {
+                    $rootScope.showMessage("城市不能为空!");
+                    return false;
+                }
+                if (!hardwareInfo.address_detail) {
+                    $rootScope.showMessage("上门安装地址不能为空!");
+                    return false;
+                }
+                if (!hardwareInfo.link_name) {
+                    $rootScope.showMessage("联系人姓名不能为空!");
+                    return false;
+                }
+                if ($scope.hardwareInfo.recommend_type == 2) {
+                    if (!$scope.name) {
+                        $rootScope.showMessage("所选老师不能为空!");
+                        return false;
+                    }
+                }
+                return true;
+            }
+        };
+        obj.getAddressList();
+        $scope.changeProvince = function(curItem) {
+            $scope.province = curItem;
+            $scope.cities = [];
+            angular.forEach(addresses, function(item) {
+                if (item.province == curItem.key) {
+                    $scope.cities.push({
+                        key: item.city,
+                        id: item.id
+                    });
+                }
+            });
+        };
+        $scope.changeCity = function(curItem) {
+            $scope.city = curItem;
+        };
+        $scope.changeType = function(num) {
+            $scope.hardwareInfo.recommend_type = num;
+            if (num == 1) {
+                $scope.displayStates = [true, false];
+            } else {
+                $scope.displayStates = [false, true];
+                $state.go('search',{type:'student'});
+                $scope.hardwareInfo.province = $scope.province;
+                $scope.hardwareInfo.city = $scope.city;
+                localStorage.setItem('hardwareInfo',JSON.stringify($scope.hardwareInfo));
+            }
+        };
+    }]);
+
+angular.module('education')
+    .controller('StudentInfoController', ['$rootScope', '$scope', '$state', 'StudentService', '$timeout', 'ValidateService', function($rootScope, $scope, $state, StudentService, $timeout, ValidateService) {
+
+        // 返回
+        $scope.back = function() {
+            $state.go('personal');
+        };
+        $scope.states = [];
+        $scope.grades = [];
+        // 保存更改
+        $scope.saveInfo = function() {
+            var flag = obj.validateInput();
+            if (flag) {
+                StudentService.updatePersonalInfo($scope.personalInfo, function(data) {
+                    if (data.success == 'Y') {
+                        $rootScope.showMessage('保存成功!');
+                    }
+                }, function(error) {
+                    console.error(error);
+                });
+            }
+        };
+        $scope.personalInfo = {};
+        var obj = {
+            getPersonalInfo: function() {
+                StudentService.getPersonalInfo({}, function(data) {
+                    if (data.success == 'Y') {
+                        var data = data.data;
+                        if (data.age) {
+                            data.age = parseInt(data.age);
+                        }
+                        $scope.personalInfo = data;
+                        if ($scope.personalInfo.state) {
+                            angular.forEach($scope.personalInfo.state, function(val) {
+                                angular.forEach($scope.states, function(item) {
+                                    if (item.key == val) {
+                                        item.isSelected = true;
+                                    }
+                                })
+                            });
+                        }
+                    }
+                }, function(error) {
+                    console.error(error);
+                });
+            },
+            getStates: function() {
+                StudentService.getStates({}, function(data) {
+                    if (data.success == 'Y') {
+                        angular.forEach(data.data, function(val, key) {
+                            $scope.states.push({
+                                key: key,
+                                val: val,
+                                isSelected: false
+                            });
+                        });
+                    }
+                }, function(error) {
+                    console.error(error);
+                });
+            },
+            getGrades: function() {
+                StudentService.getGrades({}, function(data) {
+                    if (data.success == 'Y') {
+                        angular.forEach(data.data, function(val, key) {
+                            $scope.grades.push({
+                                key: key,
+                                val: val
+                            });
+                        });
+                    }
+                }, function(error) {
+                    console.error(error);
+                });
+            },
+            validateInput: function() {
+                if (!$scope.personalInfo.truename) {
+                    $rootScope.showMessage('姓名不能为空!');
+                    return false;
+                }
+                if (!ValidateService.checkName($scope.personalInfo.truename)) {
+                    $rootScope.showMessage('姓名2-7个中文字符!');
+                    return false;
+                }
+                if (!$scope.personalInfo.age) {
+                    $rootScope.showMessage('年龄不能为空!');
+                    return false;
+                }
+                if ($scope.personalInfo.age < 8 || $scope.personalInfo.age > 20) {
+                    $rootScope.showMessage('年龄8-20岁!');
+                    return false;
+                }
+                if (!$scope.personalInfo.school_name) {
+                    $rootScope.showMessage('学校不能为空!');
+                    return false;
+                }
+                return true;
+            }
+        };
+        $scope.changeSex = function(number) {
+            $scope.personalInfo.sex = number;
+        };
+        $scope.changeGrade = function(grade) {
+            $scope.personalInfo.grade = grade;
+        };
+        $scope.changeState = function(item) {
+            var state = $scope.personalInfo.state;
+            if (!state) {
+                state = [];
+            }
+            var index = state.indexOf(item.key);
+            item.isSelected = !item.isSelected;
+            if (index == -1 && item.isSelected) {
+                state.push(item.key);
+            } else {
+                state.splice(index, 1);
+            }
+            $scope.personalInfo.state = state;
+        };
+        obj.getGrades();
+        obj.getStates();
+        obj.getPersonalInfo();
+    }]);
+
+angular.module('education')
+    .factory('StudentService', ['$resource', 'CONFIG', function($resource, CONFIG) {
+        return $resource(CONFIG.urlPrefix + '/v1/account/detail', {}, {
+            getPersonalInfo: {
+                method: 'get',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            updatePersonalInfo: {
+                method: 'post',
+                url: CONFIG.urlPrefix + '/v1/account/update',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            getStates: {
+                url: CONFIG.urlPrefix + '/v1/student/state',
+                method: 'get'
+            },
+            getGrades: {
+                url: CONFIG.urlPrefix + '/v1/student/grades',
+                method: 'get'
+            },
+            getAddressList: {
+                url: CONFIG.urlPrefix + '/v1/address/lists',
+                method: 'get'
+            },
+            orderHardWare: {
+                url: CONFIG.urlPrefix + '/v1/order/equipment/add',
+                method: 'post',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            hasHardWare: {
+                url: CONFIG.urlPrefix + '/v1/order/equipment/has',
+                method: 'get',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            getOrderList: {
+                url: CONFIG.urlPrefix + '/v1/order/server/lists',
+                method: 'get',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            getOrderDetails:{
+                method: 'get',
+                url: CONFIG.urlPrefix + '/v1/order/server/detail',
+                headers: {
+                    token: CONFIG.token
+                }
+            }
+        });
+    }]).factory('HardWareService', function() {
+        var service = {
+            setTeaherInfo: function(teacherId, name) {
+                this.teacherId = teacherId;
+                this.name = name;
+            },
+            getTeacherInfo: function() {
+                return {
+                    teacherId: this.teacherId,
+                    name: this.name
+                }
+            }
+        };
+        return service;
+    });
+
+angular.module('education')
+    .controller('TeacherOrderHardWareController', ['$rootScope', '$scope', '$state', '$timeout', 'StudentService','ValidateService', function($rootScope, $scope, $state, $timeout, StudentService,ValidateService) {
         // 返回
         $scope.back = function() {
             $state.go('news');
@@ -2390,9 +2539,23 @@ angular.module('education')
                     $rootScope.showMessage("上门安装地址不能为空!");
                     return false;
                 }
+                if(!ValidateService.checkAddress(hardwareInfo.address_detail)){
+                    $rootScope.showMessage("地址5-30个字符!");
+                    return false;
+                }
                 if (!hardwareInfo.link_name) {
                     $rootScope.showMessage("联系人姓名不能为空!");
                     return false;
+                }
+                if(!ValidateService.checkName(hardwareInfo.link_name)){
+                    $rootScope.showMessage("联系人姓名2-7位中文字符!");
+                    return false;
+                }
+                if(hardwareInfo.mobile){
+                    if(!ValidateService.checkPhone(hardwareInfo.mobile)){
+                        $rootScope.showMessage("手机号码格式不正确!");
+                        return false;
+                    }
                 }
                 return true;
             }
@@ -2559,13 +2722,17 @@ angular.module('education')
     }])
 
 angular.module('education')
-    .controller('TeacherInfoController', ['$rootScope', '$scope', '$state', 'TeacherService', 'Upload', '$stateParams','CONFIG','$timeout', function($rootScope, $scope, $state, TeacherService, Upload, $stateParams,CONFIG,$timeout) {
+    .controller('TeacherInfoController', ['$rootScope', '$scope', '$state', 'TeacherService', 'Upload', '$stateParams','CONFIG','$timeout','ValidateService', function($rootScope, $scope, $state, TeacherService, Upload, $stateParams,CONFIG,$timeout,ValidateService) {
         $scope.appTitle = '我的资料';
         if ($stateParams.id) {
             $scope.appTitle = '机构教师资料编辑';
         }
         $scope.back = function() {
-            $state.go('personal');
+            if ($stateParams.id) {
+                $state.go('organizationManager');
+            }else{
+                $state.go('personal');
+            }
         };
         $scope.dispalyStates = [true, false, false];
         $scope.grades = [];
@@ -2573,13 +2740,16 @@ angular.module('education')
         $scope.subjects = [];
         // 保存更改
         $scope.saveInfo = function() {
-            TeacherService.updatePersonalInfo($scope.personalInfo, function(data) {
-                if (data.success == 'Y') {
-                    $rootScope.showMessage('保存成功!');
-                }
-            }, function(error) {
-                console.error(error);
-            });
+            var flag = obj.validateInput();
+            if(flag){
+                TeacherService.updatePersonalInfo($scope.personalInfo, function(data) {
+                    if (data.success == 'Y') {
+                        $rootScope.showMessage('保存成功!');
+                    }
+                }, function(error) {
+                    console.error(error);
+                });
+            }
         };
         $scope.personalInfo = {};
         var obj = {
@@ -2705,6 +2875,24 @@ angular.module('education')
                             }
                         });
                     });
+                }
+            },
+            validateInput:function(){
+                if(!$scope.personalInfo.truename){
+                    $rootScope.showMessage('姓名不能为空!');
+                    return false;
+                }
+                if(!ValidateService.checkName($scope.personalInfo.truename)){
+                    $rootScope.showMessage('姓名2-7个字符!');
+                    return false;
+                }
+                if(!$scope.personalInfo.age){
+                    $rootScope.showMessage('年龄不能为空!');
+                    return false;
+                }
+                if($scope.personalInfo.age < 20 || $scope.personalInfo.age > 60){
+                    $rootScope.showMessage('年龄20-60!');
+                    return false;
                 }
             }
         };
@@ -2849,25 +3037,41 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('UpdatepwdController', ['$rootScope', '$scope', '$state', 'UpdatepwdService','$timeout', function($rootScope, $scope, $state, UpdatepwdService,$timeout) {
+    .controller('UpdatepwdController', ['$rootScope', '$scope', '$state', 'UpdatepwdService', '$timeout', 'ValidateService', function($rootScope, $scope, $state, UpdatepwdService, $timeout, ValidateService) {
         $rootScope.showHeaderBar = false;
         $scope.pwdInfo = {};
         $scope.back = function() {
             $state.go('personal');
         };
         var obj = {
-            validateInput:function(){
+            validateInput: function() {
                 var pwdInfo = $scope.pwdInfo;
-                if(!pwdInfo.pwd1){
+                if (!pwdInfo.password) {
                     $rootScope.showMessage('请输入原密码!');
                     return false;
                 }
-                if(!pwdInfo.pwd2){
+                if (!ValidateService.checkPwd(pwdInfo.password)) {
+                    $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
+                    return false;
+                }
+                if (!pwdInfo.pwd1) {
                     $rootScope.showMessage('请输入新密码!');
                     return false;
                 }
-                if(!pwdInfo.password){
+                if (!ValidateService.checkPwd(pwdInfo.pwd1)) {
+                    $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
+                    return false;
+                }
+                if (!pwdInfo.pwd2) {
                     $rootScope.showMessage('请设置新密码!');
+                    return false;
+                }
+                if (!ValidateService.checkPwd(pwdInfo.pwd2)) {
+                    $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
+                    return false;
+                }
+                if (pwdInfo.pwd1 != pwdInfo.pwd2) {
+                    $rootScope.showMessage('两次输入的密码不一致,请重新输入!');
                     return false;
                 }
                 return true;
@@ -2875,17 +3079,25 @@ angular.module('education')
         };
         $scope.updatePwd = function() {
             var flag = obj.validateInput();
-            if(flag){
-                UpdatepwdService.updatePwd($scope.pwdInfo, function(data) {
+            if (flag) {
+                var params = {
+                    password: $scope.pwdInfo.password,
+                    newpassword: $scope.pwdInfo.pwd2
+                };
+                UpdatepwdService.updatePwd(params, function(data) {
                     if (data.success == 'Y') {
                         $rootScope.showMessage('修改成功!');
-                        $timeout(function(){
-
-                        },1000);
-                    }else{
-                        angular.forEach(data.msg,function(val,key){
-                            $rootScope.showMessage(val);
-                        });
+                        $timeout(function() {
+                            $state.go('personal');
+                        }, 1000);
+                    } else {
+                        if (angular.isObject(data.msg)) {
+                            angular.forEach(data.msg, function(val, key) {
+                                $rootScope.showMessage(val);
+                            });
+                        } else {
+                            $rootScope.showMessage(data.msg);
+                        }
                     }
                 }, function(error) {
                     console.error(error);

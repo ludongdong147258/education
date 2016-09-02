@@ -295,7 +295,8 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
             $rootScope.user = JSON.parse(CONFIG.user);
         }
     }]).constant('CONFIG', {
-        urlPrefix: 'http://101.200.131.30:8020',
+        // urlPrefix: 'http://101.200.131.30:8020',
+        urlPrefix:'',
         token: localStorage.getItem('token'),
         user: localStorage.getItem('user'),
         student: '学生',
