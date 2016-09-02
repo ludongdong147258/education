@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('TeacherInfoController', ['$rootScope', '$scope', '$state', 'TeacherService', 'Upload', '$stateParams','CONFIG','$timeout', function($rootScope, $scope, $state, TeacherService, Upload, $stateParams,CONFIG,$timeout) {
+    .controller('TeacherInfoController', ['$rootScope', '$scope', '$state', 'TeacherService', 'Upload', '$stateParams','CONFIG','$timeout','ValidateService', function($rootScope, $scope, $state, TeacherService, Upload, $stateParams,CONFIG,$timeout,ValidateService) {
         $scope.appTitle = '我的资料';
         if ($stateParams.id) {
             $scope.appTitle = '机构教师资料编辑';
@@ -13,13 +13,16 @@ angular.module('education')
         $scope.subjects = [];
         // 保存更改
         $scope.saveInfo = function() {
-            TeacherService.updatePersonalInfo($scope.personalInfo, function(data) {
-                if (data.success == 'Y') {
-                    $rootScope.showMessage('保存成功!');
-                }
-            }, function(error) {
-                console.error(error);
-            });
+            var flag = obj.validateInput();
+            if(flag){
+                TeacherService.updatePersonalInfo($scope.personalInfo, function(data) {
+                    if (data.success == 'Y') {
+                        $rootScope.showMessage('保存成功!');
+                    }
+                }, function(error) {
+                    console.error(error);
+                });
+            }
         };
         $scope.personalInfo = {};
         var obj = {
@@ -74,8 +77,8 @@ angular.module('education')
                     if (data.success == 'Y') {
                         angular.forEach(data.data, function(val, key) {
                             $scope.grades.push({
-                                key,
-                                val,
+                                key:key,
+                                val:val,
                                 isSelected: false
                             });
                         });
@@ -89,8 +92,8 @@ angular.module('education')
                     if (data.success == 'Y') {
                         angular.forEach(data.workTime, function(val, key) {
                             $scope.worktimes.push({
-                                key,
-                                val,
+                                key:key,
+                                val:val,
                                 isSelected: false
                             });
                         });
@@ -104,8 +107,8 @@ angular.module('education')
                     if (data.success == 'Y') {
                         angular.forEach(data.subjects, function(val, key) {
                             $scope.subjects.push({
-                                key,
-                                val,
+                                key:key,
+                                val:val,
                                 isSelected: false
                             });
                         });
@@ -145,6 +148,24 @@ angular.module('education')
                             }
                         });
                     });
+                }
+            },
+            validateInput:function(){
+                if(!$scope.personalInfo.truename){
+                    $rootScope.showMessage('姓名不能为空!');
+                    return false;
+                }
+                if(!ValidateService.checkName($scope.personalInfo.truename)){
+                    $rootScope.showMessage('姓名2-7个字符!');
+                    return false;
+                }
+                if(!$scope.personalInfo.age){
+                    $rootScope.showMessage('年龄不能为空!');
+                    return false;
+                }
+                if($scope.personalInfo.age < 20 || $scope.personalInfo.age > 60){
+                    $rootScope.showMessage('年龄20-60!');
+                    return false;
                 }
             }
         };

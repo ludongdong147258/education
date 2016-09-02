@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService', 'CONFIG', '$ionicLoading', '$timeout', function($rootScope, $scope, $state, LoginService, CONFIG, $ionicLoading, $timeout) {
+    .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService', 'CONFIG', '$ionicLoading', '$timeout','ValidateService', function($rootScope, $scope, $state, LoginService, CONFIG, $ionicLoading, $timeout,ValidateService) {
         $rootScope.showHeaderBar = false;
         var obj = {
             validateInput: function() {
@@ -7,10 +7,18 @@ angular.module('education')
                     $rootScope.showMessage('请输入手机号!');
                     return false;
                 };
+                if(!ValidateService.checkPhone($scope.loginInfo.mobile)){
+                    $rootScope.showMessage('手机号码格式不正确!');
+                    return false;
+                }
                 if (!$scope.loginInfo.password) {
                     $rootScope.showMessage('请输入密码!');
                     return false;
                 };
+                if(!ValidateService.checkPwd($scope.loginInfo.password)){
+                    $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
+                    return false;
+                }
                 return true;
             }
         };

@@ -49,7 +49,7 @@ angular.module('education')
             },
             getOrderDetails:{
                 method: 'get',
-                url: CONFIG.urlPrefix + '/v1/order/server/details',
+                url: CONFIG.urlPrefix + '/v1/order/server/detail',
                 headers: {
                     token: CONFIG.token
                 }

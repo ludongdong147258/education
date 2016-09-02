@@ -17,7 +17,13 @@ angular.module('education')
                     id: $stateParams.id
                 }, function(data) {
                     if (data.success == 'Y') {
-                        $scope.orderInfo = data.data;
+                        var data = data.data;
+                        if(data.status == '1'){
+                            data.statusDisplay = '待支付';
+                        }else if(data.status == '2'){
+                            data.statusDisplay = '已支付';
+                        }
+                        $scope.orderInfo = data;
                     }
                 });
             }

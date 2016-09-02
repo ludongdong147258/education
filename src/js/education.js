@@ -1,18 +1,9 @@
-angular.module('education', ['ngResource', 'ionic', 'ngFileUpload','monospaced.qrcode'])
+angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.qrcode'])
     .config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         $ionicConfigProvider.views.maxCache(5); // 不缓存页面
         $ionicConfigProvider.templates.maxPrefetch(0); // 不进行预加载界面
         $urlRouterProvider.otherwise('/news');
-        $stateProvider.state('home', {
-                url: '/home',
-                cache: false,
-                views: {
-                    baseContent: {
-                        templateUrl: './js/home/home.html',
-                        controller: 'HomeController'
-                    }
-                }
-            }).state('login', {
+        $stateProvider.state('login', {
                 url: '/login',
                 cache: false,
                 views: {
@@ -291,7 +282,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload','monospaced.q
     }]).run(['$rootScope', '$ionicLoading', 'CONFIG', function($rootScope, $ionicLoading, CONFIG) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             $ionicLoading.show({
-                template:'<ion-spinner icon="ios-small"></ion-spinner>'
+                template: '<ion-spinner icon="ios-small"></ion-spinner>'
             });
         });
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -319,4 +310,28 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload','monospaced.q
                 element.attr('scroll', false);
             }
         }
-    }]);
+    }]).factory('ValidateService', function() {
+        var service = {
+            checkPwd: function(pwd) {
+                var reg = /^[0-9 | A-Z | a-z]{6,10}$/;
+                return reg.test(pwd);
+            },
+            checkPhone: function(phone) {
+                var reg = /^1[0-9]{10}$/;
+                return reg.test(phone);
+            },
+            checkSmsCode: function(code) {
+                var reg = /^[0-9]{6}$/;
+                return reg.test(code);
+            },
+            checkAddress: function(address) {
+                var reg = /^[0-9a-zA-Z\u4e00-\u9fa5]{5,30}$/;
+                return reg.test(address);
+            },
+            checkName:function(name){
+                var reg = /^[\u4e00-\u9fa5]{2,7}$/;
+                return reg.test(name);
+            }
+        };
+        return service
+    });

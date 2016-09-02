@@ -11,7 +11,7 @@
         </div>
         <label class="item item-input border-top">
             <span class="input-label">教师姓名</span>
-            <input type="text" placeholder="未填写" ng-model="personalInfo.truename">
+            <input type="text" placeholder="2-7个中文字符" ng-model="personalInfo.truename">
         </label>
         <div class="row">
             <div class="col">
@@ -41,8 +41,8 @@
             </div>
         </div>
         <label class="item item-input border-bottom">
-            <span class="input-label">年龄</span>
-            <input type="number" placeholder="未填写" ng-model="personalInfo.age">
+            <span class="input-label">年龄(岁)</span>
+            <input type="number" placeholder="20-60" max="60" min="20" ng-model="personalInfo.age">
         </label>
         <div class="row order-row">
             <div class="col">
@@ -59,11 +59,11 @@
         </label>
         <label class="item item-input border-bottom">
             <span class="input-label">教龄(年)</span>
-            <input type="number" placeholder="未填写" ng-model="personalInfo.worked_year">
+            <input type="number" placeholder="1-30" max="30" min="1" ng-model="personalInfo.worked_year">
         </label>
         <label class="item item-input border-bottom">
-            <span class="input-label">补习费用(元)</span>
-            <input type="number" placeholder="未填写" ng-model="personalInfo.extra_server_fee">
+            <span class="input-label">补习费用(元/小时)</span>
+            <input type="number" min="1" placeholder="未填写" ng-model="personalInfo.extra_server_fee">
         </label>
         <div class="row order-row" style="margin-bottom:10px;">
             <div class="col">

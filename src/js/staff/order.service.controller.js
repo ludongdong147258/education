@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('StaffOrderServiceController', ['$rootScope', '$scope', '$state', '$ionicPopup', 'StaffService','$timeout', function($rootScope, $scope, $state, $ionicPopup, StaffService,$timeout) {
+    .controller('StaffOrderServiceController', ['$rootScope', '$scope', '$state', '$ionicPopup', 'StaffService','$timeout','ValidateService', function($rootScope, $scope, $state, $ionicPopup, StaffService,$timeout,ValidateService) {
         var obj = {
             getStaticFee: function() {
                 StaffService.getStaticFee({}, function(data) {
@@ -11,6 +11,14 @@ angular.module('education')
         };
         obj.getStaticFee();
         $scope.getTeacherFee = function() {
+            if (!$scope.serviceInfo.mobile) {
+                $rootScope.showMessage('手机号不能为空!');
+                return;
+            }
+            if(!ValidateService.checkPhone($scope.serviceInfo.mobile)){
+                $rootScope.showMessage('手机号码格式不正确!');
+                return;
+            }
             StaffService.getTeacherFee({
                 mobile: $scope.serviceInfo.mobile
             }, function(data) {
@@ -39,9 +47,14 @@ angular.module('education')
                 $rootScope.showMessage('手机号不能为空!');
                 return;
             }
+            if(!ValidateService.checkPhone($scope.serviceInfo.mobile)){
+                $rootScope.showMessage('手机号码格式不正确!');
+                return;
+            }
             $ionicPopup.show({
-                template: '1、智能硬件产品质智能硬件产品质保及押金使用模式说明智能硬件产',
+                template: '1、智能硬件提供给使用者使用,采取押金方式提供;<br/>2、3个月内,硬件没有大的人为损害,使用者无条件自由退换押金;<br/>3、使用者长期使用期间,硬件产品的换代升级,提供新的硬件产品,为全免费置换模式;使用者无需另行支付或增加押金额;<br/>4、使用满1年后,使用者不再有硬件使用需求,在硬件产品没有大的人为损害情况下,且硬件产品具备使用条件,使用者可申请退换押金;<br/>5、智能硬件产品实行三年质保,终生保修(质保指由于质量缺陷造成的设备无法正常使用);',
                 title: '智能硬件产品质保及押金使用模式说明',
+                cssClass:'service-popup',
                 scope: $scope,
                 buttons: [{
                     text: '取消',

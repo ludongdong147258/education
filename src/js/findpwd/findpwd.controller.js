@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('FindpwdController', ['$rootScope', '$scope', '$state', 'FindpwdService', '$timeout', 'RegisterService', function($rootScope, $scope, $state, FindpwdService, $timeout, RegisterService) {
+    .controller('FindpwdController', ['$rootScope', '$scope', '$state', 'FindpwdService', '$timeout', 'RegisterService','ValidateService', function($rootScope, $scope, $state, FindpwdService, $timeout, RegisterService,ValidateService) {
         $rootScope.showHeaderBar = false;
         $scope.findpwdInfo = {};
         var obj = {
@@ -8,12 +8,24 @@ angular.module('education')
                     $rootScope.showMessage('请输入手机号!');
                     return false;
                 }
+                if(!ValidateService.checkPhone($scope.findpwdInfo.mobile)){
+                    $rootScope.showMessage('手机号码格式不正确!');
+                    return false;
+                }
                 if (!$scope.findpwdInfo.smscode) {
                     $rootScope.showMessage('请输入验证码!');
                     return false;
                 }
+                if(!ValidateService.checkSmsCode($scope.findpwdInfo.smscode)){
+                    $rootScope.showMessage('短信验证码格式不正确!');
+                    return false;
+                }
                 if (!$scope.findpwdInfo.password) {
                     $rootScope.showMessage('请输入新密码!');
+                    return false;
+                }
+                if(!ValidateService.checkPwd($scope.findpwdInfo.password)){
+                    $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
                     return false;
                 }
                 return true;
@@ -46,6 +58,10 @@ angular.module('education')
         $scope.getSmsCode = function() {
             if (!$scope.findpwdInfo.mobile) {
                 $rootScope.showMessage('请填写手机号!');
+                return false;
+            }
+            if(!ValidateService.checkPhone($scope.findpwdInfo.mobile)){
+                $rootScope.showMessage('手机号码格式不正确!');
                 return false;
             }
             $scope.btnState = true;

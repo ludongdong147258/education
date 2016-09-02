@@ -313,3 +313,9 @@
     display: block;
     margin: 0 auto;
 }
+.popup-container.active .popup{
+    width: 80%;
+}
+.service-popup .popup-body {
+    text-align: left;
+}

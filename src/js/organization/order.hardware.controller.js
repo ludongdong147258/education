@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('InstitutionOrderHardWareController', ['$rootScope', '$scope', '$state', '$timeout', 'StudentService', function($rootScope, $scope, $state, $timeout, StudentService) {
+    .controller('InstitutionOrderHardWareController', ['$rootScope', '$scope', '$state', '$timeout', 'StudentService','ValidateService', function($rootScope, $scope, $state, $timeout, StudentService,ValidateService) {
         $scope.city = {
             key: '',
             id: ''
@@ -25,9 +25,13 @@ angular.module('education')
                             $state.go('news');
                         }, 3000);
                     } else {
-                        angular.forEach(data.msg, function(val, key) {
-                            $rootScope.showMessage(data.msg[key]);
-                        });
+                        if(angular.isObject(data.msg)){
+                            angular.forEach(data.msg, function(val, key) {
+                                $rootScope.showMessage(data.msg[key]);
+                            });
+                        }else{
+                            $rootScope.showMessage('预定失败!');
+                        }
                     }
                 }, function(error) {
                     console.error(error);
@@ -76,9 +80,23 @@ angular.module('education')
                     $rootScope.showMessage("上门安装地址不能为空!");
                     return false;
                 }
+                if(!ValidateService.checkAddress(hardwareInfo.address_detail)){
+                    $rootScope.showMessage("地址5-30个字符!");
+                    return false;
+                }
                 if (!hardwareInfo.link_name) {
                     $rootScope.showMessage("联系人姓名不能为空!");
                     return false;
+                }
+                if(!ValidateService.checkName(hardwareInfo.link_name)){
+                    $rootScope.showMessage("联系人姓名2-7位中文字符!");
+                    return false;
+                }
+                if(hardwareInfo.mobile){
+                    if(!ValidateService.checkPhone(hardwareInfo.mobile)){
+                        $rootScope.showMessage("手机号码格式不正确!");
+                        return false;
+                    }
                 }
                 return true;
             }

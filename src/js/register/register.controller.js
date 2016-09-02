@@ -1,17 +1,29 @@
 angular.module('education')
-    .controller('RegisterController', ['$rootScope', '$scope', '$state', '$stateParams', 'RegisterService', 'LoginService', '$timeout','CONFIG', function($rootScope, $scope, $state, $stateParams, RegisterService, LoginService, $timeout,CONFIG) {
+    .controller('RegisterController', ['$rootScope', '$scope', '$state', '$stateParams', 'RegisterService', 'LoginService', '$timeout','CONFIG','ValidateService', function($rootScope, $scope, $state, $stateParams, RegisterService, LoginService, $timeout,CONFIG,ValidateService) {
         var obj = {
             validateInput: function(type) {
                 if (!$scope.registerInfo[type].mobile) {
                     $rootScope.showMessage('请填写手机号!');
                     return false;
                 }
+                if(!ValidateService.checkPhone($scope.registerInfo[type].mobile)){
+                    $rootScope.showMessage('手机号码格式不正确!');
+                    return false;
+                }
                 if (!$scope.registerInfo[type].smscode) {
                     $rootScope.showMessage('请填写短信验证码!');
                     return false;
                 }
+                if(!ValidateService.checkSmsCode($scope.registerInfo[type].smscode)){
+                    $rootScope.showMessage('短信验证码格式不正确!');
+                    return false;
+                }
                 if (!$scope.registerInfo[type].password) {
                     $rootScope.showMessage('请填写密码!');
+                    return false;
+                }
+                if(!ValidateService.checkPwd($scope.registerInfo[type].password)){
+                    $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
                     return false;
                 }
                 return true;
@@ -87,6 +99,10 @@ angular.module('education')
         $scope.getSmsCode = function() {
             if (!$scope.registerInfo[types[curIndex]].mobile) {
                 $rootScope.showMessage('请填写手机号!');
+                return false;
+            }
+            if(!ValidateService.checkPhone($scope.registerInfo[types[curIndex]].mobile)){
+                $rootScope.showMessage('手机号码格式不正确!');
                 return false;
             }
             $scope.btnStates[curIndex] = true;

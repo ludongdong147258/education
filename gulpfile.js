@@ -7,6 +7,7 @@ var clean = require('gulp-clean'),
     imagemin = require('gulp-imagemin'), //图片压缩
     pngcrush = require('imagemin-pngcrush'),
     minifycss = require('gulp-minify-css'), //css压缩
+    // jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'), //js压缩
     concat = require('gulp-concat'), //文件合并
     rename = require('gulp-rename'), //文件更名
@@ -86,7 +87,7 @@ gulp.task('js', function() {
         .pipe(rename({
             suffix: '.min'
         }))
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest('dest/js'))
         .pipe(notify({
             message: 'js task ok'

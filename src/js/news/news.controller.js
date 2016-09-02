@@ -74,6 +74,9 @@ angular.module('education')
                         class: 'yuding-icon'
                     }];
                     break;
+                case 'manage':
+                    $rootScope.listItems = [];
+                    break;    
             }
         }
     }]);

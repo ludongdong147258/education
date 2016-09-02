@@ -15,7 +15,7 @@
             </label>
             <div class="item item-input-inset">
                 <label class="item-input-wrapper register-code">
-                    <input type="text" placeholder="输入验证码" ng-model="registerInfo.student.smscode">
+                    <input type="text" placeholder="输入验证码(6位数字)" ng-model="registerInfo.student.smscode">
                 </label>
                 <button ng-disabled="btnStates[0]" class="button button-small button-energized" ng-click="getSmsCode()">
                     <span ng-hide="btnStates[0]">获取验证码</span>
@@ -23,7 +23,7 @@
                 </button>
             </div>
             <label class="item item-input">
-                <input type="password" placeholder="设置登录密码" ng-model="registerInfo.student.password">
+                <input type="password" placeholder="设置登录密码(6-10位字母、数字组合)" ng-model="registerInfo.student.password">
             </label>
             <div class="row">
                 <div class="col">
@@ -39,7 +39,7 @@
             </label>
             <div class="item item-input-inset">
                 <label class="item-input-wrapper register-code">
-                    <input type="text" placeholder="输入验证码" ng-model="registerInfo.teacher.smscode">
+                    <input type="text" placeholder="输入验证码(6位数字)" ng-model="registerInfo.teacher.smscode">
                 </label>
                 <button ng-disabled="btnStates[1]" class="button button-small button-energized" ng-click="getSmsCode()">
                     <span ng-hide="btnStates[1]">获取验证码</span>
@@ -47,7 +47,7 @@
                 </button>
             </div>
             <label class="item item-input">
-                <input type="password" placeholder="设置登录密码" ng-model="registerInfo.teacher.password">
+                <input type="password" placeholder="设置登录密码(6-10位字母、数字组合)" ng-model="registerInfo.teacher.password">
             </label>
             <div class="row">
                 <div class="col">
@@ -63,7 +63,7 @@
             </label>
             <div class="item item-input-inset">
                 <label class="item-input-wrapper register-code">
-                    <input type="text" placeholder="输入验证码" ng-model="registerInfo.institution.smscode">
+                    <input type="text" placeholder="输入验证码(6位数字)" ng-model="registerInfo.institution.smscode">
                 </label>
                 <button ng-disabled="btnStates[2]" class="button button-small button-energized" ng-click="getSmsCode()">
                     <span ng-hide="btnStates[2]">获取验证码</span>
@@ -71,7 +71,7 @@
                 </button>
             </div>
             <label class="item item-input">
-                <input type="password" placeholder="设置登录密码" ng-model="registerInfo.institution.password">
+                <input type="password" placeholder="设置登录密码(6-10位字母、数字组合)" ng-model="registerInfo.institution.password">
             </label>
             <div class="row">
                 <div class="col">

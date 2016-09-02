@@ -73,7 +73,7 @@ angular.module('education')
             },
             getOrderDetails:{
                 method: 'get',
-                url: CONFIG.urlPrefix + '/v1/order/server/details',
+                url: CONFIG.urlPrefix + '/v1/order/server/detail',
                 headers: {
                     token: CONFIG.token
                 }
@@ -88,6 +88,13 @@ angular.module('education')
             getTeacherFee:{
                 method: 'get',
                 url: CONFIG.urlPrefix + '/v1/order/teacher/fee',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            authOrder:{
+                method: 'post',
+                url: CONFIG.urlPrefix + '/v1/order/server/auth',
                 headers: {
                     token: CONFIG.token
                 }

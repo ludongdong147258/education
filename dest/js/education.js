@@ -3,16 +3,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload','monospaced.q
         $ionicConfigProvider.views.maxCache(5); // 不缓存页面
         $ionicConfigProvider.templates.maxPrefetch(0); // 不进行预加载界面
         $urlRouterProvider.otherwise('/news');
-        $stateProvider.state('home', {
-                url: '/home',
-                cache: false,
-                views: {
-                    baseContent: {
-                        templateUrl: './js/home/home.html',
-                        controller: 'HomeController'
-                    }
-                }
-            }).state('login', {
+        $stateProvider.state('login', {
                 url: '/login',
                 cache: false,
                 views: {
@@ -1392,6 +1383,377 @@ angular.module('education')
     }]);
 
 angular.module('education')
+    .controller('StudentOrderController', ['$rootScope', '$scope', '$state','StudentService', function($rootScope, $scope, $state,StudentService) {
+        $rootScope.showHeaderBar = false;
+        $scope.back = function() {
+            $state.go('personal');
+        };
+        var obj = {
+            getOrderList:function(){
+                StudentService.getOrderList({},function(data){
+                    if(data.success == 'Y'){
+                        $scope.orderList = data.data;
+                    }
+                });
+            }
+        };
+        obj.getOrderList();
+    }]);
+
+angular.module('education')
+    .controller('StudentOrderDetailsController', ['$rootScope', '$scope', '$state', '$stateParams', 'StudentService', function($rootScope, $scope, $state, $stateParams, StudentService) {
+        // 返回
+        $scope.back = function() {
+            $state.go('studentOrder');
+        };
+        $scope.dispalyStates = [true, false];
+        $scope.tabChange = function(curIndex) {
+            angular.forEach($scope.dispalyStates, function(val, index) {
+                $scope.dispalyStates[index] = false;
+            });
+            $scope.dispalyStates[curIndex] = true;
+        };
+        var obj = {
+            getOrderInfo: function() {
+                StudentService.getOrderDetails({
+                    id: $stateParams.id
+                }, function(data) {
+                    if (data.success == 'Y') {
+                        $scope.orderInfo = data.data;
+                    }
+                });
+            }
+        };
+        obj.getOrderInfo();
+    }]);
+
+angular.module('education')
+    .controller('StudentOrderHardWareController', ['$rootScope', '$scope', '$state', 'StudentService', '$stateParams', '$timeout',function($rootScope, $scope, $state, StudentService, $stateParams, $timeout) {
+        // 返回
+        $scope.back = function() {
+            localStorage.removeItem('hardwareInfo');
+            $state.go('news');
+        };
+        $scope.hardwareInfo = {
+            recommend_type: 1
+        };
+        $scope.displayStates = [true, false];
+        var id = $stateParams.id;
+
+        if(id){
+            $scope.name = $stateParams.name;
+            $scope.hardwareInfo.recommend_type = 2;
+            $scope.displayStates = [false, true];
+        }
+        // 免费预约
+        $scope.saveOrder = function() {
+            var flag = obj.validateInput();
+            if (flag) {
+                if (!$scope.hardwareInfo.mobile) {
+                    $scope.hardwareInfo.mobile = parseInt($rootScope.user.mobile);
+                }
+                $scope.hardwareInfo.address_id = $scope.city.id;
+                $scope.hardwareInfo.member_type = $rootScope.user.role;
+                if(id){
+                    $scope.hardwareInfo.teacher_id = id;
+                }
+                StudentService.orderHardWare($scope.hardwareInfo, function(data) {
+                    if (data.success == 'Y') {
+                        localStorage.removeItem('hardwareInfo');
+                        $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 5000);
+                        $timeout(function() {
+                            $state.go('news');
+                        }, 3000);
+                    } else {
+                        angular.forEach(data.msg, function(val, key) {
+                            $rootScope.showMessage(data.msg[key]);
+                        });
+                    }
+                }, function(error) {
+                    console.error(error);
+                    $rootScope.showMessage('预定失败!');
+                });
+            }
+        };
+        var addresses = [];
+        $scope.provinces = [];
+        $scope.cities = [];
+        var obj = {
+            getAddressList: function() {
+                StudentService.getAddressList({}, function(data) {
+                    if (data.success == 'Y') {
+                        addresses = data.data;
+                        var tempKey = '';
+                        angular.forEach(data.data, function(item, index) {
+                            if (tempKey != item.province) {
+                                $scope.provinces.push({
+                                    key: item.province
+                                });
+                                tempKey = item.province;
+                            }
+                        });
+                        var hardwareInfo = localStorage.getItem('hardwareInfo');
+                        if(hardwareInfo){
+                            $scope.hardwareInfo = angular.fromJson(hardwareInfo);
+                            angular.forEach($scope.provinces,function(val,index){
+                                if(val.key == $scope.hardwareInfo.province.key){
+                                    $scope.province = $scope.provinces[index];
+                                    return;
+                                }
+                            });
+                            $scope.changeProvince($scope.province);
+                            angular.forEach($scope.cities,function(val,index){
+                                if(val.key == $scope.hardwareInfo.city.key){
+                                    $scope.city = $scope.cities[index];
+                                    return;
+                                }
+                            });
+                            $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
+                        } else {
+                            $scope.province = {key:''};
+                            $scope.city = {
+                                key: '',
+                                id: ''
+                            };
+                        }
+                    }
+                }, function(error) {
+                    console.log(error);
+                });
+            },
+            validateInput: function() {
+                var hardwareInfo = $scope.hardwareInfo;
+                if (!hardwareInfo.time) {
+                    $rootScope.showMessage("日期不能为空!");
+                    return false;
+                }
+                if (!$scope.province.key) {
+                    $rootScope.showMessage("省份不能为空!");
+                    return false;
+                }
+                if (!$scope.city.key) {
+                    $rootScope.showMessage("城市不能为空!");
+                    return false;
+                }
+                if (!hardwareInfo.address_detail) {
+                    $rootScope.showMessage("上门安装地址不能为空!");
+                    return false;
+                }
+                if (!hardwareInfo.link_name) {
+                    $rootScope.showMessage("联系人姓名不能为空!");
+                    return false;
+                }
+                if ($scope.hardwareInfo.recommend_type == 2) {
+                    if (!$scope.name) {
+                        $rootScope.showMessage("所选老师不能为空!");
+                        return false;
+                    }
+                }
+                return true;
+            }
+        };
+        obj.getAddressList();
+        $scope.changeProvince = function(curItem) {
+            $scope.province = curItem;
+            $scope.cities = [];
+            angular.forEach(addresses, function(item) {
+                if (item.province == curItem.key) {
+                    $scope.cities.push({
+                        key: item.city,
+                        id: item.id
+                    });
+                }
+            });
+        };
+        $scope.changeCity = function(curItem) {
+            $scope.city = curItem;
+        };
+        $scope.changeType = function(num) {
+            $scope.hardwareInfo.recommend_type = num;
+            if (num == 1) {
+                $scope.displayStates = [true, false];
+            } else {
+                $scope.displayStates = [false, true];
+                $state.go('search',{type:'student'});
+                $scope.hardwareInfo.province = $scope.province;
+                $scope.hardwareInfo.city = $scope.city;
+                localStorage.setItem('hardwareInfo',JSON.stringify($scope.hardwareInfo));
+            }
+        };
+    }]);
+
+angular.module('education')
+    .controller('StudentInfoController', ['$rootScope', '$scope', '$state', 'StudentService','$timeout', function($rootScope, $scope, $state, StudentService,$timeout) {
+        $rootScope.showHeaderBar = false;
+        // 返回
+        $scope.back = function() {
+            $state.go('personal');
+        };
+        $scope.states = [];
+        $scope.grades = [];
+        // 保存更改
+        $scope.saveInfo = function() {
+            StudentService.updatePersonalInfo($scope.personalInfo, function(data) {
+                if (data.success == 'Y') {
+                    $rootScope.showMessage('保存成功!');
+                }
+            }, function(error) {
+                console.error(error);
+            });
+        };
+        $scope.personalInfo = {};
+        var obj = {
+            getPersonalInfo: function() {
+                StudentService.getPersonalInfo({}, function(data) {
+                    if (data.success == 'Y') {
+                        var data = data.data;
+                        if(data.age){
+                            data.age = parseInt(data.age);
+                        }
+                        $scope.personalInfo = data;
+                        if($scope.personalInfo.state){
+                            angular.forEach($scope.personalInfo.state,function(val){
+                                angular.forEach($scope.states,function(item){
+                                    if(item.key == val) {
+                                        item.isSelected = true;
+                                    }
+                                })
+                            });
+                        }
+                    }
+                }, function(error) {
+                    console.error(error);
+                });
+            },
+            getStates: function() {
+                StudentService.getStates({}, function(data) {
+                    if (data.success == 'Y') {
+                        angular.forEach(data.data, function(val, key) {
+                            $scope.states.push({
+                                key:key,
+                                val:val,
+                                isSelected: false
+                            });
+                        });
+                    }
+                }, function(error) {
+                    console.error(error);
+                });
+            },
+            getGrades: function() {
+                StudentService.getGrades({}, function(data) {
+                    if (data.success == 'Y') {
+                        angular.forEach(data.data, function(val, key) {
+                            $scope.grades.push({
+                                key:key,
+                                val:val
+                            });
+                        });
+                    }
+                }, function(error) {
+                    console.error(error);
+                });
+            }
+        };
+        $scope.changeSex = function(number) {
+            $scope.personalInfo.sex = number;
+        };
+        $scope.changeGrade = function(grade) {
+            $scope.personalInfo.grade = grade;
+        };
+        $scope.changeState = function(item) {
+            var state = $scope.personalInfo.state;
+            if (!state) {
+                state = [];
+            }
+            var index = state.indexOf(item.key);
+            item.isSelected = !item.isSelected;
+            if (index == -1 && item.isSelected) {
+                state.push(item.key);
+            } else {
+                state.splice(index, 1);
+            }
+            $scope.personalInfo.state = state;
+        };
+        obj.getGrades();
+        obj.getStates();
+        obj.getPersonalInfo();
+    }]);
+
+angular.module('education')
+    .factory('StudentService', ['$resource', 'CONFIG', function($resource, CONFIG) {
+        return $resource(CONFIG.urlPrefix + '/v1/account/detail', {}, {
+            getPersonalInfo: {
+                method: 'get',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            updatePersonalInfo: {
+                method: 'post',
+                url: CONFIG.urlPrefix + '/v1/account/update',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            getStates: {
+                url: CONFIG.urlPrefix + '/v1/student/state',
+                method: 'get'
+            },
+            getGrades: {
+                url: CONFIG.urlPrefix + '/v1/student/grades',
+                method: 'get'
+            },
+            getAddressList: {
+                url: CONFIG.urlPrefix + '/v1/address/lists',
+                method: 'get'
+            },
+            orderHardWare: {
+                url: CONFIG.urlPrefix + '/v1/order/equipment/add',
+                method: 'post',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            hasHardWare: {
+                url: CONFIG.urlPrefix + '/v1/order/equipment/has',
+                method: 'get',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            getOrderList: {
+                url: CONFIG.urlPrefix + '/v1/order/server/lists',
+                method: 'get',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
+            getOrderDetails:{
+                method: 'get',
+                url: CONFIG.urlPrefix + '/v1/order/server/details',
+                headers: {
+                    token: CONFIG.token
+                }
+            }
+        });
+    }]).factory('HardWareService', function() {
+        var service = {
+            setTeaherInfo: function(teacherId, name) {
+                this.teacherId = teacherId;
+                this.name = name;
+            },
+            getTeacherInfo: function() {
+                return {
+                    teacherId: this.teacherId,
+                    name: this.name
+                }
+            }
+        };
+        return service;
+    });
+
+angular.module('education')
     .controller('ExamineController', ['$rootScope', '$scope', 'StaffService', '$state', function($rootScope, $scope, StaffService, $state) {
         $rootScope.showHeaderBar = false;
         $scope.showTeacherList = true;
@@ -1524,7 +1886,7 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('StaffOrderDetailsController', ['$rootScope', '$scope', '$state', '$ionicPopup','$stateParams','StaffService', function($rootScope, $scope, $state, $ionicPopup,$stateParams,StaffService) {
+    .controller('StaffOrderDetailsController', ['$rootScope', '$scope', '$state', '$ionicPopup', '$stateParams', 'StaffService', '$timeout', function($rootScope, $scope, $state, $ionicPopup, $stateParams, StaffService, $timeout) {
         // 返回
         $scope.back = function() {
             $state.go('staffOrder');
@@ -1537,17 +1899,41 @@ angular.module('education')
             $scope.dispalyStates[curIndex] = true;
         };
         var obj = {
-            getOrderDetails:function(){
-                StaffService.getOrderDetails({id:$stateParams.id},function(data){
-                    if(data.success == 'Y'){
+            getOrderDetails: function() {
+                StaffService.getOrderDetails({
+                    id: $stateParams.id
+                }, function(data) {
+                    if (data.success == 'Y') {
                         $scope.orderInfo = data.data;
                     }
                 });
             }
         };
         obj.getOrderDetails();
-        $scope.confirm = function(){
-            
+        $scope.confirm = function() {
+            var confirmPopup = $ionicPopup.confirm({
+                title: '提示',
+                template: '您确定已收款?',
+                cancelText: '取消',
+                cancelType: 'button-dark',
+                okText: '确定',
+                okType: 'button-energized'
+            });
+            confirmPopup.then(function(res) {
+                if (res) {
+                    StaffService.authOrder({
+                        id: $stateParams.id,
+                        status: 2
+                    }, function(data) {
+                        if (data.success == 'Y') {
+                            $rootScope.showMessage('收款成功!');
+                            $timeout(function() {
+                                $state.go('staffOrder');
+                            }, 1000);
+                        }
+                    });
+                }
+            });
         };
     }]);
 
@@ -1809,6 +2195,13 @@ angular.module('education')
                 headers: {
                     token: CONFIG.token
                 }
+            },
+            authOrder:{
+                method: 'post',
+                url: CONFIG.urlPrefix + '/v1/order/server/auth',
+                headers: {
+                    token: CONFIG.token
+                }
             }
         });
     }]);
@@ -1918,377 +2311,6 @@ angular.module('education')
             });
         };
     }]);
-
-angular.module('education')
-    .controller('StudentOrderController', ['$rootScope', '$scope', '$state','StudentService', function($rootScope, $scope, $state,StudentService) {
-        $rootScope.showHeaderBar = false;
-        $scope.back = function() {
-            $state.go('personal');
-        };
-        var obj = {
-            getOrderList:function(){
-                StudentService.getOrderList({},function(data){
-                    if(data.success == 'Y'){
-                        $scope.orderList = data.data;
-                    }
-                });
-            }
-        };
-        obj.getOrderList();
-    }]);
-
-angular.module('education')
-    .controller('StudentOrderDetailsController', ['$rootScope', '$scope', '$state', '$stateParams', 'StudentService', function($rootScope, $scope, $state, $stateParams, StudentService) {
-        // 返回
-        $scope.back = function() {
-            $state.go('studentOrder');
-        };
-        $scope.dispalyStates = [true, false];
-        $scope.tabChange = function(curIndex) {
-            angular.forEach($scope.dispalyStates, function(val, index) {
-                $scope.dispalyStates[index] = false;
-            });
-            $scope.dispalyStates[curIndex] = true;
-        };
-        var obj = {
-            getOrderInfo: function() {
-                StudentService.getOrderDetails({
-                    id: $stateParams.id
-                }, function(data) {
-                    if (data.success == 'Y') {
-                        $scope.orderInfo = data.data;
-                    }
-                });
-            }
-        };
-        obj.getOrderInfo();
-    }]);
-
-angular.module('education')
-    .controller('StudentOrderHardWareController', ['$rootScope', '$scope', '$state', 'StudentService', '$stateParams', '$timeout',function($rootScope, $scope, $state, StudentService, $stateParams, $timeout) {
-        // 返回
-        $scope.back = function() {
-            localStorage.removeItem('hardwareInfo');
-            $state.go('news');
-        };
-        $scope.hardwareInfo = {
-            recommend_type: 1
-        };
-        $scope.displayStates = [true, false];
-        var id = $stateParams.id;
-
-        if(id){
-            $scope.name = $stateParams.name;
-            $scope.hardwareInfo.recommend_type = 2;
-            $scope.displayStates = [false, true];
-        }
-        // 免费预约
-        $scope.saveOrder = function() {
-            var flag = obj.validateInput();
-            if (flag) {
-                if (!$scope.hardwareInfo.mobile) {
-                    $scope.hardwareInfo.mobile = parseInt($rootScope.user.mobile);
-                }
-                $scope.hardwareInfo.address_id = $scope.city.id;
-                $scope.hardwareInfo.member_type = $rootScope.user.role;
-                if(id){
-                    $scope.hardwareInfo.teacher_id = id;
-                }
-                StudentService.orderHardWare($scope.hardwareInfo, function(data) {
-                    if (data.success == 'Y') {
-                        localStorage.removeItem('hardwareInfo');
-                        $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 5000);
-                        $timeout(function() {
-                            $state.go('news');
-                        }, 3000);
-                    } else {
-                        angular.forEach(data.msg, function(val, key) {
-                            $rootScope.showMessage(data.msg[key]);
-                        });
-                    }
-                }, function(error) {
-                    console.error(error);
-                    $rootScope.showMessage('预定失败!');
-                });
-            }
-        };
-        var addresses = [];
-        $scope.provinces = [];
-        $scope.cities = [];
-        var obj = {
-            getAddressList: function() {
-                StudentService.getAddressList({}, function(data) {
-                    if (data.success == 'Y') {
-                        addresses = data.data;
-                        var tempKey = '';
-                        angular.forEach(data.data, function(item, index) {
-                            if (tempKey != item.province) {
-                                $scope.provinces.push({
-                                    key: item.province
-                                });
-                                tempKey = item.province;
-                            }
-                        });
-                        var hardwareInfo = localStorage.getItem('hardwareInfo');
-                        if(hardwareInfo){
-                            $scope.hardwareInfo = angular.fromJson(hardwareInfo);
-                            angular.forEach($scope.provinces,function(val,index){
-                                if(val.key == $scope.hardwareInfo.province.key){
-                                    $scope.province = $scope.provinces[index];
-                                    return;
-                                }
-                            });
-                            $scope.changeProvince($scope.province);
-                            angular.forEach($scope.cities,function(val,index){
-                                if(val.key == $scope.hardwareInfo.city.key){
-                                    $scope.city = $scope.cities[index];
-                                    return;
-                                }
-                            });
-                            $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
-                        } else {
-                            $scope.province = {key:''};
-                            $scope.city = {
-                                key: '',
-                                id: ''
-                            };
-                        }
-                    }
-                }, function(error) {
-                    console.log(error);
-                });
-            },
-            validateInput: function() {
-                var hardwareInfo = $scope.hardwareInfo;
-                if (!hardwareInfo.time) {
-                    $rootScope.showMessage("日期不能为空!");
-                    return false;
-                }
-                if (!$scope.province.key) {
-                    $rootScope.showMessage("省份不能为空!");
-                    return false;
-                }
-                if (!$scope.city.key) {
-                    $rootScope.showMessage("城市不能为空!");
-                    return false;
-                }
-                if (!hardwareInfo.address_detail) {
-                    $rootScope.showMessage("上门安装地址不能为空!");
-                    return false;
-                }
-                if (!hardwareInfo.link_name) {
-                    $rootScope.showMessage("联系人姓名不能为空!");
-                    return false;
-                }
-                if ($scope.hardwareInfo.recommend_type == 2) {
-                    if (!$scope.name) {
-                        $rootScope.showMessage("所选老师不能为空!");
-                        return false;
-                    }
-                }
-                return true;
-            }
-        };
-        obj.getAddressList();
-        $scope.changeProvince = function(curItem) {
-            $scope.province = curItem;
-            $scope.cities = [];
-            angular.forEach(addresses, function(item) {
-                if (item.province == curItem.key) {
-                    $scope.cities.push({
-                        key: item.city,
-                        id: item.id
-                    });
-                }
-            });
-        };
-        $scope.changeCity = function(curItem) {
-            $scope.city = curItem;
-        };
-        $scope.changeType = function(num) {
-            $scope.hardwareInfo.recommend_type = num;
-            if (num == 1) {
-                $scope.displayStates = [true, false];
-            } else {
-                $scope.displayStates = [false, true];
-                $state.go('search',{type:'student'});
-                $scope.hardwareInfo.province = $scope.province;
-                $scope.hardwareInfo.city = $scope.city;
-                localStorage.setItem('hardwareInfo',JSON.stringify($scope.hardwareInfo));
-            }
-        };
-    }]);
-
-angular.module('education')
-    .controller('StudentInfoController', ['$rootScope', '$scope', '$state', 'StudentService','$timeout', function($rootScope, $scope, $state, StudentService,$timeout) {
-        $rootScope.showHeaderBar = false;
-        // 返回
-        $scope.back = function() {
-            $state.go('personal');
-        };
-        $scope.states = [];
-        $scope.grades = [];
-        // 保存更改
-        $scope.saveInfo = function() {
-            StudentService.updatePersonalInfo($scope.personalInfo, function(data) {
-                if (data.success == 'Y') {
-                    $rootScope.showMessage('保存成功!');
-                }
-            }, function(error) {
-                console.error(error);
-            });
-        };
-        $scope.personalInfo = {};
-        var obj = {
-            getPersonalInfo: function() {
-                StudentService.getPersonalInfo({}, function(data) {
-                    if (data.success == 'Y') {
-                        var data = data.data;
-                        if(data.age){
-                            data.age = parseInt(data.age);
-                        }
-                        $scope.personalInfo = data;
-                        if($scope.personalInfo.state){
-                            angular.forEach($scope.personalInfo.state,function(val){
-                                angular.forEach($scope.states,function(item){
-                                    if(item.key == val) {
-                                        item.isSelected = true;
-                                    }
-                                })
-                            });
-                        }
-                    }
-                }, function(error) {
-                    console.error(error);
-                });
-            },
-            getStates: function() {
-                StudentService.getStates({}, function(data) {
-                    if (data.success == 'Y') {
-                        angular.forEach(data.data, function(val, key) {
-                            $scope.states.push({
-                                key,
-                                val,
-                                isSelected: false
-                            });
-                        });
-                    }
-                }, function(error) {
-                    console.error(error);
-                });
-            },
-            getGrades: function() {
-                StudentService.getGrades({}, function(data) {
-                    if (data.success == 'Y') {
-                        angular.forEach(data.data, function(val, key) {
-                            $scope.grades.push({
-                                key,
-                                val
-                            });
-                        });
-                    }
-                }, function(error) {
-                    console.error(error);
-                });
-            }
-        };
-        $scope.changeSex = function(number) {
-            $scope.personalInfo.sex = number;
-        };
-        $scope.changeGrade = function(grade) {
-            $scope.personalInfo.grade = grade;
-        };
-        $scope.changeState = function(item) {
-            var state = $scope.personalInfo.state;
-            if (!state) {
-                state = [];
-            }
-            var index = state.indexOf(item.key);
-            item.isSelected = !item.isSelected;
-            if (index == -1 && item.isSelected) {
-                state.push(item.key);
-            } else {
-                state.splice(index, 1);
-            }
-            $scope.personalInfo.state = state;
-        };
-        obj.getGrades();
-        obj.getStates();
-        obj.getPersonalInfo();
-    }]);
-
-angular.module('education')
-    .factory('StudentService', ['$resource', 'CONFIG', function($resource, CONFIG) {
-        return $resource(CONFIG.urlPrefix + '/v1/account/detail', {}, {
-            getPersonalInfo: {
-                method: 'get',
-                headers: {
-                    token: CONFIG.token
-                }
-            },
-            updatePersonalInfo: {
-                method: 'post',
-                url: CONFIG.urlPrefix + '/v1/account/update',
-                headers: {
-                    token: CONFIG.token
-                }
-            },
-            getStates: {
-                url: CONFIG.urlPrefix + '/v1/student/state',
-                method: 'get'
-            },
-            getGrades: {
-                url: CONFIG.urlPrefix + '/v1/student/grades',
-                method: 'get'
-            },
-            getAddressList: {
-                url: CONFIG.urlPrefix + '/v1/address/lists',
-                method: 'get'
-            },
-            orderHardWare: {
-                url: CONFIG.urlPrefix + '/v1/order/equipment/add',
-                method: 'post',
-                headers: {
-                    token: CONFIG.token
-                }
-            },
-            hasHardWare: {
-                url: CONFIG.urlPrefix + '/v1/order/equipment/has',
-                method: 'get',
-                headers: {
-                    token: CONFIG.token
-                }
-            },
-            getOrderList: {
-                url: CONFIG.urlPrefix + '/v1/order/server/lists',
-                method: 'get',
-                headers: {
-                    token: CONFIG.token
-                }
-            },
-            getOrderDetails:{
-                method: 'get',
-                url: CONFIG.urlPrefix + '/v1/order/server/details',
-                headers: {
-                    token: CONFIG.token
-                }
-            }
-        });
-    }]).factory('HardWareService', function() {
-        var service = {
-            setTeaherInfo: function(teacherId, name) {
-                this.teacherId = teacherId;
-                this.name = name;
-            },
-            getTeacherInfo: function() {
-                return {
-                    teacherId: this.teacherId,
-                    name: this.name
-                }
-            }
-        };
-        return service;
-    });
 
 angular.module('education')
     .controller('TeacherOrderHardWareController', ['$rootScope', '$scope', '$state', '$timeout', 'StudentService', function($rootScope, $scope, $state, $timeout, StudentService) {
@@ -2612,8 +2634,8 @@ angular.module('education')
                     if (data.success == 'Y') {
                         angular.forEach(data.data, function(val, key) {
                             $scope.grades.push({
-                                key,
-                                val,
+                                key:key,
+                                val:val,
                                 isSelected: false
                             });
                         });
@@ -2627,8 +2649,8 @@ angular.module('education')
                     if (data.success == 'Y') {
                         angular.forEach(data.workTime, function(val, key) {
                             $scope.worktimes.push({
-                                key,
-                                val,
+                                key:key,
+                                val:val,
                                 isSelected: false
                             });
                         });
@@ -2642,8 +2664,8 @@ angular.module('education')
                     if (data.success == 'Y') {
                         angular.forEach(data.subjects, function(val, key) {
                             $scope.subjects.push({
-                                key,
-                                val,
+                                key:key,
+                                val:val,
                                 isSelected: false
                             });
                         });

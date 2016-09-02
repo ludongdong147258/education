@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('OrganizationAddTeacherController', ['$rootScope', '$scope', '$state', 'OrganizationService','$timeout', function($rootScope, $scope, $state, OrganizationService,$timeout) {
+    .controller('OrganizationAddTeacherController', ['$rootScope', '$scope', '$state', 'OrganizationService','$timeout','ValidateService', function($rootScope, $scope, $state, OrganizationService,$timeout,ValidateService) {
         $rootScope.showHeaderBar = false;
         $scope.back = function() {
             $state.go('organizationManager');
@@ -32,12 +32,24 @@ angular.module('education')
                     $rootScope.showMessage('教师姓名不能为空!');
                     return false;
                 }
+                if(!ValidateService.checkName($scope.teacherInfo.truename)){
+                    $rootScope.showMessage('教师姓名2-7个中文字符!');
+                    return false;
+                }
                 if (!$scope.teacherInfo.mobile) {
                     $rootScope.showMessage('手机号码不能为空!');
                     return false;
                 }
+                if(!ValidateService.checkPhone($scope.teacherInfo.mobile)){
+                    $rootScope.showMessage('手机号码格式不正确!');
+                    return false;
+                }
                 if (!$scope.teacherInfo.password) {
                     $rootScope.showMessage('密码不能为空!');
+                    return false;
+                }
+                if(!ValidateService.checkPwd($scope.teacherInfo.password)){
+                    $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
                     return false;
                 }
                 return true;
