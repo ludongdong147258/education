@@ -34,15 +34,15 @@
         </div>
         <label class="item item-input">
             <span class="input-label">上门安装地址</span>
-            <input type="text" placeholder="上门安装地址(至少5个字符)" ng-model="hardwareInfo.address_detail">
+            <input type="text" placeholder="上门安装地址(5-30个字符)" ng-model="hardwareInfo.address_detail">
         </label>
         <label class="item item-input">
             <span class="input-label">联系人姓名</span>
-            <input type="text" placeholder="联系人姓名" ng-model="hardwareInfo.link_name">
+            <input type="text" placeholder="联系人姓名(2-7个中文字符)" ng-model="hardwareInfo.link_name">
         </label>
         <label class="item item-input border-bottom">
             <span class="input-label">联系电话</span>
-            <input type="number" placeholder="如与账号相同可不填" ng-model="hardwareInfo.mobile">
+            <input type="number" placeholder="如与账号相同可不填" max-length="11" ng-model="hardwareInfo.mobile">
         </label>
         <!-- <div class="row order-row">
             <div class="col">

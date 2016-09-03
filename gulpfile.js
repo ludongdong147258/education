@@ -35,7 +35,6 @@ gulp.task('fonts', function() {
 
 gulp.task('libs', function() {
     return gulp.src('src/libs/**/*.js')
-        .pipe(concat('base.js'))
         .pipe(uglify())
         .pipe(gulp.dest('dest/libs'))
         .pipe(notify({

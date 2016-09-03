@@ -38,7 +38,7 @@
             </div>
         </div>
         <div ng-show="displayStates[1]">
-            <div class="row-bottom m10" ng-repeat="item in serviceList" ui-sref="staffOrderDetails({id:item.id})">
+            <div class="row-bottom m10" ng-repeat="item in serviceList" ui-sref="staffOrderDetails({id:item.id,tabIndex:1})">
                 <div class="row">
                     <div class="col">
                         订单生成时间:{{item.created_at | date:'yyyy-MM-dd HH:mm:ss'}}

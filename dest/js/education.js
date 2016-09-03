@@ -58,7 +58,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('news', {
-                url: '/news',
+                url: '/news?tabIndex',
                 cache: false,
                 views: {
                     baseContent: {
@@ -67,7 +67,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('newsDetails', {
-                url: '/news/details/{id}',
+                url: '/news/details/{id}?tabIndex',
                 cache: false,
                 views: {
                     baseContent: {
@@ -76,7 +76,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('register', {
-                url: '/register?tabIndex',
+                url: '/register?tabIndex&code',
                 cache: false,
                 views: {
                     baseContent: {
@@ -166,7 +166,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('staffOrder', {
-                url: '/staff/order',
+                url: '/staff/order?tabIndex',
                 cache: false,
                 views: {
                     baseContent: {
@@ -184,7 +184,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('staffOrderDetails', {
-                url: '/staff/order/details?id',
+                url: '/staff/order/details?id&tabIndex',
                 cache: false,
                 views: {
                     baseContent: {
@@ -193,7 +193,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('examineList', {
-                url: '/exmaine/list',
+                url: '/exmaine/list?tabIndex',
                 cache: false,
                 views: {
                     baseContent: {
@@ -212,7 +212,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                 }
             })
             .state('examineOrganization', {
-                url: '/exmaine/organization/{id}',
+                url: '/exmaine/organization/{id}?tabIndex',
                 cache: false,
                 views: {
                     baseContent: {
@@ -295,8 +295,8 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
             $rootScope.user = JSON.parse(CONFIG.user);
         }
     }]).constant('CONFIG', {
-        // urlPrefix: 'http://101.200.131.30:8020',
-        urlPrefix:'',
+        urlPrefix: 'http://101.200.131.30:8020',
+        // urlPrefix:'',
         token: localStorage.getItem('token'),
         user: localStorage.getItem('user'),
         student: '学生',
@@ -342,6 +342,84 @@ angular.module('education')
         return function(type) {
             return CONFIG[type];
         };
+    }]);
+
+angular.module('education')
+    .controller('HomeController', ['$rootScope', '$scope', 'CONFIG', 'HomeService', 'StudentService', '$state', function($rootScope, $scope, CONFIG, HomeService, StudentService, $state) {
+        $rootScope.showHeaderBar = true;
+        if ($rootScope.user) {
+            switch ($rootScope.user.role) {
+                case 'student':
+                    $scope.listItems = [{
+                        state: 'studentOrderHardWare',
+                        name: '预定智能硬件'
+                    }, {
+                        state: 'studentInfo',
+                        name: '补全学生资料'
+                    }, {
+                        state: 'reference',
+                        name: '邀请老师/同学加入'
+                    }];
+                    break;
+                case 'teacher':
+                    $scope.listItems = [{
+                        state: 'teacherOrderHardWare',
+                        name: '预定智能硬件'
+                    }, {
+                        state: 'teacherInfo',
+                        name: '认证教师资料'
+                    }, {
+                        state: 'reference',
+                        name: '邀请老师/同学加入'
+                    }];
+                    break;
+                case 'institution':
+                    $scope.listItems = [{
+                        state: 'teacherOrderHardWare',
+                        name: '预定智能硬件'
+                    }, {
+                        state: 'organizationInfo',
+                        name: '认证机构资料'
+                    }, {
+                        state: 'organizationManager',
+                        name: '管理机构教师'
+                    }];
+                    break;
+                case 'manage':
+                    $scope.listItems = [{
+                        state: 'staffOrderService',
+                        name: '提交订单'
+                    }, {
+                        state: 'examineList',
+                        name: '审核教师/机构'
+                    }];
+                    break;
+            }
+        }
+        $scope.hasHardWare = function(state, e) {
+            if (state == 'studentOrderHardWare') {
+                e.preventDefault();
+                StudentService.hasHardWare({}, function(data) {
+                    if (data.success == 'Y') {
+                        $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 3000);
+                    } else {
+                        $state.go('studentOrderHardWare');
+                    }
+                });
+            }
+        }
+    }]);
+
+angular.module('education')
+    .factory('HomeService', ['$resource', 'CONFIG', function($resource, CONFIG) {
+        return $resource(CONFIG.urlPrefix + '/v1/account/update', {}, {
+            getSelfInfo: {
+                method: 'post',
+                headers:{
+                    token:CONFIG.token
+                }
+            }
+        });
     }]);
 
 angular.module('education')
@@ -449,84 +527,6 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('HomeController', ['$rootScope', '$scope', 'CONFIG', 'HomeService', 'StudentService', '$state', function($rootScope, $scope, CONFIG, HomeService, StudentService, $state) {
-        $rootScope.showHeaderBar = true;
-        if ($rootScope.user) {
-            switch ($rootScope.user.role) {
-                case 'student':
-                    $scope.listItems = [{
-                        state: 'studentOrderHardWare',
-                        name: '预定智能硬件'
-                    }, {
-                        state: 'studentInfo',
-                        name: '补全学生资料'
-                    }, {
-                        state: 'reference',
-                        name: '邀请老师/同学加入'
-                    }];
-                    break;
-                case 'teacher':
-                    $scope.listItems = [{
-                        state: 'teacherOrderHardWare',
-                        name: '预定智能硬件'
-                    }, {
-                        state: 'teacherInfo',
-                        name: '认证教师资料'
-                    }, {
-                        state: 'reference',
-                        name: '邀请老师/同学加入'
-                    }];
-                    break;
-                case 'institution':
-                    $scope.listItems = [{
-                        state: 'teacherOrderHardWare',
-                        name: '预定智能硬件'
-                    }, {
-                        state: 'organizationInfo',
-                        name: '认证机构资料'
-                    }, {
-                        state: 'organizationManager',
-                        name: '管理机构教师'
-                    }];
-                    break;
-                case 'manage':
-                    $scope.listItems = [{
-                        state: 'staffOrderService',
-                        name: '提交订单'
-                    }, {
-                        state: 'examineList',
-                        name: '审核教师/机构'
-                    }];
-                    break;
-            }
-        }
-        $scope.hasHardWare = function(state, e) {
-            if (state == 'studentOrderHardWare') {
-                e.preventDefault();
-                StudentService.hasHardWare({}, function(data) {
-                    if (data.success == 'Y') {
-                        $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 3000);
-                    } else {
-                        $state.go('studentOrderHardWare');
-                    }
-                });
-            }
-        }
-    }]);
-
-angular.module('education')
-    .factory('HomeService', ['$resource', 'CONFIG', function($resource, CONFIG) {
-        return $resource(CONFIG.urlPrefix + '/v1/account/update', {}, {
-            getSelfInfo: {
-                method: 'post',
-                headers:{
-                    token:CONFIG.token
-                }
-            }
-        });
-    }]);
-
-angular.module('education')
     .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService', 'CONFIG', '$ionicLoading', '$timeout','ValidateService', function($rootScope, $scope, $state, LoginService, CONFIG, $ionicLoading, $timeout,ValidateService) {
         $rootScope.showHeaderBar = false;
         var obj = {
@@ -580,6 +580,7 @@ angular.module('education')
                             });
                         }, 1000);
                     } else {
+                        $ionicLoading.hide();
                         $rootScope.showMessage(data.msg);
                     }
                 }, function(error) {
@@ -600,11 +601,16 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('NewsController', ['$rootScope', '$scope', 'NewsService', function($rootScope, $scope, NewsService) {
+    .controller('NewsController', ['$rootScope', '$scope', 'NewsService','$stateParams', function($rootScope, $scope, NewsService,$stateParams) {
+        var tabIndex = $stateParams.tabIndex;
         $scope.showNewsList = true;
         $scope.showOutcomeList = false;
         $scope.newsList = [];
         $scope.hasMoreData = true;
+        if(tabIndex){
+            $scope.showNewsList = false;
+            $scope.showOutcomeList = true;
+        }
         var page = 1,
             type = 'news';
         var obj = {
@@ -677,17 +683,17 @@ angular.module('education')
                     break;
                 case 'manage':
                     $rootScope.listItems = [];
-                    break;    
+                    break;
             }
         }
     }]);
 
 angular.module('education')
     .controller('NewsDetailsController', ['$rootScope', '$scope', '$state', 'NewsService', '$stateParams', function($rootScope, $scope, $state, NewsService, $stateParams) {
-        $rootScope.showHeaderBar = false;
+        var tabIndex = $stateParams.tabIndex;
         // 返回
         $scope.back = function() {
-            $state.go('news');
+            $state.go('news',{tabIndex:tabIndex});
         };
         $scope.newsInfo = {};
         var obj = {
@@ -1204,6 +1210,7 @@ angular.module('education')
 
 angular.module('education')
     .controller('RegisterController', ['$rootScope', '$scope', '$state', '$stateParams', 'RegisterService', 'LoginService', '$timeout','CONFIG','ValidateService', function($rootScope, $scope, $state, $stateParams, RegisterService, LoginService, $timeout,CONFIG,ValidateService) {
+        var code = $stateParams.code;
         var obj = {
             validateInput: function(type) {
                 if (!$scope.registerInfo[type].mobile) {
@@ -1272,6 +1279,9 @@ angular.module('education')
             var type = types[curIndex];
             var flag = obj.validateInput(type);
             if (flag) {
+                if(code){
+                    $scope.registerInfo[type].invitecode = code;
+                }
                 RegisterService.register(
                     $scope.registerInfo[type],
                     function(data) {
@@ -1287,7 +1297,9 @@ angular.module('education')
                             CONFIG.user = user;
                             $rootScope.user = user;
                             $rootScope.showMessage('注册成功!');
-                            $state.go('news',null,{reload:true});
+                            $timeout(function(){
+                                $state.go('news',null,{reload:true});
+                            },1000);
                         } else if (data.success == 'N') {
                             for (var prop in data.msg) {
                                 $rootScope.showMessage(data.msg[prop]);
@@ -1325,8 +1337,9 @@ angular.module('education')
 
         function reduceCount() {
             $scope.counts[curIndex] = counts[curIndex];
-            if (counts[curIndex] == 0) {
+            if (counts[curIndex] == 1) {
                 $scope.btnStates[curIndex] = false;
+                counts[curIndex] = 60;
                 $timeout(timerId);
                 return;
             }
@@ -1349,7 +1362,7 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('SearchController', ['$rootScope', '$scope', '$state', '$stateParams', 'SearchService', 'TeacherService', function($rootScope, $scope, $state, $stateParams, SearchService, TeacherService) {
+    .controller('SearchController', ['$rootScope', '$scope', '$state', '$stateParams', 'SearchService', 'TeacherService', '$ionicPopup', function($rootScope, $scope, $state, $stateParams, SearchService, TeacherService, $ionicPopup) {
         $scope.type = $stateParams.type;
         // 返回
         $scope.back = function() {
@@ -1424,7 +1437,9 @@ angular.module('education')
                     if (historyList.indexOf(',') != -1) {
                         $scope.histories = historyList.split(',');
                     } else {
-                        $scope.histories.push(historyList);
+                        if ($scope.histories.indexOf(historyList) == -1) {
+                            $scope.histories.push(historyList);
+                        }
                     }
                 }
             }
@@ -1457,17 +1472,31 @@ angular.module('education')
             }
         };
         $scope.clearHistory = function() {
-            localStorage.removeItem('records');
-            $scope.histories.length = 0;
+            var confirmPopup = $ionicPopup.confirm({
+                template: '清空历史记录?',
+                okText: '立即清空',
+                okType: 'button-energized',
+                cancelText: '取消',
+                cancelType: 'button-dark'
+            });
+            confirmPopup.then(function(res) {
+                if (res) {
+                    localStorage.removeItem('records');
+                    $scope.histories.length = 0;
+                }
+            });
         };
         $scope.setSearchText = function(searchText) {
             $scope.searchText = searchText;
             $scope.search();
         };
-        $scope.toStudentHardWare = function(e,item){
+        $scope.toStudentHardWare = function(e, item) {
             e.preventDefault();
             e.stopPropagation();
-            $state.go('studentOrderHardWare',{id:item.id,name:item.truename});
+            $state.go('studentOrderHardWare', {
+                id: item.id,
+                name: item.truename
+            });
         };
     }]);
 
@@ -1481,10 +1510,15 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('ExamineController', ['$rootScope', '$scope', 'StaffService', '$state', function($rootScope, $scope, StaffService, $state) {
-        $rootScope.showHeaderBar = false;
+    .controller('ExamineController', ['$rootScope', '$scope', 'StaffService', '$state','$stateParams', function($rootScope, $scope, StaffService, $state,$stateParams) {
+        var tabIndex = $stateParams.tabIndex;
+
         $scope.showTeacherList = true;
         $scope.showOrganizationList = false;
+        if(tabIndex){
+            $scope.showTeacherList = false;
+            $scope.showOrganizationList = true;
+        }
         // 返回
         $scope.back = function() {
             $state.go('personal');
@@ -1511,7 +1545,11 @@ angular.module('education')
                 });
             }
         };
-        obj.loadTeacherList();
+        if(tabIndex){
+            obj.loadOrganizationList();
+        }else{
+            obj.loadTeacherList();
+        }
 
         $scope.changeTab = function(index) {
             if (index) {
@@ -1527,13 +1565,16 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('StaffOrderController', ['$rootScope', '$scope', '$state', '$ionicPopup', 'StaffService', function($rootScope, $scope, $state, $ionicPopup, StaffService) {
-        $rootScope.showHeaderBar = false;
+    .controller('StaffOrderController', ['$rootScope', '$scope', '$state', '$ionicPopup', 'StaffService','$stateParams', function($rootScope, $scope, $state, $ionicPopup, StaffService,$stateParams) {
+
         // 返回
         $scope.back = function() {
             $state.go('personal');
         };
         $scope.displayStates = [true, false];
+        if($stateParams.tabIndex){
+            $scope.displayStates = [false, true];
+        }
         // tab 切换
         $scope.tabChange = function(index) {
             angular.forEach($scope.displayStates, function(val, key) {
@@ -1609,14 +1650,19 @@ angular.module('education')
                 });
             }
         };
-        obj.getEquipmentList();
+        if($stateParams.tabIndex){
+            obj.getServiceList();
+        }else {
+            obj.getEquipmentList();
+        }
     }]);
 
 angular.module('education')
     .controller('StaffOrderDetailsController', ['$rootScope', '$scope', '$state', '$ionicPopup', '$stateParams', 'StaffService', '$timeout', function($rootScope, $scope, $state, $ionicPopup, $stateParams, StaffService, $timeout) {
+        var tabIndex = $stateParams.tabIndex;
         // 返回
         $scope.back = function() {
-            $state.go('staffOrder');
+            $state.go('staffOrder',{tabIndex:tabIndex});
         };
         $scope.dispalyStates = [true, false, false];
         $scope.tabChange = function(curIndex) {
@@ -1661,7 +1707,7 @@ angular.module('education')
                         if (data.success == 'Y') {
                             $rootScope.showMessage('收款成功!');
                             $timeout(function() {
-                                $state.go('staffOrder');
+                                $state.go('staffOrder',{tabIndex:tabIndex});
                             }, 1000);
                         }
                     });
@@ -1801,10 +1847,10 @@ angular.module('education')
 
 angular.module('education')
     .controller('ExamineOrganizationController', ['$rootScope', '$scope', 'StaffService', '$state', '$stateParams', '$ionicPopup','$timeout', function($rootScope, $scope, StaffService, $state, $stateParams, $ionicPopup,$timeout) {
-        $rootScope.showHeaderBar = false;
+        var tabIndex = $stateParams.tabIndex;
         // 返回
         $scope.back = function() {
-            $state.go('examineList');
+            $state.go('examineList',{tabIndex:tabIndex});
         };
         var obj = {
             getDetails: function() {
@@ -1837,7 +1883,7 @@ angular.module('education')
                         if (data.success == 'Y') {
                             $rootScope.showMessage('审核成功!');
                             $timeout(function(){
-                                $state.go('examineList');
+                                $state.go('examineList',{tabIndex:tabIndex});
                             },1000);
                         }
                     }, function(error) {
@@ -2110,7 +2156,7 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('StudentOrderHardWareController', ['$rootScope', '$scope', '$state', 'StudentService', '$stateParams', '$timeout',function($rootScope, $scope, $state, StudentService, $stateParams, $timeout) {
+    .controller('StudentOrderHardWareController', ['$rootScope', '$scope', '$state', 'StudentService', '$stateParams', '$timeout','ValidateService',function($rootScope, $scope, $state, StudentService, $stateParams, $timeout,ValidateService) {
         // 返回
         $scope.back = function() {
             localStorage.removeItem('hardwareInfo');
@@ -2221,9 +2267,23 @@ angular.module('education')
                     $rootScope.showMessage("上门安装地址不能为空!");
                     return false;
                 }
+                if(!ValidateService.checkAddress(hardwareInfo.address_detail)){
+                    $rootScope.showMessage("地址5-30个字符!");
+                    return false;
+                }
                 if (!hardwareInfo.link_name) {
                     $rootScope.showMessage("联系人姓名不能为空!");
                     return false;
+                }
+                if(!ValidateService.checkName(hardwareInfo.link_name)){
+                    $rootScope.showMessage("联系人姓名2-7个中文字符!");
+                    return false;
+                }
+                if(hardwareInfo.mobile){
+                    if(!ValidateService.checkPhone(hardwareInfo.mobile)){
+                        $rootScope.showMessage("电话号码格式不正确!");
+                        return false;
+                    }
                 }
                 if ($scope.hardwareInfo.recommend_type == 2) {
                     if (!$scope.name) {
@@ -2894,6 +2954,7 @@ angular.module('education')
                     $rootScope.showMessage('年龄20-60!');
                     return false;
                 }
+                return true;
             }
         };
         $scope.changeSex = function(number) {
