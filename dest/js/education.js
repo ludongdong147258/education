@@ -2,7 +2,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
     .config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         $ionicConfigProvider.views.maxCache(5); // 不缓存页面
         $ionicConfigProvider.templates.maxPrefetch(0); // 不进行预加载界面
-        $urlRouterProvider.otherwise('/news');
+        $urlRouterProvider.otherwise('/login');
         $stateProvider.state('login', {
                 url: '/login',
                 cache: false,
@@ -277,7 +277,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
             $rootScope.user = null;
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            $state.go('news');
+            $state.go('login');
         };
     }]).run(['$rootScope', '$ionicLoading', 'CONFIG', function($rootScope, $ionicLoading, CONFIG) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -342,84 +342,6 @@ angular.module('education')
         return function(type) {
             return CONFIG[type];
         };
-    }]);
-
-angular.module('education')
-    .controller('HomeController', ['$rootScope', '$scope', 'CONFIG', 'HomeService', 'StudentService', '$state', function($rootScope, $scope, CONFIG, HomeService, StudentService, $state) {
-        $rootScope.showHeaderBar = true;
-        if ($rootScope.user) {
-            switch ($rootScope.user.role) {
-                case 'student':
-                    $scope.listItems = [{
-                        state: 'studentOrderHardWare',
-                        name: '预定智能硬件'
-                    }, {
-                        state: 'studentInfo',
-                        name: '补全学生资料'
-                    }, {
-                        state: 'reference',
-                        name: '邀请老师/同学加入'
-                    }];
-                    break;
-                case 'teacher':
-                    $scope.listItems = [{
-                        state: 'teacherOrderHardWare',
-                        name: '预定智能硬件'
-                    }, {
-                        state: 'teacherInfo',
-                        name: '认证教师资料'
-                    }, {
-                        state: 'reference',
-                        name: '邀请老师/同学加入'
-                    }];
-                    break;
-                case 'institution':
-                    $scope.listItems = [{
-                        state: 'teacherOrderHardWare',
-                        name: '预定智能硬件'
-                    }, {
-                        state: 'organizationInfo',
-                        name: '认证机构资料'
-                    }, {
-                        state: 'organizationManager',
-                        name: '管理机构教师'
-                    }];
-                    break;
-                case 'manage':
-                    $scope.listItems = [{
-                        state: 'staffOrderService',
-                        name: '提交订单'
-                    }, {
-                        state: 'examineList',
-                        name: '审核教师/机构'
-                    }];
-                    break;
-            }
-        }
-        $scope.hasHardWare = function(state, e) {
-            if (state == 'studentOrderHardWare') {
-                e.preventDefault();
-                StudentService.hasHardWare({}, function(data) {
-                    if (data.success == 'Y') {
-                        $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 3000);
-                    } else {
-                        $state.go('studentOrderHardWare');
-                    }
-                });
-            }
-        }
-    }]);
-
-angular.module('education')
-    .factory('HomeService', ['$resource', 'CONFIG', function($resource, CONFIG) {
-        return $resource(CONFIG.urlPrefix + '/v1/account/update', {}, {
-            getSelfInfo: {
-                method: 'post',
-                headers:{
-                    token:CONFIG.token
-                }
-            }
-        });
     }]);
 
 angular.module('education')
@@ -527,6 +449,84 @@ angular.module('education')
     }]);
 
 angular.module('education')
+    .controller('HomeController', ['$rootScope', '$scope', 'CONFIG', 'HomeService', 'StudentService', '$state', function($rootScope, $scope, CONFIG, HomeService, StudentService, $state) {
+        $rootScope.showHeaderBar = true;
+        if ($rootScope.user) {
+            switch ($rootScope.user.role) {
+                case 'student':
+                    $scope.listItems = [{
+                        state: 'studentOrderHardWare',
+                        name: '预定智能硬件'
+                    }, {
+                        state: 'studentInfo',
+                        name: '补全学生资料'
+                    }, {
+                        state: 'reference',
+                        name: '邀请老师/同学加入'
+                    }];
+                    break;
+                case 'teacher':
+                    $scope.listItems = [{
+                        state: 'teacherOrderHardWare',
+                        name: '预定智能硬件'
+                    }, {
+                        state: 'teacherInfo',
+                        name: '认证教师资料'
+                    }, {
+                        state: 'reference',
+                        name: '邀请老师/同学加入'
+                    }];
+                    break;
+                case 'institution':
+                    $scope.listItems = [{
+                        state: 'teacherOrderHardWare',
+                        name: '预定智能硬件'
+                    }, {
+                        state: 'organizationInfo',
+                        name: '认证机构资料'
+                    }, {
+                        state: 'organizationManager',
+                        name: '管理机构教师'
+                    }];
+                    break;
+                case 'manage':
+                    $scope.listItems = [{
+                        state: 'staffOrderService',
+                        name: '提交订单'
+                    }, {
+                        state: 'examineList',
+                        name: '审核教师/机构'
+                    }];
+                    break;
+            }
+        }
+        $scope.hasHardWare = function(state, e) {
+            if (state == 'studentOrderHardWare') {
+                e.preventDefault();
+                StudentService.hasHardWare({}, function(data) {
+                    if (data.success == 'Y') {
+                        $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 3000);
+                    } else {
+                        $state.go('studentOrderHardWare');
+                    }
+                });
+            }
+        }
+    }]);
+
+angular.module('education')
+    .factory('HomeService', ['$resource', 'CONFIG', function($resource, CONFIG) {
+        return $resource(CONFIG.urlPrefix + '/v1/account/update', {}, {
+            getSelfInfo: {
+                method: 'post',
+                headers:{
+                    token:CONFIG.token
+                }
+            }
+        });
+    }]);
+
+angular.module('education')
     .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService', 'CONFIG', '$ionicLoading', '$timeout','ValidateService', function($rootScope, $scope, $state, LoginService, CONFIG, $ionicLoading, $timeout,ValidateService) {
         $rootScope.showHeaderBar = false;
         var obj = {
@@ -555,7 +555,7 @@ angular.module('education')
         };
         // 返回
         $scope.back = function() {
-            $state.go('news');
+            // $state.go('news');
         };
         $scope.login = function() {
             var flag = obj.validateInput();
@@ -575,7 +575,7 @@ angular.module('education')
                         CONFIG.user = user;
                         $rootScope.user = user;
                         $timeout(function() {
-                            $state.go('news', null, {
+                            $state.go('personal', null, {
                                 reload: true
                             });
                         }, 1000);
@@ -658,34 +658,34 @@ angular.module('education')
             $scope.newsList.length = 0;
             obj.loadNews();
         };
-        if ($rootScope.user) {
-            switch ($rootScope.user.role) {
-                case 'student':
-                    $rootScope.listItems = [{
-                        state: 'studentOrderHardWare',
-                        name: '预约智能硬件',
-                        class: 'yuding-icon'
-                    }];
-                    break;
-                case 'teacher':
-                    $rootScope.listItems = [{
-                        state: 'teacherOrderHardWare',
-                        name: '预约智能硬件',
-                        class: 'yuding-icon'
-                    }];
-                    break;
-                case 'institution':
-                    $rootScope.listItems = [{
-                        state: 'organizationOrderHardWare',
-                        name: '预约智能硬件',
-                        class: 'yuding-icon'
-                    }];
-                    break;
-                case 'manage':
-                    $rootScope.listItems = [];
-                    break;
-            }
-        }
+        // if ($rootScope.user) {
+        //     switch ($rootScope.user.role) {
+        //         case 'student':
+        //             $rootScope.listItems = [{
+        //                 state: 'studentOrderHardWare',
+        //                 name: '预约智能硬件',
+        //                 class: 'yuding-icon'
+        //             }];
+        //             break;
+        //         case 'teacher':
+        //             $rootScope.listItems = [{
+        //                 state: 'teacherOrderHardWare',
+        //                 name: '预约智能硬件',
+        //                 class: 'yuding-icon'
+        //             }];
+        //             break;
+        //         case 'institution':
+        //             $rootScope.listItems = [{
+        //                 state: 'organizationOrderHardWare',
+        //                 name: '预约智能硬件',
+        //                 class: 'yuding-icon'
+        //             }];
+        //             break;
+        //         case 'manage':
+        //             $rootScope.listItems = [];
+        //             break;
+        //     }
+        // }
     }]);
 
 angular.module('education')
@@ -793,7 +793,7 @@ angular.module('education')
         $scope.province = {key:''};
         // 返回
         $scope.back = function() {
-            $state.go('news');
+            $state.go('personal');
         };
         // 免费预约
         $scope.saveOrder = function() {
@@ -808,7 +808,7 @@ angular.module('education')
                     if (data.success == 'Y') {
                         $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 5000);
                         $timeout(function() {
-                            $state.go('news');
+                            $state.go('personal');
                         }, 3000);
                     } else {
                         if(angular.isObject(data.msg)){
@@ -1071,6 +1071,10 @@ angular.module('education')
             switch (role) {
                 case 'student':
                     $scope.listItems = [{
+                        state: 'studentOrderHardWare',
+                        class: 'ion-clock balanced',
+                        name: '预约智能硬件'
+                    },{
                         state: 'studentInfo',
                         class: 'ion-person calm',
                         name: '我的资料'
@@ -1086,6 +1090,10 @@ angular.module('education')
                     break;
                 case 'teacher':
                     $scope.listItems = [{
+                        state: 'teacherOrderHardWare',
+                        class: 'ion-clock balanced',
+                        name: '预约智能硬件'
+                    },{
                         state: 'teacherInfo',
                         class: 'ion-person calm',
                         name: '我的资料'
@@ -1096,8 +1104,11 @@ angular.module('education')
                     }]
                     break;
                 case 'institution':
-                    $scope.listItems = ['organizationInfo'];
                     $scope.listItems = [{
+                        state: 'organizationOrderHardWare',
+                        class: 'ion-clock balanced',
+                        name: '预约智能硬件'
+                    },{
                         state: 'organizationInfo',
                         class: 'ion-person calm',
                         name: '我的资料'
@@ -1132,26 +1143,26 @@ angular.module('education')
         $scope.back = function() {
             $state.go('news');
         };
-        $scope.recommendList = [];
-        var obj = {
-            init: function() {
-                obj.loadList();
-            },
-            loadList: function() {
-                SearchService.getRecommendTeacherList({}, function(data) {
-                    if (data.success == 'Y') {
-                        data.data.stars = [];
-                        for (var i = 0; i < data.data.star; i++) {
-                            data.data.stars.push(i);
-                        }
-                        $scope.recommendList = data.data;
-                    }
-                }, function(error) {
-                    console.error(error);
-                });
-            }
-        };
-        obj.init();
+        // $scope.recommendList = [];
+        // var obj = {
+        //     init: function() {
+        //         obj.loadList();
+        //     },
+        //     loadList: function() {
+        //         SearchService.getRecommendTeacherList({}, function(data) {
+        //             if (data.success == 'Y') {
+        //                 data.data.stars = [];
+        //                 for (var i = 0; i < data.data.star; i++) {
+        //                     data.data.stars.push(i);
+        //                 }
+        //                 $scope.recommendList = data.data;
+        //             }
+        //         }, function(error) {
+        //             console.error(error);
+        //         });
+        //     }
+        // };
+        // obj.init();
     }]);
 
 angular.module('education')
@@ -1260,7 +1271,7 @@ angular.module('education')
         };
         // 返回
         $scope.back = function() {
-            $state.go('news');
+            $state.go('login');
         };
         $scope.displayStates = [true, false, false];
         // tab切换
@@ -1298,7 +1309,7 @@ angular.module('education')
                             $rootScope.user = user;
                             $rootScope.showMessage('注册成功!');
                             $timeout(function(){
-                                $state.go('news',null,{reload:true});
+                                $state.go('personal',null,{reload:true});
                             },1000);
                         } else if (data.success == 'N') {
                             for (var prop in data.msg) {
@@ -2160,7 +2171,7 @@ angular.module('education')
         // 返回
         $scope.back = function() {
             localStorage.removeItem('hardwareInfo');
-            $state.go('news');
+            $state.go('personal');
         };
         $scope.hardwareInfo = {
             recommend_type: 1
@@ -2190,7 +2201,7 @@ angular.module('education')
                         localStorage.removeItem('hardwareInfo');
                         $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 5000);
                         $timeout(function() {
-                            $state.go('news');
+                            $state.go('personal');
                         }, 3000);
                     } else {
                         angular.forEach(data.msg, function(val, key) {
@@ -2525,7 +2536,7 @@ angular.module('education')
     .controller('TeacherOrderHardWareController', ['$rootScope', '$scope', '$state', '$timeout', 'StudentService','ValidateService', function($rootScope, $scope, $state, $timeout, StudentService,ValidateService) {
         // 返回
         $scope.back = function() {
-            $state.go('news');
+            $state.go('personal');
         };
         // 免费预约
         $scope.saveOrder = function() {
@@ -2540,7 +2551,7 @@ angular.module('education')
                     if (data.success == 'Y') {
                         $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 5000);
                         $timeout(function() {
-                            $state.go('news');
+                            $state.go('personal');
                         }, 3000);
                     } else {
                         angular.forEach(data.msg, function(val, key) {
