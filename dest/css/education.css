@@ -9864,6 +9864,10 @@ a.button {
 .teacher-image {
     text-align: center;
 }
+.teacher-image img {
+    max-width: 300px;
+    max-height: 250px;
+}
 .row-center .col, .text-center {
     text-align: center;
 }
@@ -10144,4 +10148,16 @@ a.button {
 .row-link .col:last-child {
     text-align: right;
     padding-right: 15px;
+}
+.small-img {
+    text-align: center;
+}
+.small-img img {
+    width: 200px;
+    max-width: 100%;
+    max-height: 200px;
+    height: auto;
+}
+.spinner svg {
+    margin-bottom: -8px;
 }

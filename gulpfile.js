@@ -11,6 +11,7 @@ var clean = require('gulp-clean'),
     uglify = require('gulp-uglify'), //js压缩
     concat = require('gulp-concat'), //文件合并
     rename = require('gulp-rename'), //文件更名
+    rev = require('gulp-rev'), // MD5后缀
     notify = require('gulp-notify'); //提示信息
 // clean
 gulp.task("clean", function() {
@@ -67,6 +68,7 @@ gulp.task('css', function() {
             suffix: '.min'
         }))
         .pipe(minifycss())
+        .pipe(rev())
         .pipe(gulp.dest('dest/css'))
         .pipe(notify({
             message: 'css task ok'
@@ -92,6 +94,7 @@ gulp.task('js', function() {
             suffix: '.min'
         }))
         .pipe(uglify())
+        .pipe(rev())
         .pipe(gulp.dest('dest/js'))
         .pipe(notify({
             message: 'js task ok'

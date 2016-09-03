@@ -49,7 +49,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('teacherDetails', {
-                url: '/teacher/details/{id}',
+                url: '/teacher/details/{id}?type&searchText',
                 cache: false,
                 views: {
                     baseContent: {
@@ -222,7 +222,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                 }
             })
             .state('search', {
-                url: '/search?type',
+                url: '/search?type&searchText',
                 cache: false,
                 views: {
                     baseContent: {
@@ -296,7 +296,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
         }
     }]).constant('CONFIG', {
         urlPrefix: location.protocol + '//' + location.host,
-        // urlPrefix:'http://101.200.131.30:8020',
+        // urlPrefix: 'http://101.200.131.30:8020',
         token: localStorage.getItem('token'),
         user: localStorage.getItem('user'),
         student: '学生',
@@ -919,7 +919,7 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('OrganizationInfoController', ['$rootScope', '$scope', '$state', 'OrganizationService', 'Upload', 'CONFIG', '$timeout', function($rootScope, $scope, $state, OrganizationService, Upload, CONFIG, $timeout) {
+    .controller('OrganizationInfoController', ['$rootScope', '$scope', '$state', 'OrganizationService', 'Upload', 'CONFIG', '$timeout','ValidateService','$ionicLoading', function($rootScope, $scope, $state, OrganizationService, Upload, CONFIG, $timeout,ValidateService,$ionicLoading) {
         $rootScope.showHeaderBar = false;
         $scope.back = function() {
             $state.go('personal');
@@ -927,14 +927,20 @@ angular.module('education')
         $scope.dispalyStates = [true, false, false];
         $scope.organizationInfo = {};
         $scope.saveInfo = function() {
-            OrganizationService.updateOrganizationInfo($scope.organizationInfo, function(data) {
-                if (data.success == 'Y') {
-                    $rootScope.showMessage('保存成功!');
-                }
-            }, function(error) {
-                $rootScope.showMessage('保存失败!');
-                console.error(error);
-            });
+            var flag = obj.validateInput();
+            if(flag){
+                OrganizationService.updateOrganizationInfo($scope.organizationInfo, function(data) {
+                    if (data.success == 'Y') {
+                        $rootScope.showMessage('保存成功!');
+                        $timeout(function(){
+                            $state.go('personal');
+                        },1000);
+                    }
+                }, function(error) {
+                    $rootScope.showMessage('保存失败!');
+                    console.error(error);
+                });
+            }
         };
         $scope.tabChange = function(curIndex) {
             angular.forEach($scope.dispalyStates, function(val, index) {
@@ -955,6 +961,26 @@ angular.module('education')
                 }, function(error) {
                     console.error(error);
                 });
+            },
+            validateInput:function(){
+                var organizationInfo = $scope.organizationInfo;
+                if(!organizationInfo.name) {
+                    $rootScope.showMessage('机构名称不能为空!');
+                    return false;
+                }
+                if(!organizationInfo.legal_person) {
+                    $rootScope.showMessage('法人姓名不能为空!');
+                    return false;
+                }
+                if(!ValidateService.checkName(organizationInfo.legal_person)){
+                    $rootScope.showMessage('法人姓名2-7个中文字符!');
+                    return false;
+                }
+                if(!organizationInfo.certificate_url){
+                    $rootScope.showMessage('请上传企业营业执照照片!');
+                    return false;
+                }
+                return true;
             }
         };
         obj.getOrganizationInfo();
@@ -962,6 +988,9 @@ angular.module('education')
             $scope.f = file;
             $scope.errFile = errFiles && errFiles[0];
             if (file) {
+                $ionicLoading.show({
+                    template: '<ion-spinner icon="ios-small"></ion-spinner>&nbsp;上传中...'
+                });
                 file.upload = Upload.upload({
                     url: CONFIG.urlPrefix + '/v1/common/upload',
                     data: {
@@ -970,11 +999,16 @@ angular.module('education')
                 });
                 file.upload.then(function(data) {
                     $timeout(function() {
+                        $ionicLoading.hide();
+                        $rootScope.showMessage('上传成功!');
                         $scope.organizationInfo.certificate_url = data.data;
                     });
                 }, function(response) {
-                    if (response.status > 0)
+                    if (response.status > 0){
+                        $ionicLoading.hide();
+                        $rootScope.showMessage('上传失败!');
                         $scope.errorMsg = response.status + ': ' + response.data;
+                    }
                 }, function(evt) {
                     file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
                 });
@@ -1070,16 +1104,98 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('PersonalController', ['$rootScope', '$scope', '$state', 'CONFIG', function($rootScope, $scope, $state, CONFIG) {
-        $rootScope.showHeaderBar = false;
+    .controller('PersonalController', ['$rootScope', '$scope', '$state', 'CONFIG', 'Upload', '$timeout', 'StudentService', '$ionicLoading', 'TeacherService', 'OrganizationService', 'StaffService', function($rootScope, $scope, $state, CONFIG, Upload, $timeout, StudentService, $ionicLoading, TeacherService, OrganizationService, StaffService) {
+        var role = $rootScope.user.role;
         $scope.back = function() {
             $state.go('news');
+        };
+        $scope.uploadFiles = function(file, errFiles) {
+            $scope.f = file;
+            $scope.errFile = errFiles && errFiles[0];
+            if (file) {
+                $ionicLoading.show({
+                    template: '<ion-spinner icon="ios-small"></ion-spinner>&nbsp;上传中...'
+                });
+                file.upload = Upload.upload({
+                    url: CONFIG.urlPrefix + '/v1/common/upload',
+                    data: {
+                        file: file
+                    }
+                });
+                file.upload.then(function(data) {
+                    $timeout(function() {
+                        $rootScope.user.avatar = data.data;
+                        var userJson = JSON.stringify($rootScope.user);
+                        if (role == 'student') {
+                            StudentService.updatePersonalInfo({
+                                avatar: data.data
+                            }, function(data) {
+                                if (data.success == 'Y') {
+                                    $ionicLoading.hide();
+                                    $rootScope.showMessage('上传成功!');
+                                    localStorage.setItem('user', userJson);
+                                }
+                            }, function(error) {
+                                console.error(error);
+                                $ionicLoading.hide();
+                                $rootScope.showMessage('上传失败!');
+                            });
+                        } else if (role == 'teacher') {
+                            TeacherService.updatePersonalInfo({
+                                avatar: data.data
+                            }, function(data) {
+                                if (data.success == 'Y') {
+                                    $ionicLoading.hide();
+                                    $rootScope.showMessage('上传成功!');
+                                    localStorage.setItem('user', userJson);
+                                }
+                            }, function(error) {
+                                $ionicLoading.hide();
+                                $rootScope.showMessage('上传失败!');
+                            });
+                        } else if (role == 'institution') {
+                            OrganizationService.updateOrganizationInfo({
+                                avatar: data.data
+                            }, function(data) {
+                                if (data.success == 'Y') {
+                                    $ionicLoading.hide();
+                                    $rootScope.showMessage('上传成功!');
+                                    localStorage.setItem('user', userJson);
+                                }
+                            }, function(error) {
+                                $ionicLoading.hide();
+                                $rootScope.showMessage('上传失败!');
+                            });
+                        } else if (role == 'manage') {
+                            StaffService.updateAvatar({
+                                avatar: data.data
+                            }, function(data) {
+                                if (data.success == 'Y') {
+                                    $ionicLoading.hide();
+                                    $rootScope.showMessage('上传成功!');
+                                    localStorage.setItem('user', userJson);
+                                }
+                            }, function(error) {
+                                $ionicLoading.hide();
+                                $rootScope.showMessage('上传失败!');
+                            });
+                        }
+                    });
+                }, function(response) {
+                    if (response.status > 0) {
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                        $ionicLoading.hide();
+                        $rootScope.showMessage('上传失败!');
+                    }
+                }, function(evt) {
+                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                });
+            }
         };
         if ($rootScope.user) {
             if (!$rootScope.user.avatar) {
                 $rootScope.user.avatar = '././images/person.png';
             }
-            var role = $rootScope.user.role;
             $scope.roleDisplay = CONFIG[role];
             switch (role) {
                 case 'student':
@@ -1087,7 +1203,7 @@ angular.module('education')
                         state: 'studentOrderHardWare',
                         class: 'ion-clock balanced',
                         name: '预约智能硬件'
-                    },{
+                    }, {
                         state: 'studentInfo',
                         class: 'ion-person calm',
                         name: '我的资料'
@@ -1106,7 +1222,7 @@ angular.module('education')
                         state: 'teacherOrderHardWare',
                         class: 'ion-clock balanced',
                         name: '预约智能硬件'
-                    },{
+                    }, {
                         state: 'teacherInfo',
                         class: 'ion-person calm',
                         name: '我的资料'
@@ -1121,7 +1237,7 @@ angular.module('education')
                         state: 'organizationOrderHardWare',
                         class: 'ion-clock balanced',
                         name: '预约智能硬件'
-                    },{
+                    }, {
                         state: 'organizationInfo',
                         class: 'ion-person calm',
                         name: '我的资料'
@@ -1388,6 +1504,7 @@ angular.module('education')
 angular.module('education')
     .controller('SearchController', ['$rootScope', '$scope', '$state', '$stateParams', 'SearchService', 'TeacherService', '$ionicPopup', function($rootScope, $scope, $state, $stateParams, SearchService, TeacherService, $ionicPopup) {
         $scope.type = $stateParams.type;
+        var keywords = $stateParams.searchText;
         // 返回
         $scope.back = function() {
             if ($scope.type) {
@@ -1408,7 +1525,9 @@ angular.module('education')
         var obj = {
             init: function() {
                 // obj.loadList();
-                obj.getHistoryList();
+                if($scope.showHistory){
+                    obj.getHistoryList();
+                }
             },
             loadList: function() {
                 SearchService.getRecommendTeacherList({}, function(data) {
@@ -1468,7 +1587,13 @@ angular.module('education')
                 }
             }
         };
+        if(keywords){
+            $scope.showHistory = false;
+            $scope.searchText = keywords;
+            obj.loadTeacherList();
+        }
         obj.init();
+        
         $scope.search = function() {
             if (!$scope.searchText) {
                 $rootScope.showMessage('搜索关键字不能为空!');
@@ -1984,41 +2109,48 @@ angular.module('education')
                     token: CONFIG.token
                 }
             },
-            updateEquipmentStatus:{
+            updateEquipmentStatus: {
                 method: 'post',
                 url: CONFIG.urlPrefix + '/v1/order/equipment/auth',
                 headers: {
                     token: CONFIG.token
                 }
             },
-            getOrderDetails:{
+            getOrderDetails: {
                 method: 'get',
                 url: CONFIG.urlPrefix + '/v1/order/server/detail',
                 headers: {
                     token: CONFIG.token
                 }
             },
-            getStaticFee:{
+            getStaticFee: {
                 method: 'get',
                 url: CONFIG.urlPrefix + '/v1/order/static/fee',
                 headers: {
                     token: CONFIG.token
                 }
             },
-            getTeacherFee:{
+            getTeacherFee: {
                 method: 'get',
                 url: CONFIG.urlPrefix + '/v1/order/teacher/fee',
                 headers: {
                     token: CONFIG.token
                 }
             },
-            authOrder:{
+            authOrder: {
                 method: 'post',
                 url: CONFIG.urlPrefix + '/v1/order/server/auth',
                 headers: {
                     token: CONFIG.token
                 }
-            }
+            },
+            updateAvatar: {
+                url: CONFIG.urlPrefix + '/v1/account/update',
+                method: 'post',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
         });
     }]);
 
@@ -2247,20 +2379,28 @@ angular.module('education')
                         var hardwareInfo = localStorage.getItem('hardwareInfo');
                         if(hardwareInfo){
                             $scope.hardwareInfo = angular.fromJson(hardwareInfo);
-                            angular.forEach($scope.provinces,function(val,index){
-                                if(val.key == $scope.hardwareInfo.province.key){
-                                    $scope.province = $scope.provinces[index];
-                                    return;
-                                }
-                            });
+                            if($scope.hardwareInfo.province){
+                                angular.forEach($scope.provinces,function(val,index){
+                                    if(val.key == $scope.hardwareInfo.province.key){
+                                        $scope.province = $scope.provinces[index];
+                                        return;
+                                    }
+                                });
+                            }
+
                             $scope.changeProvince($scope.province);
-                            angular.forEach($scope.cities,function(val,index){
-                                if(val.key == $scope.hardwareInfo.city.key){
-                                    $scope.city = $scope.cities[index];
-                                    return;
-                                }
-                            });
-                            $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
+                            if($scope.hardwareInfo.city){
+                                angular.forEach($scope.cities,function(val,index){
+                                    if(val.key == $scope.hardwareInfo.city.key){
+                                        $scope.city = $scope.cities[index];
+                                        return;
+                                    }
+                                });
+                            }
+                            if($scope.hardwareInfo.time){
+                                $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
+                            }
+                            
                         } else {
                             $scope.province = {key:''};
                             $scope.city = {
@@ -2320,16 +2460,18 @@ angular.module('education')
         };
         obj.getAddressList();
         $scope.changeProvince = function(curItem) {
-            $scope.province = curItem;
-            $scope.cities = [];
-            angular.forEach(addresses, function(item) {
-                if (item.province == curItem.key) {
-                    $scope.cities.push({
-                        key: item.city,
-                        id: item.id
-                    });
-                }
-            });
+            if(curItem){
+                $scope.province = curItem;
+                $scope.cities = [];
+                angular.forEach(addresses, function(item) {
+                    if (item.province == curItem.key) {
+                        $scope.cities.push({
+                            key: item.city,
+                            id: item.id
+                        });
+                    }
+                });
+            }
         };
         $scope.changeCity = function(curItem) {
             $scope.city = curItem;
@@ -2349,7 +2491,7 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('StudentInfoController', ['$rootScope', '$scope', '$state', 'StudentService', '$timeout', 'ValidateService', function($rootScope, $scope, $state, StudentService, $timeout, ValidateService) {
+    .controller('StudentInfoController', ['$rootScope', '$scope', '$state', 'StudentService', '$timeout', 'ValidateService','$timeout', function($rootScope, $scope, $state, StudentService, $timeout, ValidateService,$timeout) {
 
         // 返回
         $scope.back = function() {
@@ -2364,6 +2506,9 @@ angular.module('education')
                 StudentService.updatePersonalInfo($scope.personalInfo, function(data) {
                     if (data.success == 'Y') {
                         $rootScope.showMessage('保存成功!');
+                        $timeout(function(){
+                            $state.go('personal');
+                        },1000);
                     }
                 }, function(error) {
                     console.error(error);
@@ -2780,9 +2925,14 @@ angular.module('education')
 
 angular.module('education')
     .controller('TeacherDetailsController', ['$rootScope', '$scope', '$state', 'TeacherService', '$stateParams', function($rootScope, $scope, $state, TeacherService, $stateParams) {
-        $rootScope.showHeaderBar = false;
+        $scope.type = $stateParams.type;
+        var searchText = $stateParams.searchText;
         $scope.back = function() {
-            window.history.back();
+            if(searchText){
+                $state.go('search',{type:$scope.type,searchText:searchText});
+            }else{
+                $state.go('teacher');
+            }
         };
         $scope.teacherInfo = {};
         var obj = {
@@ -2790,10 +2940,10 @@ angular.module('education')
                 TeacherService.getDetails({
                     id: $stateParams.id
                 }, function(data) {
-                    if(data.success == 'Y'){
+                    if (data.success == 'Y') {
                         $scope.teacherInfo = data.data;
                         $scope.teacherInfo.stars = [];
-                        for(var i = 0; i < data.data.star; i++){
+                        for (var i = 0; i < data.data.star; i++) {
                             $scope.teacherInfo.stars.push(i);
                         }
                     }
@@ -2803,10 +2953,20 @@ angular.module('education')
             }
         };
         obj.getDetails();
+        $scope.sure = function() {
+            var teacherInfo = $scope.teacherInfo;
+            $state.go('studentOrderHardWare', {
+                id: teacherInfo.id,
+                name: teacherInfo.truename
+            });
+        };
+        $scope.cancel = function() {
+            $state.go('search',{type:$scope.type,searchText:searchText});
+        };
     }])
 
 angular.module('education')
-    .controller('TeacherInfoController', ['$rootScope', '$scope', '$state', 'TeacherService', 'Upload', '$stateParams','CONFIG','$timeout','ValidateService', function($rootScope, $scope, $state, TeacherService, Upload, $stateParams,CONFIG,$timeout,ValidateService) {
+    .controller('TeacherInfoController', ['$rootScope', '$scope', '$state', 'TeacherService', 'Upload', '$stateParams','CONFIG','$timeout','ValidateService','$ionicLoading', function($rootScope, $scope, $state, TeacherService, Upload, $stateParams,CONFIG,$timeout,ValidateService,$ionicLoading) {
         $scope.appTitle = '我的资料';
         if ($stateParams.id) {
             $scope.appTitle = '机构教师资料编辑';
@@ -2829,6 +2989,9 @@ angular.module('education')
                 TeacherService.updatePersonalInfo($scope.personalInfo, function(data) {
                     if (data.success == 'Y') {
                         $rootScope.showMessage('保存成功!');
+                        $timeout(function(){
+                            $state.go('personal');
+                        },1000);
                     }
                 }, function(error) {
                     console.error(error);
@@ -2970,6 +3133,10 @@ angular.module('education')
                     $rootScope.showMessage('姓名2-7个字符!');
                     return false;
                 }
+                if(!$scope.personalInfo.certificate_url){
+                    $rootScope.showMessage('请上传本人身份证或教职资质照片!');
+                    return false;
+                }
                 if(!$scope.personalInfo.age){
                     $rootScope.showMessage('年龄不能为空!');
                     return false;
@@ -3051,6 +3218,7 @@ angular.module('education')
             $scope.f = file;
             $scope.errFile = errFiles && errFiles[0];
             if (file) {
+                $ionicLoading.show({template:'<ion-spinner icon="ios-small"></ion-spinner>上传中...'});
                 file.upload = Upload.upload({
                     url: CONFIG.urlPrefix+'/v1/common/upload',
                     data: {
@@ -3058,12 +3226,17 @@ angular.module('education')
                     }
                 });
                 file.upload.then(function(data) {
+                    $ionicLoading.hide();
                     $timeout(function() {
                         $scope.personalInfo.certificate_url = data.data;
+                        $rootScope.showMessage('上传成功!');
                     });
                 }, function(response) {
-                    if (response.status > 0)
+                    if (response.status > 0){
                         $scope.errorMsg = response.status + ': ' + response.data;
+                        $ionicLoading.hide();
+                        $rootScope.showMessage('上传失败!');
+                    }
                 }, function(evt) {
                     file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
                 });

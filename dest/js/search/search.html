@@ -10,7 +10,7 @@
     <ion-content>
         <!-- <ion-refresher pulling-text="下拉刷新" on-refresh="refresh()"></ion-refresher> -->
         <div class="list" ng-hide="showHistory">
-            <a ng-hide="type" class="item item-thumbnail-left" ng-repeat="item in teacherList" ui-sref="teacherDetails({id:item.id})">
+            <a class="item item-thumbnail-left" ng-repeat="item in teacherList" ui-sref="teacherDetails({id:item.id,type:type,searchText:searchText})">
                 <img ng-src="{{item.avatar}}">
                 <div class="row teacher-row">
                     <div class="col col-67">
@@ -38,7 +38,7 @@
                 </div>
                 <div>{{item.introduction}}</div>
             </a>
-            <a ng-show="type" class="item item-thumbnail-left" ng-repeat="item in teacherList"
+            <!-- <a ng-show="type" class="item item-thumbnail-left" ng-repeat="item in teacherList"
             ng-click="toStudentHardWare($event,item)">
                 <img ng-src="{{item.avatar}}">
                 <div class="row teacher-row">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div>{{item.introduction}}</div>
-            </a>
+            </a> -->
         </div>
         <span class="search-tip" ng-show="teacherList.length == 0 && !showHistory">未查询到相关信息</span>
         <div ng-show="showHistory">

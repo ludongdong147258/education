@@ -15,7 +15,7 @@
         </label>
         <label class="item item-input">
             <span class="input-label">法人姓名</span>
-            <input type="text" placeholder="未填写" ng-model="organizationInfo.legal_person">
+            <input type="text" placeholder="2-7个中文字符" ng-model="organizationInfo.legal_person">
         </label>
         <div class="row">
             <div class="col">
@@ -25,9 +25,12 @@
         </div>
         <div class="row">
             <div class="col">
-                <span class="progress" ng-show="f.progress >= 0">
+                <!-- <span class="progress" ng-show="f.progress >= 0">
                         <div style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
-                    </span>
+                    </span> -->
+                    <div class="small-img" ng-show="organizationInfo.certificate_url">
+                        <img ng-src="{{organizationInfo.certificate_url}}" />
+                    </div>
             </div>
         </div>
         <div class="row order-row">
