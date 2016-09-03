@@ -56,32 +56,32 @@ angular.module('education')
             $scope.newsList.length = 0;
             obj.loadNews();
         };
-        if ($rootScope.user) {
-            switch ($rootScope.user.role) {
-                case 'student':
-                    $rootScope.listItems = [{
-                        state: 'studentOrderHardWare',
-                        name: '预约智能硬件',
-                        class: 'yuding-icon'
-                    }];
-                    break;
-                case 'teacher':
-                    $rootScope.listItems = [{
-                        state: 'teacherOrderHardWare',
-                        name: '预约智能硬件',
-                        class: 'yuding-icon'
-                    }];
-                    break;
-                case 'institution':
-                    $rootScope.listItems = [{
-                        state: 'organizationOrderHardWare',
-                        name: '预约智能硬件',
-                        class: 'yuding-icon'
-                    }];
-                    break;
-                case 'manage':
-                    $rootScope.listItems = [];
-                    break;
-            }
-        }
+        // if ($rootScope.user) {
+        //     switch ($rootScope.user.role) {
+        //         case 'student':
+        //             $rootScope.listItems = [{
+        //                 state: 'studentOrderHardWare',
+        //                 name: '预约智能硬件',
+        //                 class: 'yuding-icon'
+        //             }];
+        //             break;
+        //         case 'teacher':
+        //             $rootScope.listItems = [{
+        //                 state: 'teacherOrderHardWare',
+        //                 name: '预约智能硬件',
+        //                 class: 'yuding-icon'
+        //             }];
+        //             break;
+        //         case 'institution':
+        //             $rootScope.listItems = [{
+        //                 state: 'organizationOrderHardWare',
+        //                 name: '预约智能硬件',
+        //                 class: 'yuding-icon'
+        //             }];
+        //             break;
+        //         case 'manage':
+        //             $rootScope.listItems = [];
+        //             break;
+        //     }
+        // }
     }]);

@@ -50,7 +50,7 @@ angular.module('education')
         };
         // 返回
         $scope.back = function() {
-            $state.go('news');
+            $state.go('login');
         };
         $scope.displayStates = [true, false, false];
         // tab切换
@@ -88,7 +88,7 @@ angular.module('education')
                             $rootScope.user = user;
                             $rootScope.showMessage('注册成功!');
                             $timeout(function(){
-                                $state.go('news',null,{reload:true});
+                                $state.go('personal',null,{reload:true});
                             },1000);
                         } else if (data.success == 'N') {
                             for (var prop in data.msg) {

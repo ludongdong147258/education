@@ -2,7 +2,7 @@ angular.module('education')
     .controller('TeacherOrderHardWareController', ['$rootScope', '$scope', '$state', '$timeout', 'StudentService','ValidateService', function($rootScope, $scope, $state, $timeout, StudentService,ValidateService) {
         // 返回
         $scope.back = function() {
-            $state.go('news');
+            $state.go('personal');
         };
         // 免费预约
         $scope.saveOrder = function() {
@@ -17,7 +17,7 @@ angular.module('education')
                     if (data.success == 'Y') {
                         $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 5000);
                         $timeout(function() {
-                            $state.go('news');
+                            $state.go('personal');
                         }, 3000);
                     } else {
                         angular.forEach(data.msg, function(val, key) {

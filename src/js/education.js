@@ -2,7 +2,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
     .config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         $ionicConfigProvider.views.maxCache(5); // 不缓存页面
         $ionicConfigProvider.templates.maxPrefetch(0); // 不进行预加载界面
-        $urlRouterProvider.otherwise('/news');
+        $urlRouterProvider.otherwise('/login');
         $stateProvider.state('login', {
                 url: '/login',
                 cache: false,
@@ -277,7 +277,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
             $rootScope.user = null;
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            $state.go('news');
+            $state.go('login');
         };
     }]).run(['$rootScope', '$ionicLoading', 'CONFIG', function($rootScope, $ionicLoading, CONFIG) {
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {

@@ -13,6 +13,10 @@ angular.module('education')
             switch (role) {
                 case 'student':
                     $scope.listItems = [{
+                        state: 'studentOrderHardWare',
+                        class: 'ion-clock balanced',
+                        name: '预约智能硬件'
+                    },{
                         state: 'studentInfo',
                         class: 'ion-person calm',
                         name: '我的资料'
@@ -28,6 +32,10 @@ angular.module('education')
                     break;
                 case 'teacher':
                     $scope.listItems = [{
+                        state: 'teacherOrderHardWare',
+                        class: 'ion-clock balanced',
+                        name: '预约智能硬件'
+                    },{
                         state: 'teacherInfo',
                         class: 'ion-person calm',
                         name: '我的资料'
@@ -38,8 +46,11 @@ angular.module('education')
                     }]
                     break;
                 case 'institution':
-                    $scope.listItems = ['organizationInfo'];
                     $scope.listItems = [{
+                        state: 'organizationOrderHardWare',
+                        class: 'ion-clock balanced',
+                        name: '预约智能硬件'
+                    },{
                         state: 'organizationInfo',
                         class: 'ion-person calm',
                         name: '我的资料'

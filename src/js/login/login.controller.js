@@ -27,7 +27,7 @@ angular.module('education')
         };
         // 返回
         $scope.back = function() {
-            $state.go('news');
+            // $state.go('news');
         };
         $scope.login = function() {
             var flag = obj.validateInput();
@@ -47,7 +47,7 @@ angular.module('education')
                         CONFIG.user = user;
                         $rootScope.user = user;
                         $timeout(function() {
-                            $state.go('news', null, {
+                            $state.go('personal', null, {
                                 reload: true
                             });
                         }, 1000);

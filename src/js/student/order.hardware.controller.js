@@ -3,7 +3,7 @@ angular.module('education')
         // 返回
         $scope.back = function() {
             localStorage.removeItem('hardwareInfo');
-            $state.go('news');
+            $state.go('personal');
         };
         $scope.hardwareInfo = {
             recommend_type: 1
@@ -33,7 +33,7 @@ angular.module('education')
                         localStorage.removeItem('hardwareInfo');
                         $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 5000);
                         $timeout(function() {
-                            $state.go('news');
+                            $state.go('personal');
                         }, 3000);
                     } else {
                         angular.forEach(data.msg, function(val, key) {

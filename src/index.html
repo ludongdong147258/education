@@ -85,9 +85,9 @@
                 <li class="item" ng-click="toggleRight()" ng-show="user" ui-sref="personal">
                     <a class="energized"><i class="self-icon"></i>个人中心</a>
                 </li>
-                <li ng-show="user" class="item" ng-click="toggleRight()" ui-sref="{{item.state}}" ng-repeat="item in listItems">
+                <!-- <li ng-show="user" class="item" ng-click="toggleRight()" ui-sref="{{item.state}}" ng-repeat="item in listItems">
                     <a class="energized"><i class="news-icon"></i>{{item.name}}</a>
-                </li>
+                </li> -->
                 <li class="item" ng-click="toggleRight()" ui-sref="news">
                     <a class="energized"><i class="news-icon"></i>京南动态</a>
                 </li>
@@ -100,12 +100,12 @@
                 <li class="item" ng-click="toggleRight()" ui-sref="search">
                     <a class="energized"><i class="search-icon"></i>搜索教师</a>
                 </li>
-                <li class="item" ng-click="toggleRight()" ng-hide="user" ui-sref="register">
+                <!-- <li class="item" ng-click="toggleRight()" ng-hide="user" ui-sref="register">
                     <a class="energized"><i class="register-icon"></i>账号注册</a>
                 </li>
                 <li class="item" ng-click="toggleRight()" ng-hide="user" ui-sref="login">
                     <a class="energized"><i class="login-icon"></i>账号登录</a>
-                </li>
+                </li> -->
                 <li class="item" ng-click="toggleRight()" ng-show="user">
                     <a class="energized" ng-click="logout()"><i class="exit-icon"></i>退出登录</a>(ID:{{user.id}})
                 </li>
