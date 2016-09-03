@@ -1,6 +1,7 @@
 angular.module('education')
     .controller('SearchController', ['$rootScope', '$scope', '$state', '$stateParams', 'SearchService', 'TeacherService', '$ionicPopup', function($rootScope, $scope, $state, $stateParams, SearchService, TeacherService, $ionicPopup) {
         $scope.type = $stateParams.type;
+        var keywords = $stateParams.searchText;
         // 返回
         $scope.back = function() {
             if ($scope.type) {
@@ -21,7 +22,9 @@ angular.module('education')
         var obj = {
             init: function() {
                 // obj.loadList();
-                obj.getHistoryList();
+                if($scope.showHistory){
+                    obj.getHistoryList();
+                }
             },
             loadList: function() {
                 SearchService.getRecommendTeacherList({}, function(data) {
@@ -81,7 +84,13 @@ angular.module('education')
                 }
             }
         };
+        if(keywords){
+            $scope.showHistory = false;
+            $scope.searchText = keywords;
+            obj.loadTeacherList();
+        }
         obj.init();
+        
         $scope.search = function() {
             if (!$scope.searchText) {
                 $rootScope.showMessage('搜索关键字不能为空!');

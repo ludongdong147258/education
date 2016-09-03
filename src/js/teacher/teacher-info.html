@@ -38,6 +38,9 @@
                 <span class="progress" ng-show="f.progress >= 0">
                         <div style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
                     </span>
+                <div class="small-img" ng-show="personalInfo.certificate_url">
+                    <img ng-src="{{personalInfo.certificate_url}}" />
+                </div>
             </div>
         </div>
         <label class="item item-input border-bottom">

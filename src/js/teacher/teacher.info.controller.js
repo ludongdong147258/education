@@ -22,6 +22,9 @@ angular.module('education')
                 TeacherService.updatePersonalInfo($scope.personalInfo, function(data) {
                     if (data.success == 'Y') {
                         $rootScope.showMessage('保存成功!');
+                        $timeout(function(){
+                            $state.go('personal');
+                        },1000);
                     }
                 }, function(error) {
                     console.error(error);
@@ -161,6 +164,10 @@ angular.module('education')
                 }
                 if(!ValidateService.checkName($scope.personalInfo.truename)){
                     $rootScope.showMessage('姓名2-7个字符!');
+                    return false;
+                }
+                if(!$scope.personalInfo.certificate_url){
+                    $rootScope.showMessage('请上传本人身份证或教职资质照片!');
                     return false;
                 }
                 if(!$scope.personalInfo.age){

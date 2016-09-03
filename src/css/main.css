@@ -110,6 +110,8 @@
     text-align: center;
 }
 .personal-avatar img {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
 }
 .icon-arrow-right {
@@ -328,4 +330,13 @@
 .row-link .col:last-child {
     text-align: right;
     padding-right: 15px;
+}
+.small-img {
+    text-align: center;
+}
+.small-img img {
+    width: 200px;
+    max-width: 100%;
+    max-height: 200px;
+    height: auto;
 }

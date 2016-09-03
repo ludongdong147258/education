@@ -9924,6 +9924,8 @@ a.button {
     text-align: center;
 }
 .personal-avatar img {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
 }
 .icon-arrow-right {

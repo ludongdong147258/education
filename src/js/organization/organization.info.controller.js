@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('OrganizationInfoController', ['$rootScope', '$scope', '$state', 'OrganizationService', 'Upload', 'CONFIG', '$timeout', function($rootScope, $scope, $state, OrganizationService, Upload, CONFIG, $timeout) {
+    .controller('OrganizationInfoController', ['$rootScope', '$scope', '$state', 'OrganizationService', 'Upload', 'CONFIG', '$timeout','ValidateService', function($rootScope, $scope, $state, OrganizationService, Upload, CONFIG, $timeout,ValidateService) {
         $rootScope.showHeaderBar = false;
         $scope.back = function() {
             $state.go('personal');
@@ -7,14 +7,20 @@ angular.module('education')
         $scope.dispalyStates = [true, false, false];
         $scope.organizationInfo = {};
         $scope.saveInfo = function() {
-            OrganizationService.updateOrganizationInfo($scope.organizationInfo, function(data) {
-                if (data.success == 'Y') {
-                    $rootScope.showMessage('保存成功!');
-                }
-            }, function(error) {
-                $rootScope.showMessage('保存失败!');
-                console.error(error);
-            });
+            var flag = obj.validateInput();
+            if(flag){
+                OrganizationService.updateOrganizationInfo($scope.organizationInfo, function(data) {
+                    if (data.success == 'Y') {
+                        $rootScope.showMessage('保存成功!');
+                        $timeout(function(){
+                            $state.go('personal');
+                        },1000);
+                    }
+                }, function(error) {
+                    $rootScope.showMessage('保存失败!');
+                    console.error(error);
+                });
+            }
         };
         $scope.tabChange = function(curIndex) {
             angular.forEach($scope.dispalyStates, function(val, index) {
@@ -35,6 +41,26 @@ angular.module('education')
                 }, function(error) {
                     console.error(error);
                 });
+            },
+            validateInput:function(){
+                var organizationInfo = $scope.organizationInfo;
+                if(!organizationInfo.name) {
+                    $rootScope.showMessage('机构名称不能为空!');
+                    return false;
+                }
+                if(!organizationInfo.legal_person) {
+                    $rootScope.showMessage('法人姓名不能为空!');
+                    return false;
+                }
+                if(!ValidateService.checkName(organizationInfo.legal_person)){
+                    $rootScope.showMessage('法人姓名2-7个中文字符!');
+                    return false;
+                }
+                if(!organizationInfo.certificate_url){
+                    $rootScope.showMessage('请上传企业营业执照照片!');
+                    return false;
+                }
+                return true;
             }
         };
         obj.getOrganizationInfo();

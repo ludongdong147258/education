@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('StudentInfoController', ['$rootScope', '$scope', '$state', 'StudentService', '$timeout', 'ValidateService', function($rootScope, $scope, $state, StudentService, $timeout, ValidateService) {
+    .controller('StudentInfoController', ['$rootScope', '$scope', '$state', 'StudentService', '$timeout', 'ValidateService','$timeout', function($rootScope, $scope, $state, StudentService, $timeout, ValidateService,$timeout) {
 
         // 返回
         $scope.back = function() {
@@ -14,6 +14,9 @@ angular.module('education')
                 StudentService.updatePersonalInfo($scope.personalInfo, function(data) {
                     if (data.success == 'Y') {
                         $rootScope.showMessage('保存成功!');
+                        $timeout(function(){
+                            $state.go('personal');
+                        },1000);
                     }
                 }, function(error) {
                     console.error(error);

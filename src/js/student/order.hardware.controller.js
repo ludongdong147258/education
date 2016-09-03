@@ -66,20 +66,28 @@ angular.module('education')
                         var hardwareInfo = localStorage.getItem('hardwareInfo');
                         if(hardwareInfo){
                             $scope.hardwareInfo = angular.fromJson(hardwareInfo);
-                            angular.forEach($scope.provinces,function(val,index){
-                                if(val.key == $scope.hardwareInfo.province.key){
-                                    $scope.province = $scope.provinces[index];
-                                    return;
-                                }
-                            });
+                            if($scope.hardwareInfo.province){
+                                angular.forEach($scope.provinces,function(val,index){
+                                    if(val.key == $scope.hardwareInfo.province.key){
+                                        $scope.province = $scope.provinces[index];
+                                        return;
+                                    }
+                                });
+                            }
+
                             $scope.changeProvince($scope.province);
-                            angular.forEach($scope.cities,function(val,index){
-                                if(val.key == $scope.hardwareInfo.city.key){
-                                    $scope.city = $scope.cities[index];
-                                    return;
-                                }
-                            });
-                            $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
+                            if($scope.hardwareInfo.city){
+                                angular.forEach($scope.cities,function(val,index){
+                                    if(val.key == $scope.hardwareInfo.city.key){
+                                        $scope.city = $scope.cities[index];
+                                        return;
+                                    }
+                                });
+                            }
+                            if($scope.hardwareInfo.time){
+                                $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
+                            }
+                            
                         } else {
                             $scope.province = {key:''};
                             $scope.city = {
@@ -139,16 +147,18 @@ angular.module('education')
         };
         obj.getAddressList();
         $scope.changeProvince = function(curItem) {
-            $scope.province = curItem;
-            $scope.cities = [];
-            angular.forEach(addresses, function(item) {
-                if (item.province == curItem.key) {
-                    $scope.cities.push({
-                        key: item.city,
-                        id: item.id
-                    });
-                }
-            });
+            if(curItem){
+                $scope.province = curItem;
+                $scope.cities = [];
+                angular.forEach(addresses, function(item) {
+                    if (item.province == curItem.key) {
+                        $scope.cities.push({
+                            key: item.city,
+                            id: item.id
+                        });
+                    }
+                });
+            }
         };
         $scope.changeCity = function(curItem) {
             $scope.city = curItem;

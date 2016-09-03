@@ -42,4 +42,10 @@
         <div class="" ng-bind-html="teacherInfo.introduction">
         </div>
     </ion-content>
+    <ion-footer-bar ng-show="type">
+        <div class="button-bar footer-bar home-footer-bar">
+            <button class="button button-dark" ng-click="cancel()">取消</button>
+            <button class="button button-energized" ng-click="sure()">确定选择</button>
+        </div>
+    </ion-footer-bar>
 </ion-view>
