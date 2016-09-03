@@ -28,7 +28,7 @@
             </div>
         </div>
         <div ng-if="showOrganizationList">
-            <div class="row-bottom" ng-repeat="item in organizationList" ui-sref="examineOrganization({id:item.id})">
+            <div class="row-bottom" ng-repeat="item in organizationList" ui-sref="examineOrganization({id:item.id,tabIndex:1})">
                 <div class="row">
                     <div class="col">
                         机构名称:{{item.name}}

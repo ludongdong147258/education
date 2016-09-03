@@ -58,7 +58,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('news', {
-                url: '/news',
+                url: '/news?tabIndex',
                 cache: false,
                 views: {
                     baseContent: {
@@ -67,7 +67,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('newsDetails', {
-                url: '/news/details/{id}',
+                url: '/news/details/{id}?tabIndex',
                 cache: false,
                 views: {
                     baseContent: {
@@ -76,7 +76,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('register', {
-                url: '/register?tabIndex',
+                url: '/register?tabIndex&code',
                 cache: false,
                 views: {
                     baseContent: {
@@ -166,7 +166,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('staffOrder', {
-                url: '/staff/order',
+                url: '/staff/order?tabIndex',
                 cache: false,
                 views: {
                     baseContent: {
@@ -184,7 +184,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('staffOrderDetails', {
-                url: '/staff/order/details?id',
+                url: '/staff/order/details?id&tabIndex',
                 cache: false,
                 views: {
                     baseContent: {
@@ -193,7 +193,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('examineList', {
-                url: '/exmaine/list',
+                url: '/exmaine/list?tabIndex',
                 cache: false,
                 views: {
                     baseContent: {
@@ -212,7 +212,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                 }
             })
             .state('examineOrganization', {
-                url: '/exmaine/organization/{id}',
+                url: '/exmaine/organization/{id}?tabIndex',
                 cache: false,
                 views: {
                     baseContent: {
@@ -295,8 +295,8 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
             $rootScope.user = JSON.parse(CONFIG.user);
         }
     }]).constant('CONFIG', {
-        // urlPrefix: 'http://101.200.131.30:8020',
-        urlPrefix:'',
+        urlPrefix: 'http://101.200.131.30:8020',
+        // urlPrefix:'',
         token: localStorage.getItem('token'),
         user: localStorage.getItem('user'),
         student: '学生',

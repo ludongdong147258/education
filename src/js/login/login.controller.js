@@ -52,6 +52,7 @@ angular.module('education')
                             });
                         }, 1000);
                     } else {
+                        $ionicLoading.hide();
                         $rootScope.showMessage(data.msg);
                     }
                 }, function(error) {

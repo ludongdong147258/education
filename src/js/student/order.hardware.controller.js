@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('StudentOrderHardWareController', ['$rootScope', '$scope', '$state', 'StudentService', '$stateParams', '$timeout',function($rootScope, $scope, $state, StudentService, $stateParams, $timeout) {
+    .controller('StudentOrderHardWareController', ['$rootScope', '$scope', '$state', 'StudentService', '$stateParams', '$timeout','ValidateService',function($rootScope, $scope, $state, StudentService, $stateParams, $timeout,ValidateService) {
         // 返回
         $scope.back = function() {
             localStorage.removeItem('hardwareInfo');
@@ -110,9 +110,23 @@ angular.module('education')
                     $rootScope.showMessage("上门安装地址不能为空!");
                     return false;
                 }
+                if(!ValidateService.checkAddress(hardwareInfo.address_detail)){
+                    $rootScope.showMessage("地址5-30个字符!");
+                    return false;
+                }
                 if (!hardwareInfo.link_name) {
                     $rootScope.showMessage("联系人姓名不能为空!");
                     return false;
+                }
+                if(!ValidateService.checkName(hardwareInfo.link_name)){
+                    $rootScope.showMessage("联系人姓名2-7个中文字符!");
+                    return false;
+                }
+                if(hardwareInfo.mobile){
+                    if(!ValidateService.checkPhone(hardwareInfo.mobile)){
+                        $rootScope.showMessage("电话号码格式不正确!");
+                        return false;
+                    }
                 }
                 if ($scope.hardwareInfo.recommend_type == 2) {
                     if (!$scope.name) {

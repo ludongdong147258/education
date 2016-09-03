@@ -171,6 +171,7 @@ angular.module('education')
                     $rootScope.showMessage('年龄20-60!');
                     return false;
                 }
+                return true;
             }
         };
         $scope.changeSex = function(number) {

@@ -1,11 +1,14 @@
 angular.module('education')
-    .controller('StaffOrderController', ['$rootScope', '$scope', '$state', '$ionicPopup', 'StaffService', function($rootScope, $scope, $state, $ionicPopup, StaffService) {
-        $rootScope.showHeaderBar = false;
+    .controller('StaffOrderController', ['$rootScope', '$scope', '$state', '$ionicPopup', 'StaffService','$stateParams', function($rootScope, $scope, $state, $ionicPopup, StaffService,$stateParams) {
+
         // 返回
         $scope.back = function() {
             $state.go('personal');
         };
         $scope.displayStates = [true, false];
+        if($stateParams.tabIndex){
+            $scope.displayStates = [false, true];
+        }
         // tab 切换
         $scope.tabChange = function(index) {
             angular.forEach($scope.displayStates, function(val, key) {
@@ -81,5 +84,9 @@ angular.module('education')
                 });
             }
         };
-        obj.getEquipmentList();
+        if($stateParams.tabIndex){
+            obj.getServiceList();
+        }else {
+            obj.getEquipmentList();
+        }
     }]);

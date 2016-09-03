@@ -1,5 +1,6 @@
 angular.module('education')
     .controller('RegisterController', ['$rootScope', '$scope', '$state', '$stateParams', 'RegisterService', 'LoginService', '$timeout','CONFIG','ValidateService', function($rootScope, $scope, $state, $stateParams, RegisterService, LoginService, $timeout,CONFIG,ValidateService) {
+        var code = $stateParams.code;
         var obj = {
             validateInput: function(type) {
                 if (!$scope.registerInfo[type].mobile) {
@@ -68,6 +69,9 @@ angular.module('education')
             var type = types[curIndex];
             var flag = obj.validateInput(type);
             if (flag) {
+                if(code){
+                    $scope.registerInfo[type].invitecode = code;
+                }
                 RegisterService.register(
                     $scope.registerInfo[type],
                     function(data) {
@@ -83,7 +87,9 @@ angular.module('education')
                             CONFIG.user = user;
                             $rootScope.user = user;
                             $rootScope.showMessage('注册成功!');
-                            $state.go('news',null,{reload:true});
+                            $timeout(function(){
+                                $state.go('news',null,{reload:true});
+                            },1000);
                         } else if (data.success == 'N') {
                             for (var prop in data.msg) {
                                 $rootScope.showMessage(data.msg[prop]);
@@ -121,8 +127,9 @@ angular.module('education')
 
         function reduceCount() {
             $scope.counts[curIndex] = counts[curIndex];
-            if (counts[curIndex] == 0) {
+            if (counts[curIndex] == 1) {
                 $scope.btnStates[curIndex] = false;
+                counts[curIndex] = 60;
                 $timeout(timerId);
                 return;
             }

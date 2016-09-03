@@ -18,7 +18,7 @@
             </a>
         </div>
         <div class="list" ng-if="showOutcomeList" ng-repeat="item in newsList">
-            <a class="item item-thumbnail-left" ui-sref="newsDetails({id:item.id})">
+            <a class="item item-thumbnail-left" ui-sref="newsDetails({id:item.id,tabIndex:1})">
                 <img ng-src="{{item.thumbnail}}">
                 <h2>{{item.title}}</h2>
                 <p>{{item.description}}</p>

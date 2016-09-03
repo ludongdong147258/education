@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('SearchController', ['$rootScope', '$scope', '$state', '$stateParams', 'SearchService', 'TeacherService', function($rootScope, $scope, $state, $stateParams, SearchService, TeacherService) {
+    .controller('SearchController', ['$rootScope', '$scope', '$state', '$stateParams', 'SearchService', 'TeacherService', '$ionicPopup', function($rootScope, $scope, $state, $stateParams, SearchService, TeacherService, $ionicPopup) {
         $scope.type = $stateParams.type;
         // 返回
         $scope.back = function() {
@@ -74,7 +74,9 @@ angular.module('education')
                     if (historyList.indexOf(',') != -1) {
                         $scope.histories = historyList.split(',');
                     } else {
-                        $scope.histories.push(historyList);
+                        if ($scope.histories.indexOf(historyList) == -1) {
+                            $scope.histories.push(historyList);
+                        }
                     }
                 }
             }
@@ -107,16 +109,30 @@ angular.module('education')
             }
         };
         $scope.clearHistory = function() {
-            localStorage.removeItem('records');
-            $scope.histories.length = 0;
+            var confirmPopup = $ionicPopup.confirm({
+                template: '清空历史记录?',
+                okText: '立即清空',
+                okType: 'button-energized',
+                cancelText: '取消',
+                cancelType: 'button-dark'
+            });
+            confirmPopup.then(function(res) {
+                if (res) {
+                    localStorage.removeItem('records');
+                    $scope.histories.length = 0;
+                }
+            });
         };
         $scope.setSearchText = function(searchText) {
             $scope.searchText = searchText;
             $scope.search();
         };
-        $scope.toStudentHardWare = function(e,item){
+        $scope.toStudentHardWare = function(e, item) {
             e.preventDefault();
             e.stopPropagation();
-            $state.go('studentOrderHardWare',{id:item.id,name:item.truename});
+            $state.go('studentOrderHardWare', {
+                id: item.id,
+                name: item.truename
+            });
         };
     }]);

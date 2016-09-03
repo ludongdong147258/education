@@ -1,8 +1,13 @@
 angular.module('education')
-    .controller('ExamineController', ['$rootScope', '$scope', 'StaffService', '$state', function($rootScope, $scope, StaffService, $state) {
-        $rootScope.showHeaderBar = false;
+    .controller('ExamineController', ['$rootScope', '$scope', 'StaffService', '$state','$stateParams', function($rootScope, $scope, StaffService, $state,$stateParams) {
+        var tabIndex = $stateParams.tabIndex;
+
         $scope.showTeacherList = true;
         $scope.showOrganizationList = false;
+        if(tabIndex){
+            $scope.showTeacherList = false;
+            $scope.showOrganizationList = true;
+        }
         // 返回
         $scope.back = function() {
             $state.go('personal');
@@ -29,7 +34,11 @@ angular.module('education')
                 });
             }
         };
-        obj.loadTeacherList();
+        if(tabIndex){
+            obj.loadOrganizationList();
+        }else{
+            obj.loadTeacherList();
+        }
 
         $scope.changeTab = function(index) {
             if (index) {

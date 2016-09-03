@@ -1,9 +1,14 @@
 angular.module('education')
-    .controller('NewsController', ['$rootScope', '$scope', 'NewsService', function($rootScope, $scope, NewsService) {
+    .controller('NewsController', ['$rootScope', '$scope', 'NewsService','$stateParams', function($rootScope, $scope, NewsService,$stateParams) {
+        var tabIndex = $stateParams.tabIndex;
         $scope.showNewsList = true;
         $scope.showOutcomeList = false;
         $scope.newsList = [];
         $scope.hasMoreData = true;
+        if(tabIndex){
+            $scope.showNewsList = false;
+            $scope.showOutcomeList = true;
+        }
         var page = 1,
             type = 'news';
         var obj = {
@@ -76,7 +81,7 @@ angular.module('education')
                     break;
                 case 'manage':
                     $rootScope.listItems = [];
-                    break;    
+                    break;
             }
         }
     }]);

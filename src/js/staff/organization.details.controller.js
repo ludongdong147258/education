@@ -1,9 +1,9 @@
 angular.module('education')
     .controller('ExamineOrganizationController', ['$rootScope', '$scope', 'StaffService', '$state', '$stateParams', '$ionicPopup','$timeout', function($rootScope, $scope, StaffService, $state, $stateParams, $ionicPopup,$timeout) {
-        $rootScope.showHeaderBar = false;
+        var tabIndex = $stateParams.tabIndex;
         // 返回
         $scope.back = function() {
-            $state.go('examineList');
+            $state.go('examineList',{tabIndex:tabIndex});
         };
         var obj = {
             getDetails: function() {
@@ -36,7 +36,7 @@ angular.module('education')
                         if (data.success == 'Y') {
                             $rootScope.showMessage('审核成功!');
                             $timeout(function(){
-                                $state.go('examineList');
+                                $state.go('examineList',{tabIndex:tabIndex});
                             },1000);
                         }
                     }, function(error) {

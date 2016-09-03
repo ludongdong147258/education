@@ -1,8 +1,9 @@
 angular.module('education')
     .controller('StaffOrderDetailsController', ['$rootScope', '$scope', '$state', '$ionicPopup', '$stateParams', 'StaffService', '$timeout', function($rootScope, $scope, $state, $ionicPopup, $stateParams, StaffService, $timeout) {
+        var tabIndex = $stateParams.tabIndex;
         // 返回
         $scope.back = function() {
-            $state.go('staffOrder');
+            $state.go('staffOrder',{tabIndex:tabIndex});
         };
         $scope.dispalyStates = [true, false, false];
         $scope.tabChange = function(curIndex) {
@@ -47,7 +48,7 @@ angular.module('education')
                         if (data.success == 'Y') {
                             $rootScope.showMessage('收款成功!');
                             $timeout(function() {
-                                $state.go('staffOrder');
+                                $state.go('staffOrder',{tabIndex:tabIndex});
                             }, 1000);
                         }
                     });

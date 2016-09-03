@@ -1,9 +1,9 @@
 angular.module('education')
     .controller('NewsDetailsController', ['$rootScope', '$scope', '$state', 'NewsService', '$stateParams', function($rootScope, $scope, $state, NewsService, $stateParams) {
-        $rootScope.showHeaderBar = false;
+        var tabIndex = $stateParams.tabIndex;
         // 返回
         $scope.back = function() {
-            $state.go('news');
+            $state.go('news',{tabIndex:tabIndex});
         };
         $scope.newsInfo = {};
         var obj = {

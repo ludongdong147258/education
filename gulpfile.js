@@ -35,7 +35,12 @@ gulp.task('fonts', function() {
 
 gulp.task('libs', function() {
     return gulp.src('src/libs/**/*.js')
-        .pipe(gulp.dest('dest/libs'));
+        .pipe(concat('base.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('dest/libs'))
+        .pipe(notify({
+            message: 'js task ok'
+        }));
 });
 
 // 压缩图片
@@ -96,7 +101,7 @@ gulp.task('js', function() {
 
 // 默认任务
 gulp.task('default', ['clean'], function() {
-    gulp.run('img', 'css', 'js', 'html','fonts','libs');
+    gulp.run('img', 'css', 'js', 'html', 'fonts', 'libs');
 
     // 监听html文件变化
     gulp.watch('src/*.html', function() {
