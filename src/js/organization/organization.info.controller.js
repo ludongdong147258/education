@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('OrganizationInfoController', ['$rootScope', '$scope', '$state', 'OrganizationService', 'Upload', 'CONFIG', '$timeout','ValidateService', function($rootScope, $scope, $state, OrganizationService, Upload, CONFIG, $timeout,ValidateService) {
+    .controller('OrganizationInfoController', ['$rootScope', '$scope', '$state', 'OrganizationService', 'Upload', 'CONFIG', '$timeout','ValidateService','$ionicLoading', function($rootScope, $scope, $state, OrganizationService, Upload, CONFIG, $timeout,ValidateService,$ionicLoading) {
         $rootScope.showHeaderBar = false;
         $scope.back = function() {
             $state.go('personal');
@@ -68,6 +68,9 @@ angular.module('education')
             $scope.f = file;
             $scope.errFile = errFiles && errFiles[0];
             if (file) {
+                $ionicLoading.show({
+                    template: '<ion-spinner icon="ios-small"></ion-spinner>&nbsp;上传中...'
+                });
                 file.upload = Upload.upload({
                     url: CONFIG.urlPrefix + '/v1/common/upload',
                     data: {
@@ -76,11 +79,16 @@ angular.module('education')
                 });
                 file.upload.then(function(data) {
                     $timeout(function() {
+                        $ionicLoading.hide();
+                        $rootScope.showMessage('上传成功!');
                         $scope.organizationInfo.certificate_url = data.data;
                     });
                 }, function(response) {
-                    if (response.status > 0)
+                    if (response.status > 0){
+                        $ionicLoading.hide();
+                        $rootScope.showMessage('上传失败!');
                         $scope.errorMsg = response.status + ': ' + response.data;
+                    }
                 }, function(evt) {
                     file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
                 });

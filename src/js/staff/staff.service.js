@@ -64,40 +64,47 @@ angular.module('education')
                     token: CONFIG.token
                 }
             },
-            updateEquipmentStatus:{
+            updateEquipmentStatus: {
                 method: 'post',
                 url: CONFIG.urlPrefix + '/v1/order/equipment/auth',
                 headers: {
                     token: CONFIG.token
                 }
             },
-            getOrderDetails:{
+            getOrderDetails: {
                 method: 'get',
                 url: CONFIG.urlPrefix + '/v1/order/server/detail',
                 headers: {
                     token: CONFIG.token
                 }
             },
-            getStaticFee:{
+            getStaticFee: {
                 method: 'get',
                 url: CONFIG.urlPrefix + '/v1/order/static/fee',
                 headers: {
                     token: CONFIG.token
                 }
             },
-            getTeacherFee:{
+            getTeacherFee: {
                 method: 'get',
                 url: CONFIG.urlPrefix + '/v1/order/teacher/fee',
                 headers: {
                     token: CONFIG.token
                 }
             },
-            authOrder:{
+            authOrder: {
                 method: 'post',
                 url: CONFIG.urlPrefix + '/v1/order/server/auth',
                 headers: {
                     token: CONFIG.token
                 }
-            }
+            },
+            updateAvatar: {
+                url: CONFIG.urlPrefix + '/v1/account/update',
+                method: 'post',
+                headers: {
+                    token: CONFIG.token
+                }
+            },
         });
     }]);

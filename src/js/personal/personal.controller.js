@@ -1,14 +1,96 @@
 angular.module('education')
-    .controller('PersonalController', ['$rootScope', '$scope', '$state', 'CONFIG', function($rootScope, $scope, $state, CONFIG) {
-        $rootScope.showHeaderBar = false;
+    .controller('PersonalController', ['$rootScope', '$scope', '$state', 'CONFIG', 'Upload', '$timeout', 'StudentService', '$ionicLoading', 'TeacherService', 'OrganizationService', 'StaffService', function($rootScope, $scope, $state, CONFIG, Upload, $timeout, StudentService, $ionicLoading, TeacherService, OrganizationService, StaffService) {
+        var role = $rootScope.user.role;
         $scope.back = function() {
             $state.go('news');
+        };
+        $scope.uploadFiles = function(file, errFiles) {
+            $scope.f = file;
+            $scope.errFile = errFiles && errFiles[0];
+            if (file) {
+                $ionicLoading.show({
+                    template: '<ion-spinner icon="ios-small"></ion-spinner>&nbsp;上传中...'
+                });
+                file.upload = Upload.upload({
+                    url: CONFIG.urlPrefix + '/v1/common/upload',
+                    data: {
+                        file: file
+                    }
+                });
+                file.upload.then(function(data) {
+                    $timeout(function() {
+                        $rootScope.user.avatar = data.data;
+                        var userJson = JSON.stringify($rootScope.user);
+                        if (role == 'student') {
+                            StudentService.updatePersonalInfo({
+                                avatar: data.data
+                            }, function(data) {
+                                if (data.success == 'Y') {
+                                    $ionicLoading.hide();
+                                    $rootScope.showMessage('上传成功!');
+                                    localStorage.setItem('user', userJson);
+                                }
+                            }, function(error) {
+                                console.error(error);
+                                $ionicLoading.hide();
+                                $rootScope.showMessage('上传失败!');
+                            });
+                        } else if (role == 'teacher') {
+                            TeacherService.updatePersonalInfo({
+                                avatar: data.data
+                            }, function(data) {
+                                if (data.success == 'Y') {
+                                    $ionicLoading.hide();
+                                    $rootScope.showMessage('上传成功!');
+                                    localStorage.setItem('user', userJson);
+                                }
+                            }, function(error) {
+                                $ionicLoading.hide();
+                                $rootScope.showMessage('上传失败!');
+                            });
+                        } else if (role == 'institution') {
+                            OrganizationService.updateOrganizationInfo({
+                                avatar: data.data
+                            }, function(data) {
+                                if (data.success == 'Y') {
+                                    $ionicLoading.hide();
+                                    $rootScope.showMessage('上传成功!');
+                                    localStorage.setItem('user', userJson);
+                                }
+                            }, function(error) {
+                                $ionicLoading.hide();
+                                $rootScope.showMessage('上传失败!');
+                            });
+                        } else if (role == 'manage') {
+                            StaffService.updateAvatar({
+                                avatar: data.data
+                            }, function(data) {
+                                if (data.success == 'Y') {
+                                    $ionicLoading.hide();
+                                    $rootScope.showMessage('上传成功!');
+                                    localStorage.setItem('user', userJson);
+                                }
+                            }, function(error) {
+                                $ionicLoading.hide();
+                                $rootScope.showMessage('上传失败!');
+                            });
+                        }
+                    });
+                }, function(response) {
+                    if (response.status > 0) {
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                        $ionicLoading.hide();
+                        $rootScope.showMessage('上传失败!');
+                    }
+                }, function(evt) {
+                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                });
+            }
         };
         if ($rootScope.user) {
             if (!$rootScope.user.avatar) {
                 $rootScope.user.avatar = '././images/person.png';
             }
-            var role = $rootScope.user.role;
             $scope.roleDisplay = CONFIG[role];
             switch (role) {
                 case 'student':
@@ -16,7 +98,7 @@ angular.module('education')
                         state: 'studentOrderHardWare',
                         class: 'ion-clock balanced',
                         name: '预约智能硬件'
-                    },{
+                    }, {
                         state: 'studentInfo',
                         class: 'ion-person calm',
                         name: '我的资料'
@@ -35,7 +117,7 @@ angular.module('education')
                         state: 'teacherOrderHardWare',
                         class: 'ion-clock balanced',
                         name: '预约智能硬件'
-                    },{
+                    }, {
                         state: 'teacherInfo',
                         class: 'ion-person calm',
                         name: '我的资料'
@@ -50,7 +132,7 @@ angular.module('education')
                         state: 'organizationOrderHardWare',
                         class: 'ion-clock balanced',
                         name: '预约智能硬件'
-                    },{
+                    }, {
                         state: 'organizationInfo',
                         class: 'ion-person calm',
                         name: '我的资料'

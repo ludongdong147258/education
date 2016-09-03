@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('TeacherInfoController', ['$rootScope', '$scope', '$state', 'TeacherService', 'Upload', '$stateParams','CONFIG','$timeout','ValidateService', function($rootScope, $scope, $state, TeacherService, Upload, $stateParams,CONFIG,$timeout,ValidateService) {
+    .controller('TeacherInfoController', ['$rootScope', '$scope', '$state', 'TeacherService', 'Upload', '$stateParams','CONFIG','$timeout','ValidateService','$ionicLoading', function($rootScope, $scope, $state, TeacherService, Upload, $stateParams,CONFIG,$timeout,ValidateService,$ionicLoading) {
         $scope.appTitle = '我的资料';
         if ($stateParams.id) {
             $scope.appTitle = '机构教师资料编辑';
@@ -251,6 +251,7 @@ angular.module('education')
             $scope.f = file;
             $scope.errFile = errFiles && errFiles[0];
             if (file) {
+                $ionicLoading.show({template:'<ion-spinner icon="ios-small"></ion-spinner>上传中...'});
                 file.upload = Upload.upload({
                     url: CONFIG.urlPrefix+'/v1/common/upload',
                     data: {
@@ -258,12 +259,17 @@ angular.module('education')
                     }
                 });
                 file.upload.then(function(data) {
+                    $ionicLoading.hide();
                     $timeout(function() {
                         $scope.personalInfo.certificate_url = data.data;
+                        $rootScope.showMessage('上传成功!');
                     });
                 }, function(response) {
-                    if (response.status > 0)
+                    if (response.status > 0){
                         $scope.errorMsg = response.status + ': ' + response.data;
+                        $ionicLoading.hide();
+                        $rootScope.showMessage('上传失败!');
+                    }
                 }, function(evt) {
                     file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
                 });

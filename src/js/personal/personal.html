@@ -7,6 +7,8 @@
         <div class="list">
             <div class="item personal-avatar">
                 <img ng-src="{{user.avatar}}"/>
+                <button type="file" style="display:block; margin:0 auto;" class="button button-stable button-outline ion-upload button-small" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
+                    上传个人头像</button>
                 <h2>{{user.mobile}}</h2>
                 <p>{{roleDisplay}}账号</p>
             </div>
