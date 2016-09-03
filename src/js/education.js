@@ -295,7 +295,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
             $rootScope.user = JSON.parse(CONFIG.user);
         }
     }]).constant('CONFIG', {
-        urlPrefix: 'http://101.200.131.30:8020',
+        urlPrefix: location.protocol + '//' + location.host,
         // urlPrefix:'',
         token: localStorage.getItem('token'),
         user: localStorage.getItem('user'),
@@ -329,7 +329,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                 var reg = /^[0-9a-zA-Z\u4e00-\u9fa5]{5,30}$/;
                 return reg.test(address);
             },
-            checkName:function(name){
+            checkName: function(name) {
                 var reg = /^[\u4e00-\u9fa5]{2,7}$/;
                 return reg.test(name);
             }
