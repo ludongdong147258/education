@@ -29,7 +29,18 @@
         </div>
         <div class="row">
             <div class="col">
-                <button type="file" class="button button-stable button-block button-outline" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-height="1000" ngf-max-size="5MB">
+                <button
+                    class="button button-stable button-block button-outline"
+                    ng-mode="file"
+                    name="file"
+                    ngf-select="uploadFiles($file, $invalidFiles)"
+                    ngf-capture="'camera'"
+                    ngf-pattern="'image/*'"
+                    ngf-accept="'image/*'"
+                    ngf-max-height="1000"
+                    ngf-max-size="20MB"
+                    ngf-min-height="100"
+                    ngf-resize="{width: 100, height: 100}">
                     上传本人身份证或教职资质照片</button>
             </div>
         </div>
@@ -39,7 +50,7 @@
                         <div style="width:{{f.progress}}%" ng-bind="f.progress + '%'"></div>
                     </span> -->
                 <div class="small-img" ng-show="personalInfo.certificate_url">
-                    <img ng-src="{{personalInfo.certificate_url}}" />
+                    <img ng-src="{{personalInfo.certificate_url}}"/>
                 </div>
             </div>
         </div>
@@ -126,9 +137,7 @@
                     {{item.val}}
                 </button>
             </div>
-            <div class="col">
-
-            </div>
+            <div class="col"></div>
         </div>
         <div class="row order-row">
             <div class="col">

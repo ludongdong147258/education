@@ -464,84 +464,6 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('HomeController', ['$rootScope', '$scope', 'CONFIG', 'HomeService', 'StudentService', '$state', function($rootScope, $scope, CONFIG, HomeService, StudentService, $state) {
-        $rootScope.showHeaderBar = true;
-        if ($rootScope.user) {
-            switch ($rootScope.user.role) {
-                case 'student':
-                    $scope.listItems = [{
-                        state: 'studentOrderHardWare',
-                        name: '预定智能硬件'
-                    }, {
-                        state: 'studentInfo',
-                        name: '补全学生资料'
-                    }, {
-                        state: 'reference',
-                        name: '邀请老师/同学加入'
-                    }];
-                    break;
-                case 'teacher':
-                    $scope.listItems = [{
-                        state: 'teacherOrderHardWare',
-                        name: '预定智能硬件'
-                    }, {
-                        state: 'teacherInfo',
-                        name: '认证教师资料'
-                    }, {
-                        state: 'reference',
-                        name: '邀请老师/同学加入'
-                    }];
-                    break;
-                case 'institution':
-                    $scope.listItems = [{
-                        state: 'teacherOrderHardWare',
-                        name: '预定智能硬件'
-                    }, {
-                        state: 'organizationInfo',
-                        name: '认证机构资料'
-                    }, {
-                        state: 'organizationManager',
-                        name: '管理机构教师'
-                    }];
-                    break;
-                case 'manage':
-                    $scope.listItems = [{
-                        state: 'staffOrderService',
-                        name: '提交订单'
-                    }, {
-                        state: 'examineList',
-                        name: '审核教师/机构'
-                    }];
-                    break;
-            }
-        }
-        $scope.hasHardWare = function(state, e) {
-            if (state == 'studentOrderHardWare') {
-                e.preventDefault();
-                StudentService.hasHardWare({}, function(data) {
-                    if (data.success == 'Y') {
-                        $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 3000);
-                    } else {
-                        $state.go('studentOrderHardWare');
-                    }
-                });
-            }
-        }
-    }]);
-
-angular.module('education')
-    .factory('HomeService', ['$resource', 'CONFIG', function($resource, CONFIG) {
-        return $resource(CONFIG.urlPrefix + '/v1/account/update', {}, {
-            getSelfInfo: {
-                method: 'post',
-                headers:{
-                    token:CONFIG.token
-                }
-            }
-        });
-    }]);
-
-angular.module('education')
     .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService', 'CONFIG', '$ionicLoading', '$timeout', 'ValidateService', function($rootScope, $scope, $state, LoginService, CONFIG, $ionicLoading, $timeout, ValidateService) {
         if ($rootScope.user) {
             $state.go('personal', null, {
@@ -615,6 +537,84 @@ angular.module('education')
         return $resource(CONFIG.urlPrefix + '/v1/account/login', {}, {
             login: {
                 method: 'post'
+            }
+        });
+    }]);
+
+angular.module('education')
+    .controller('HomeController', ['$rootScope', '$scope', 'CONFIG', 'HomeService', 'StudentService', '$state', function($rootScope, $scope, CONFIG, HomeService, StudentService, $state) {
+        $rootScope.showHeaderBar = true;
+        if ($rootScope.user) {
+            switch ($rootScope.user.role) {
+                case 'student':
+                    $scope.listItems = [{
+                        state: 'studentOrderHardWare',
+                        name: '预定智能硬件'
+                    }, {
+                        state: 'studentInfo',
+                        name: '补全学生资料'
+                    }, {
+                        state: 'reference',
+                        name: '邀请老师/同学加入'
+                    }];
+                    break;
+                case 'teacher':
+                    $scope.listItems = [{
+                        state: 'teacherOrderHardWare',
+                        name: '预定智能硬件'
+                    }, {
+                        state: 'teacherInfo',
+                        name: '认证教师资料'
+                    }, {
+                        state: 'reference',
+                        name: '邀请老师/同学加入'
+                    }];
+                    break;
+                case 'institution':
+                    $scope.listItems = [{
+                        state: 'teacherOrderHardWare',
+                        name: '预定智能硬件'
+                    }, {
+                        state: 'organizationInfo',
+                        name: '认证机构资料'
+                    }, {
+                        state: 'organizationManager',
+                        name: '管理机构教师'
+                    }];
+                    break;
+                case 'manage':
+                    $scope.listItems = [{
+                        state: 'staffOrderService',
+                        name: '提交订单'
+                    }, {
+                        state: 'examineList',
+                        name: '审核教师/机构'
+                    }];
+                    break;
+            }
+        }
+        $scope.hasHardWare = function(state, e) {
+            if (state == 'studentOrderHardWare') {
+                e.preventDefault();
+                StudentService.hasHardWare({}, function(data) {
+                    if (data.success == 'Y') {
+                        $rootScope.showMessage('预定申请已受理,我们的工作人员将在您指定的日期电话联系您并上门为您安装智能硬件!', 3000);
+                    } else {
+                        $state.go('studentOrderHardWare');
+                    }
+                });
+            }
+        }
+    }]);
+
+angular.module('education')
+    .factory('HomeService', ['$resource', 'CONFIG', function($resource, CONFIG) {
+        return $resource(CONFIG.urlPrefix + '/v1/account/update', {}, {
+            getSelfInfo: {
+                method: 'post',
+                headers:{
+                    token:CONFIG.token
+                }
             }
         });
     }]);
@@ -1134,7 +1134,8 @@ angular.module('education')
                         var userJson = JSON.stringify($rootScope.user);
                         if (role == 'student') {
                             StudentService.updatePersonalInfo({
-                                avatar: data.data
+                                avatar: data.data,
+                                id:$rootScope.user.id
                             }, function(data) {
                                 if (data.success == 'Y') {
                                     $ionicLoading.hide();
@@ -1148,7 +1149,8 @@ angular.module('education')
                             });
                         } else if (role == 'teacher') {
                             TeacherService.updatePersonalInfo({
-                                avatar: data.data
+                                avatar: data.data,
+                                id:$rootScope.user.id
                             }, function(data) {
                                 if (data.success == 'Y') {
                                     $ionicLoading.hide();
@@ -1161,7 +1163,8 @@ angular.module('education')
                             });
                         } else if (role == 'institution') {
                             OrganizationService.updateOrganizationInfo({
-                                avatar: data.data
+                                avatar: data.data,
+                                id:$rootScope.user.id
                             }, function(data) {
                                 if (data.success == 'Y') {
                                     $ionicLoading.hide();
@@ -1174,7 +1177,8 @@ angular.module('education')
                             });
                         } else if (role == 'manage') {
                             StaffService.updateAvatar({
-                                avatar: data.data
+                                avatar: data.data,
+                                id:$rootScope.user.id
                             }, function(data) {
                                 if (data.success == 'Y') {
                                     $ionicLoading.hide();

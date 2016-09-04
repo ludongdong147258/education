@@ -10161,3 +10161,10 @@ a.button {
 .spinner svg {
     margin-bottom: -8px;
 }
+.personal .icon{
+    font-size: 18px;
+}
+.personal a.item {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

@@ -23,7 +23,8 @@ angular.module('education')
                         var userJson = JSON.stringify($rootScope.user);
                         if (role == 'student') {
                             StudentService.updatePersonalInfo({
-                                avatar: data.data
+                                avatar: data.data,
+                                id:$rootScope.user.id
                             }, function(data) {
                                 if (data.success == 'Y') {
                                     $ionicLoading.hide();
@@ -37,7 +38,8 @@ angular.module('education')
                             });
                         } else if (role == 'teacher') {
                             TeacherService.updatePersonalInfo({
-                                avatar: data.data
+                                avatar: data.data,
+                                id:$rootScope.user.id
                             }, function(data) {
                                 if (data.success == 'Y') {
                                     $ionicLoading.hide();
@@ -50,7 +52,8 @@ angular.module('education')
                             });
                         } else if (role == 'institution') {
                             OrganizationService.updateOrganizationInfo({
-                                avatar: data.data
+                                avatar: data.data,
+                                id:$rootScope.user.id
                             }, function(data) {
                                 if (data.success == 'Y') {
                                     $ionicLoading.hide();
@@ -63,7 +66,8 @@ angular.module('education')
                             });
                         } else if (role == 'manage') {
                             StaffService.updateAvatar({
-                                avatar: data.data
+                                avatar: data.data,
+                                id:$rootScope.user.id
                             }, function(data) {
                                 if (data.success == 'Y') {
                                     $ionicLoading.hide();

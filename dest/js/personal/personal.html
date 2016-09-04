@@ -3,11 +3,22 @@
         <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
         <h1 class="title">个人中心</h1>
     </ion-header-bar>
-    <ion-content scroll="false">
+    <ion-content scroll="false" class="personal">
         <div class="list">
             <div class="item personal-avatar">
                 <img ng-src="{{user.avatar}}"/>
-                <button type="file" style="display:block; margin:0 auto;" class="button button-stable button-outline ion-upload button-small" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">
+                <button style="display:block; margin:0 auto;"
+                 class="button button-stable button-outline ion-upload button-small"
+                 ng-mode="file"
+                 name="file"
+                 ngf-select="uploadFiles($file, $invalidFiles)"
+                 ngf-capture="'camera'"
+                 ngf-pattern="'image/*'"
+                 ngf-accept="'image/*'"
+                 ngf-max-height="1000"
+                 ngf-min-height="100"
+                 ngf-resize="{width: 50, height: 50}"
+                 ngf-max-size="10MB">
                     上传个人头像</button>
                 <h2>{{user.mobile}}</h2>
                 <p>{{roleDisplay}}账号</p>
