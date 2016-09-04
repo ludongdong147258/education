@@ -277,12 +277,16 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
             $rootScope.user = null;
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            localStorage.removeItem('records');
             $state.go('login');
         };
-    }]).run(['$rootScope', '$ionicLoading', 'CONFIG', function($rootScope, $ionicLoading, CONFIG) {
+    }]).run(['$rootScope', '$ionicLoading', 'CONFIG','$state', function($rootScope, $ionicLoading, CONFIG,$state) {
+        if (CONFIG.user) {
+            $rootScope.user = JSON.parse(CONFIG.user);
+        }
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             $ionicLoading.show({
-                template: '<ion-spinner icon="ios-small"></ion-spinner>'
+                template: '<ion-spinner icon="ios-small"></ion-spinner>&nbsp;载入中...'
             });
         });
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -291,9 +295,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
             $ionicLoading.hide();
         });
-        if (CONFIG.user) {
-            $rootScope.user = JSON.parse(CONFIG.user);
-        }
+
     }]).constant('CONFIG', {
         urlPrefix: location.protocol + '//' + location.host,
         // urlPrefix: 'http://101.200.131.30:8020',
@@ -540,15 +542,19 @@ angular.module('education')
     }]);
 
 angular.module('education')
-    .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService', 'CONFIG', '$ionicLoading', '$timeout','ValidateService', function($rootScope, $scope, $state, LoginService, CONFIG, $ionicLoading, $timeout,ValidateService) {
-        $rootScope.showHeaderBar = false;
+    .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService', 'CONFIG', '$ionicLoading', '$timeout', 'ValidateService', function($rootScope, $scope, $state, LoginService, CONFIG, $ionicLoading, $timeout, ValidateService) {
+        if ($rootScope.user) {
+            $state.go('personal', null, {
+                reload: true
+            });
+        }
         var obj = {
             validateInput: function() {
                 if (!$scope.loginInfo.mobile) {
                     $rootScope.showMessage('请输入手机号!');
                     return false;
                 };
-                if(!ValidateService.checkPhone($scope.loginInfo.mobile)){
+                if (!ValidateService.checkPhone($scope.loginInfo.mobile)) {
                     $rootScope.showMessage('手机号码格式不正确!');
                     return false;
                 }
@@ -556,7 +562,7 @@ angular.module('education')
                     $rootScope.showMessage('请输入密码!');
                     return false;
                 };
-                if(!ValidateService.checkPwd($scope.loginInfo.password)){
+                if (!ValidateService.checkPwd($scope.loginInfo.password)) {
                     $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
                     return false;
                 }
@@ -574,7 +580,7 @@ angular.module('education')
             var flag = obj.validateInput();
             if (flag) {
                 $ionicLoading.show({
-                    template: '登录中...'
+                    template: '<ion-spinner icon="ios-small"></ion-spinner>&nbsp;登录中...'
                 });
                 LoginService.login($scope.loginInfo, function(data) {
                     if (data.success == 'Y') {
@@ -2400,7 +2406,7 @@ angular.module('education')
                             if($scope.hardwareInfo.time){
                                 $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
                             }
-                            
+                        
                         } else {
                             $scope.province = {key:''};
                             $scope.city = {
