@@ -277,12 +277,16 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
             $rootScope.user = null;
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            localStorage.removeItem('records');
             $state.go('login');
         };
-    }]).run(['$rootScope', '$ionicLoading', 'CONFIG', function($rootScope, $ionicLoading, CONFIG) {
+    }]).run(['$rootScope', '$ionicLoading', 'CONFIG','$state', function($rootScope, $ionicLoading, CONFIG,$state) {
+        if (CONFIG.user) {
+            $rootScope.user = JSON.parse(CONFIG.user);
+        }
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             $ionicLoading.show({
-                template: '<ion-spinner icon="ios-small"></ion-spinner>'
+                template: '<ion-spinner icon="ios-small"></ion-spinner>&nbsp;载入中...'
             });
         });
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -291,9 +295,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
         $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
             $ionicLoading.hide();
         });
-        if (CONFIG.user) {
-            $rootScope.user = JSON.parse(CONFIG.user);
-        }
+
     }]).constant('CONFIG', {
         urlPrefix: location.protocol + '//' + location.host,
         // urlPrefix: 'http://101.200.131.30:8020',

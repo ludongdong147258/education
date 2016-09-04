@@ -1,13 +1,17 @@
 angular.module('education')
-    .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService', 'CONFIG', '$ionicLoading', '$timeout','ValidateService', function($rootScope, $scope, $state, LoginService, CONFIG, $ionicLoading, $timeout,ValidateService) {
-        $rootScope.showHeaderBar = false;
+    .controller('LoginController', ['$rootScope', '$scope', '$state', 'LoginService', 'CONFIG', '$ionicLoading', '$timeout', 'ValidateService', function($rootScope, $scope, $state, LoginService, CONFIG, $ionicLoading, $timeout, ValidateService) {
+        if ($rootScope.user) {
+            $state.go('personal', null, {
+                reload: true
+            });
+        }
         var obj = {
             validateInput: function() {
                 if (!$scope.loginInfo.mobile) {
                     $rootScope.showMessage('请输入手机号!');
                     return false;
                 };
-                if(!ValidateService.checkPhone($scope.loginInfo.mobile)){
+                if (!ValidateService.checkPhone($scope.loginInfo.mobile)) {
                     $rootScope.showMessage('手机号码格式不正确!');
                     return false;
                 }
@@ -15,7 +19,7 @@ angular.module('education')
                     $rootScope.showMessage('请输入密码!');
                     return false;
                 };
-                if(!ValidateService.checkPwd($scope.loginInfo.password)){
+                if (!ValidateService.checkPwd($scope.loginInfo.password)) {
                     $rootScope.showMessage('密码必须是6-10位字母、数字组合!');
                     return false;
                 }
@@ -33,7 +37,7 @@ angular.module('education')
             var flag = obj.validateInput();
             if (flag) {
                 $ionicLoading.show({
-                    template: '登录中...'
+                    template: '<ion-spinner icon="ios-small"></ion-spinner>&nbsp;登录中...'
                 });
                 LoginService.login($scope.loginInfo, function(data) {
                     if (data.success == 'Y') {

@@ -87,7 +87,7 @@ angular.module('education')
                             if($scope.hardwareInfo.time){
                                 $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
                             }
-                            
+                        
                         } else {
                             $scope.province = {key:''};
                             $scope.city = {
