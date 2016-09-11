@@ -10331,6 +10331,7 @@ a.button {
 }
 .home a.item {
     border: none;
+    min-height: 95px;
 }
 .home a.item img {
     width: 65px;

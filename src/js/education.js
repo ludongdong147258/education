@@ -70,7 +70,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('teacherDetails', {
-                url: '/teacher/details/{id}?type&searchText',
+                url: '/teacher/details/{id}?type&searchText&state',
                 cache: false,
                 views: {
                     baseContent: {
@@ -319,8 +319,8 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
         });
 
     }]).constant('CONFIG', {
-        urlPrefix: location.protocol + '//' + location.host,
-        // urlPrefix: 'http://101.200.131.30:8020',
+        // urlPrefix: location.protocol + '//' + location.host,
+        urlPrefix: 'http://101.200.131.30:8020',
         token: localStorage.getItem('token'),
         user: localStorage.getItem('user'),
         student: '学生',

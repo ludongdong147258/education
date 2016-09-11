@@ -26,14 +26,14 @@
             </ion-slide>
         </ion-slide-box>
         <div class="row nav-btn">
-            <div class="col">
+            <!-- <div class="col">
                 <button class="button button-block button-small button-energized" ui-sref="register({state:'home'})">
                     注册
                 </button>
-            </div>
+            </div> -->
             <div class="col">
                 <button class="button button-block button-small button-energized" ui-sref="login({state:'home'})">
-                    登录
+                    登录/注册
                 </button>
             </div>
             <div class="col">
@@ -102,7 +102,7 @@
         </div>
         <div class="teacher-list">
             <div ng-repeat="item in recommendList">
-                <a class="item item-avatar">
+                <a class="item item-avatar" ui-sref="teacherDetails({id:item.id,state:'home'})">
                     <img ng-src="{{item.avatar}}">
                     <h2>{{item.truename}}</h2>
                     <p>教龄:{{item.worked_year}}年</p>

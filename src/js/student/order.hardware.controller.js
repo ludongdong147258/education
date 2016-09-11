@@ -63,6 +63,7 @@ angular.module('education')
                                 tempKey = item.province;
                             }
                         });
+
                         var hardwareInfo = localStorage.getItem('hardwareInfo');
                         if(hardwareInfo){
                             $scope.hardwareInfo = angular.fromJson(hardwareInfo);
@@ -87,13 +88,16 @@ angular.module('education')
                             if($scope.hardwareInfo.time){
                                 $scope.hardwareInfo.time = new Date($scope.hardwareInfo.time);
                             }
-                        
+
                         } else {
-                            $scope.province = {key:''};
-                            $scope.city = {
-                                key: '',
-                                id: ''
-                            };
+                            $scope.province = $scope.provinces[0];
+                            $scope.changeProvince($scope.province);
+                            $scope.city = $scope.cities[0];
+                            // $scope.province = {key:''};
+                            // $scope.city = {
+                            //     key: '',
+                            //     id: ''
+                            // };
                         }
                     }
                 }, function(error) {

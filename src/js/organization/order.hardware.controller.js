@@ -57,6 +57,9 @@ angular.module('education')
                                 tempKey = item.province;
                             }
                         });
+                        $scope.province = $scope.provinces[0];
+                        $scope.changeProvince($scope.province);
+                        $scope.city = $scope.cities[0];
                     }
                 }, function(error) {
                     console.log(error);

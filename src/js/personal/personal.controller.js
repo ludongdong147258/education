@@ -109,7 +109,7 @@ angular.module('education')
                     }, {
                         state: 'studentOrder',
                         class: 'ion-ios-list energized',
-                        name: '我的订单'
+                        name: '约课通知'
                     }, {
                         state: 'reference',
                         class: 'ion-star assertive',

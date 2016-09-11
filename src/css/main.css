@@ -517,6 +517,7 @@
 }
 .home a.item {
     border: none;
+    min-height: 95px;
 }
 .home a.item img {
     width: 65px;
@@ -541,7 +542,6 @@
     font-size: 14px;
 }
 .news-content img {
-    width: 100%;
     max-width: 100%;
 }
 .online {
@@ -551,4 +551,12 @@
 .online img {
     width: 200px;
     height: 200px;
+}
+textarea {
+    resize: none;
+    padding-left: 5px;
+}
+.student-info textarea {
+    width: 100%;
+    border-bottom: 1px solid #ddd;
 }

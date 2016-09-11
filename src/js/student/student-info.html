@@ -1,4 +1,4 @@
-<ion-view title="我的资料">
+<ion-view title="我的资料" class="student-info">
     <ion-header-bar align-title="center" class="bar-energized">
         <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
         <h1 class="title">我的资料</h1>
@@ -96,8 +96,21 @@
                 </button>
             </div>
         </div>
-        <div class="button-bar">
-            <button class="button button-energized button-block" ng-click="saveInfo()">保存更改</button>
+        <div class="row order-row">
+            <div class="col">
+                <h4 class="item">个人情况描述(可选项)</h4>
+            </div>
         </div>
+        <div>
+            <textarea name="name" rows="8" cols="40" placeholder="请填写个人基本情况和需求"></textarea>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="button-bar">
+                    <button class="button button-energized button-block" ng-click="saveInfo()">提交保存</button>
+                </div>
+            </div>
+        </div>
+
     </ion-content>
 </ion-view>

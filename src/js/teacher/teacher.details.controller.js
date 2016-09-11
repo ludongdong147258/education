@@ -6,7 +6,11 @@ angular.module('education')
             if(searchText){
                 $state.go('search',{type:$scope.type,searchText:searchText});
             }else{
-                $state.go('teacher');
+                if($stateParams.state){
+                    $state.go($stateParams.state);
+                }else{
+                    $state.go('teacher');
+                }
             }
         };
         $scope.teacherInfo = {};
