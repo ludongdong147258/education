@@ -9862,7 +9862,7 @@ a.button {
 .teacher-row .col:last-child h3 {
     text-align: right;
 }
-.teacher-row .col h3,.teacher .teacher-desc  {
+.teacher-row .col h3, .teacher .teacher-desc {
     color: #808080;
     font-size: 14px;
 }
@@ -10145,6 +10145,12 @@ a.button {
 .menu .recommend-icon {
     background: url(../images/recommend.png);
 }
+.menu .home-icon {
+    background: url(../images/home.png);
+}
+.menu .zixun-icon {
+    background: url(../images/zixun.png);
+}
 .qrcode {
     display: block;
     margin: 0 auto;
@@ -10228,10 +10234,10 @@ a.button {
 .news a.item img:first-child {
     max-width: 90px;
     max-height: 68px;
-    top:15px;
+    top: 15px;
     margin-right: 10px;
 }
-.news a.item h2{
+.news a.item h2 {
     font-size: 17px;
     color: #404040;
     margin-left: 10px;
@@ -10251,8 +10257,112 @@ a.button {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    top:14px;
+    top: 14px;
 }
-.order-service .item-input .input-label{
+.order-service .item-input .input-label {
     color: #404040;
+}
+.home .search-input {
+    width: 75%;
+    margin-left: 5px;
+}
+@media screen and (max-width:370px) {
+    .home .search-input {
+        width: 74.5%;
+    }
+}
+@media screen and (max-width:325px) {
+    .home .search-input {
+        width: 71.3%;
+    }
+}
+.home .button.button-light.button-icon {
+    margin-left: 15px;
+}
+.home .slider-pager .slider-pager-page {
+    color: #ff9a1e;
+}
+.home .nav-btn .button{
+    margin: 0;
+}
+.home .row-subject .col img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+}
+.home .row-subject .col span {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    color: #808080;
+}
+
+.home .row-more, .home .row-more .col{
+    padding: 0;
+}
+.home .row-more .col span {
+    float: left;
+}
+.home .row-more .col span:first-child{
+    display: inline-block;
+    height: 35px;
+    width: 10px;
+    background: #ff9a1e;
+}
+.home .row-more .col span:last-child {
+    display: inline-block;
+    height: 35px;
+    line-height: 35px;
+    font-size: 18px;
+    color: #404040;
+    margin-left: 5px;
+    font-weight: bold;
+}
+@media screen and (max-width:321px) {
+    .home .row-more .col span:last-child {
+        font-size: 16px;
+    }
+}
+.home .row-more .col .col-more {
+    text-align: right;
+    height: 35px;
+    line-height: 35px;
+    color: #808080;
+}
+.home a.item {
+    border: none;
+}
+.home a.item img {
+    width: 65px;
+    height: 65px;
+    max-width: 65px;
+    max-height: 65px;
+}
+.home a.item h2,.home a.item p{
+    margin-left: 30px;
+}
+.home .teacher-list {
+    overflow: hidden;
+}
+.home .teacher-list > div {
+    float: left;
+    width: 50%;
+}
+.home .img-box {
+    margin: 0 10px;
+}
+.home .img-box .img-title {
+    font-size: 14px;
+}
+.news-content img {
+    width: 100%;
+    max-width: 100%;
+}
+.online {
+    margin: 10px;
+    text-align: center;
+}
+.online img {
+    width: 200px;
+    height: 200px;
 }

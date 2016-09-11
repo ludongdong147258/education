@@ -74,6 +74,8 @@
     <script src="./js/updatepwd/updatepwd.controller.js" charset="utf-8"></script>
     <!-- 平台推荐 -->
     <script src="./js/recommend/recommned.controller.js" charset="utf-8"></script>
+    <!--在线咨询-->
+    <script src="./js/online/online.controller.js" charset="utf-8"></script>
 </head>
 
 <body>
@@ -93,7 +95,7 @@
                 <!-- <li ng-show="user" class="item" ng-click="toggleRight()" ui-sref="{{item.state}}" ng-repeat="item in listItems">
                     <a class="energized"><i class="news-icon"></i>{{item.name}}</a>
                 </li> -->
-                <li class="item" ng-click="toggleRight()" ui-sref="news">
+                <!-- <li class="item" ng-click="toggleRight()" ui-sref="news">
                     <a class="energized"><i class="news-icon"></i>京南动态</a>
                 </li>
                 <li class="item" ng-click="toggleRight()" ui-sref="teacher">
@@ -104,15 +106,18 @@
                 </li>
                 <li class="item" ng-click="toggleRight()" ui-sref="search">
                     <a class="energized"><i class="search-icon"></i>搜索教师</a>
-                </li>
+                </li> -->
                 <!-- <li class="item" ng-click="toggleRight()" ng-hide="user" ui-sref="register">
                     <a class="energized"><i class="register-icon"></i>账号注册</a>
                 </li>
                 <li class="item" ng-click="toggleRight()" ng-hide="user" ui-sref="login">
                     <a class="energized"><i class="login-icon"></i>账号登录</a>
                 </li> -->
-                <li class="item" ng-click="toggleRight()" ng-show="user">
-                    <a class="energized" ng-click="logout()"><i class="exit-icon"></i>退出登录</a>(ID:{{user.id}})
+                <li class="item" ng-click="toggleRight()" ng-show="user" ui-sref="online">
+                    <a class="energized"><i class="zixun-icon"></i>在线咨询</a>
+                </li>
+                <li class="item" ng-click="logout()" ng-show="user">
+                    <a class="energized"><i class="exit-icon"></i>退出登录</a>(ID:{{user.id}})
                 </li>
             </ul>
         </ion-side-menu>

@@ -1,8 +1,9 @@
 <ion-view title="京南动态">
     <ion-header-bar align-title="center" class="bar-energized">
+        <a class="button button-icon icon ion-chevron-left" ng-click="back()"></a>
         <h1 class="title">京南动态</h1>
-        <button class="button button-icon button-clear icon ion-navicon button-light" ng-click="toggleRight()">
-        </button>
+        <!-- <button class="button button-icon button-clear icon ion-navicon button-light" ng-click="toggleRight()">
+        </button> -->
     </ion-header-bar>
     <ion-content class="news">
         <ion-refresher pulling-text="下拉刷新" on-refresh="refreshNews()"></ion-refresher>
@@ -26,16 +27,4 @@
         </div>
         <ion-infinite-scroll ng-if="hasMoreData" on-infinite="loadMore()" distance="5%"></ion-infinite-scroll>
     </ion-content>
-    <!-- <ion-footer-bar class="bar-light">
-        <div class="button-bar footer-bar" ng-hide="user.isLogin">
-            <a class="button button-energized" ui-sref="register({tabIndex:0})">学生注册</a>
-            <a class="button button-energized" ui-sref="register({tabIndex:1})">教师注册</a>
-            <a class="button button-energized" ui-sref="register({tabIndex:2})">机构注册</a>
-        </div>
-        <div class="button-bar footer-bar home-footer-bar" ng-show="user.isLogin">
-            <a class="button button-energized" ui-sref="studentOrderHardWare">预定智能硬件</a>
-            <a class="button button-energized" ui-sref="studentInfo">补全学生资料</a>
-            <a class="button button-energized" ui-sref="reference">邀请老师/同学加入</a>
-        </div>
-    </ion-footer-bar> -->
 </ion-view>

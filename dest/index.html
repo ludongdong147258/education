@@ -9,71 +9,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="format-detection" content="telephone=no, email=no" />
     <title>京南课堂</title>
-    <link rel="stylesheet" href="./css/ionic.css" charset="utf-8">
-    <link rel="stylesheet" href="./css/main.css" charset="utf-8">
+    <link rel="stylesheet" href="./css/education-6a7196a05a.min.css" charset="utf-8">
     <script src="./libs/ionic.bundle.min.js" charset="utf-8"></script>
     <script src="./libs/angular/angular-resource.min.js" charset="utf-8"></script>
     <script src="./libs/ng-file-upload.min.js" charset="utf-8"></script>
     <script src="./libs/qrcode.js" charset="utf-8"></script>
     <script src="./libs/qrcode_UTF8.js" charset="utf-8"></script>
     <script src="./libs/angular-qrcode.js" charset="utf-8"></script>
-    <script src="./js/education.js" charset="utf-8"></script>
-    <!-- Home -->
-    <script src="./js/home/home.service.js" charset="utf-8"></script>
-    <script src="./js/home/home.controller.js" charset="utf-8"></script>
-    <!--登录-->
-    <script src="./js/login/login.service.js" charset="utf-8"></script>
-    <script src="./js/login/login.controller.js" charset="utf-8"></script>
-    <!-- 找回密码 -->
-    <script src="./js/findpwd/findpwd.service.js" charset="utf-8"></script>
-    <script src="./js/findpwd/findpwd.controller.js" charset="utf-8"></script>
-    <!-- 新闻 -->
-    <script src="./js/news/news.service.js" charset="utf-8"></script>
-    <script src="./js/news/news.controller.js" charset="utf-8"></script>
-    <script src="./js/news/news.details.controller.js" charset="utf-8"></script>
-    <!-- 老师 -->
-    <script src="./js/teacher/teacher.service.js" charset="utf-8"></script>
-    <script src="./js/teacher/teacher.controller.js" charset="utf-8"></script>
-    <script src="./js/teacher/teacher.info.controller.js" charset="utf-8"></script>
-    <script src="./js/teacher/order.hardware.controller.js" charset="utf-8"></script>
-    <script src="./js/teacher/teacher.details.controller.js" charset="utf-8"></script>
-    <script src="./js/register/register.service.js" charset="utf-8"></script>
-    <script src="./js/register/register.controller.js" charset="utf-8"></script>
-    <!-- 学生 -->
-    <script src="./js/student/student.service.js" charset="utf-8"></script>
-    <script src="./js/student/student.info.controller.js" charset="utf-8"></script>
-    <script src="./js/student/order.hardware.controller.js" charset="utf-8"></script>
-    <script src="./js/student/order.controller.js" charset="utf-8"></script>
-    <script src="./js/student/order.details.controller.js" charset="utf-8"></script>
-    <!-- 推荐 -->
-    <script src="./js/reference/reference.service.js" charset="utf-8"></script>
-    <script src="./js/reference/reference.controller.js" charset="utf-8"></script>
-    <script src="./js/personal/personal.controller.js" charset="utf-8"></script>
-    <!-- 机构 -->
-    <script src="./js/organization/organization.service.js" charset="utf-8"></script>
-    <script src="./js/organization/organization.info.controller.js" charset="utf-8"></script>
-    <script src="./js/organization/organization.manager.controller.js" charset="utf-8"></script>
-    <script src="./js/organization/add.teacher.controller.js" charset="utf-8"></script>
-    <script src="./js/organization/order.hardware.controller.js" charset="utf-8"></script>
-    <!-- 工作人员 -->
-    <script src="./js/staff/staff.service.js" charset="utf-8"></script>
-    <script src="./js/staff/examine.controller.js" charset="utf-8"></script>
-    <script src="./js/staff/order.controller.js" charset="utf-8"></script>
-    <script src="./js/staff/order.service.controller.js" charset="utf-8"></script>
-    <script src="./js/staff/order.details.controller.js" charset="utf-8"></script>
-    <script src="./js/staff/teacher.details.controller.js" charset="utf-8"></script>
-    <script src="./js/staff/organization.details.controller.js" charset="utf-8"></script>
-
-    <!-- filter -->
-    <script src="./js/filters/type.filter.js" charset="utf-8"></script>
-    <!-- 搜索页面 -->
-    <script src="./js/search/search.service.js" charset="utf-8"></script>
-    <script src="./js/search/search.controller.js" charset="utf-8"></script>
-    <!-- 修改密码 -->
-    <script src="./js/updatepwd/updatepwd.service.js" charset="utf-8"></script>
-    <script src="./js/updatepwd/updatepwd.controller.js" charset="utf-8"></script>
-    <!-- 平台推荐 -->
-    <script src="./js/recommend/recommned.controller.js" charset="utf-8"></script>
+    <script src="./js/education-9b8640dbad.min.js" charset="utf-8"></script>
 </head>
 
 <body>
@@ -84,13 +27,16 @@
         </ion-side-menu-content>
         <ion-side-menu side="right">
             <ul class="list nav-list menu">
+                <li class="item" ng-click="toggleRight()" ui-sref="home">
+                    <a class="energized"><i class="home-icon"></i>首页</a>
+                </li>
                 <li class="item" ng-click="toggleRight()" ng-show="user" ui-sref="personal">
                     <a class="energized"><i class="self-icon"></i>个人中心</a>
                 </li>
                 <!-- <li ng-show="user" class="item" ng-click="toggleRight()" ui-sref="{{item.state}}" ng-repeat="item in listItems">
                     <a class="energized"><i class="news-icon"></i>{{item.name}}</a>
                 </li> -->
-                <li class="item" ng-click="toggleRight()" ui-sref="news">
+                <!-- <li class="item" ng-click="toggleRight()" ui-sref="news">
                     <a class="energized"><i class="news-icon"></i>京南动态</a>
                 </li>
                 <li class="item" ng-click="toggleRight()" ui-sref="teacher">
@@ -101,15 +47,18 @@
                 </li>
                 <li class="item" ng-click="toggleRight()" ui-sref="search">
                     <a class="energized"><i class="search-icon"></i>搜索教师</a>
-                </li>
+                </li> -->
                 <!-- <li class="item" ng-click="toggleRight()" ng-hide="user" ui-sref="register">
                     <a class="energized"><i class="register-icon"></i>账号注册</a>
                 </li>
                 <li class="item" ng-click="toggleRight()" ng-hide="user" ui-sref="login">
                     <a class="energized"><i class="login-icon"></i>账号登录</a>
                 </li> -->
-                <li class="item" ng-click="toggleRight()" ng-show="user">
-                    <a class="energized" ng-click="logout()"><i class="exit-icon"></i>退出登录</a>(ID:{{user.id}})
+                <li class="item" ng-click="toggleRight()" ng-show="user" ui-sref="online">
+                    <a class="energized"><i class="zixun-icon"></i>在线咨询</a>
+                </li>
+                <li class="item" ng-click="logout()" ng-show="user">
+                    <a class="energized"><i class="exit-icon"></i>退出登录</a>(ID:{{user.id}})
                 </li>
             </ul>
         </ion-side-menu>

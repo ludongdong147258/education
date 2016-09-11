@@ -23,6 +23,16 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             })
+            .state('online', {
+                url: '/online',
+                cache: false,
+                views: {
+                    baseContent: {
+                        templateUrl: './js/online/online.html',
+                        controller: 'OnlineController'
+                    }
+                }
+            })
             .state('findpwd', {
                 url: '/findpwd',
                 cache: false,
@@ -290,6 +300,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
             localStorage.removeItem('user');
             localStorage.removeItem('records');
             $state.go('home');
+            $scope.toggleRight();
         };
     }]).run(['$rootScope', '$ionicLoading', 'CONFIG', '$state', function($rootScope, $ionicLoading, CONFIG, $state) {
         if (CONFIG.user) {
@@ -308,8 +319,8 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
         });
 
     }]).constant('CONFIG', {
-        // urlPrefix: location.protocol + '//' + location.host,
-        urlPrefix: 'http://101.200.131.30:8020',
+        urlPrefix: location.protocol + '//' + location.host,
+        // urlPrefix: 'http://101.200.131.30:8020',
         token: localStorage.getItem('token'),
         user: localStorage.getItem('user'),
         student: '学生',

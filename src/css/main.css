@@ -334,6 +334,9 @@
 .menu .home-icon {
     background: url(../images/home.png);
 }
+.menu .zixun-icon {
+    background: url(../images/zixun.png);
+}
 .qrcode {
     display: block;
     margin: 0 auto;
@@ -536,4 +539,16 @@
 }
 .home .img-box .img-title {
     font-size: 14px;
+}
+.news-content img {
+    width: 100%;
+    max-width: 100%;
+}
+.online {
+    margin: 10px;
+    text-align: center;
+}
+.online img {
+    width: 200px;
+    height: 200px;
 }
