@@ -2,9 +2,9 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
     .config(['$stateProvider', '$urlRouterProvider', '$ionicConfigProvider', function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         $ionicConfigProvider.views.maxCache(5); // 不缓存页面
         $ionicConfigProvider.templates.maxPrefetch(0); // 不进行预加载界面
-        $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider.otherwise('/home');
         $stateProvider.state('login', {
-                url: '/login',
+                url: '/login?state',
                 cache: false,
                 views: {
                     baseContent: {
@@ -12,7 +12,18 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                         controller: 'LoginController'
                     }
                 }
-            }).state('findpwd', {
+            })
+            .state('home', {
+                url: '/home',
+                cache: false,
+                views: {
+                    baseContent: {
+                        templateUrl: './js/home/home.html',
+                        controller: 'HomeController'
+                    }
+                }
+            })
+            .state('findpwd', {
                 url: '/findpwd',
                 cache: false,
                 views: {
@@ -22,8 +33,8 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('teacher', {
-                url: '/teacher',
-                // cache: false,
+                url: '/teacher?subject',
+                cache: false,
                 views: {
                     baseContent: {
                         templateUrl: './js/teacher/teacher.html',
@@ -76,7 +87,7 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
                     }
                 }
             }).state('register', {
-                url: '/register?tabIndex&code',
+                url: '/register?tabIndex&code&state',
                 cache: false,
                 views: {
                     baseContent: {
@@ -278,9 +289,9 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('records');
-            $state.go('login');
+            $state.go('home');
         };
-    }]).run(['$rootScope', '$ionicLoading', 'CONFIG','$state', function($rootScope, $ionicLoading, CONFIG,$state) {
+    }]).run(['$rootScope', '$ionicLoading', 'CONFIG', '$state', function($rootScope, $ionicLoading, CONFIG, $state) {
         if (CONFIG.user) {
             $rootScope.user = JSON.parse(CONFIG.user);
         }
@@ -297,8 +308,8 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
         });
 
     }]).constant('CONFIG', {
-        urlPrefix: location.protocol + '//' + location.host,
-        // urlPrefix: 'http://101.200.131.30:8020',
+        // urlPrefix: location.protocol + '//' + location.host,
+        urlPrefix: 'http://101.200.131.30:8020',
         token: localStorage.getItem('token'),
         user: localStorage.getItem('user'),
         student: '学生',

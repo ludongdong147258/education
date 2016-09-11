@@ -7,7 +7,7 @@
         </label>
         <a class="button button-icon icon ion-ios-search-strong" ng-click="search()"></a>
     </ion-header-bar>
-    <ion-content>
+    <ion-content class="search">
         <!-- <ion-refresher pulling-text="下拉刷新" on-refresh="refresh()"></ion-refresher> -->
         <div class="list" ng-hide="showHistory">
             <a class="item item-thumbnail-left" ng-repeat="item in teacherList" ui-sref="teacherDetails({id:item.id,type:type,searchText:searchText})">
@@ -69,7 +69,7 @@
             </a> -->
         </div>
         <span class="search-tip" ng-show="teacherList.length == 0 && !showHistory">未查询到相关信息</span>
-        <div ng-show="showHistory">
+        <div ng-show="showHistory" class="search-history">
             <div class="list" ng-show="histories.length > 0" style="margin-bottom:0;">
                 <div class="item item-divider">
                     搜索历史

@@ -1,7 +1,8 @@
 angular.module('education')
     .controller('TeacherController', ['$rootScope', '$scope', 'TeacherService','$stateParams','$state', function($rootScope, $scope, TeacherService,$stateParams,$state) {
+        var subject = $stateParams.subject;
         $scope.back = function(){
-            $state.go('news');
+            $state.go('home');
         };
         $scope.teacherList = [];
         $scope.subjects = [];
@@ -12,6 +13,9 @@ angular.module('education')
         $scope.grade = {key:''};
         $scope.hasMoreData = true;
         var params = {page:1};
+        if(subject){
+            params.subject = subject;
+        }
         var obj = {
             init:function(){
                 obj.getSchoolworks();

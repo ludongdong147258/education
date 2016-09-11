@@ -2,7 +2,7 @@ angular.module('education')
     .controller('RecommendController', ['$rootScope', '$scope', '$state', '$stateParams', 'SearchService', function($rootScope, $scope, $state, $stateParams, SearchService) {
         // 返回
         $scope.back = function() {
-            $state.go('news');
+            $state.go('home');
         };
         // $scope.recommendList = [];
         // var obj = {

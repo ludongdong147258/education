@@ -7,7 +7,7 @@ angular.module('education')
             if ($scope.type) {
                 $state.go('studentOrderHardWare');
             } else {
-                $state.go('news');
+                $state.go('home');
             }
         };
         var params = {
@@ -90,7 +90,7 @@ angular.module('education')
             obj.loadTeacherList();
         }
         obj.init();
-        
+
         $scope.search = function() {
             if (!$scope.searchText) {
                 $rootScope.showMessage('搜索关键字不能为空!');

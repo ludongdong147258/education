@@ -4,21 +4,21 @@
         <button class="button button-icon button-clear icon ion-navicon button-light" ng-click="toggleRight()">
         </button>
     </ion-header-bar>
-    <ion-content scroll-height>
+    <ion-content class="news">
         <ion-refresher pulling-text="下拉刷新" on-refresh="refreshNews()"></ion-refresher>
         <div class="button-bar news-bar">
             <a class="button button-clear" ng-class="{'button-energized':showNewsList,'button-stable':showOutcomeList,'button-border-bottom':showNewsList}" ng-click="changeTab(0)">京南新闻</a>
             <a class="button button-clear" ng-class="{'button-energized':showOutcomeList,'button-stable':showNewsList,'button-border-bottom':showOutcomeList}" ng-click="changeTab(1)">教学成果</a>
         </div>
-        <div class="list" ng-if="showNewsList" ng-repeat="item in newsList">
-            <a class="item item-thumbnail-left" ui-sref="newsDetails({id:item.id})">
+        <div class="list" ng-if="showNewsList">
+            <a class="item item-thumbnail-left" ui-sref="newsDetails({id:item.id})" ng-repeat="item in newsList">
                 <img ng-src="{{item.thumbnail}}">
                 <h2>{{item.title}}</h2>
                 <p>{{item.description}}</p>
             </a>
         </div>
-        <div class="list" ng-if="showOutcomeList" ng-repeat="item in newsList">
-            <a class="item item-thumbnail-left" ui-sref="newsDetails({id:item.id,tabIndex:1})">
+        <div class="list" ng-if="showOutcomeList">
+            <a class="item item-thumbnail-left" ui-sref="newsDetails({id:item.id,tabIndex:1})" ng-repeat="item in newsList">
                 <img ng-src="{{item.thumbnail}}">
                 <h2>{{item.title}}</h2>
                 <p>{{item.description}}</p>

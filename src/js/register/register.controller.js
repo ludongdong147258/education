@@ -50,7 +50,11 @@ angular.module('education')
         };
         // 返回
         $scope.back = function() {
-            $state.go('login');
+            if($stateParams.state){
+                $state.go($stateParams.state);
+            }else{
+                $state.go('login');
+            }
         };
         $scope.displayStates = [true, false, false];
         // tab切换

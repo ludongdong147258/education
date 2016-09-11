@@ -2,7 +2,7 @@ angular.module('education')
     .controller('PersonalController', ['$rootScope', '$scope', '$state', 'CONFIG', 'Upload', '$timeout', 'StudentService', '$ionicLoading', 'TeacherService', 'OrganizationService', 'StaffService', function($rootScope, $scope, $state, CONFIG, Upload, $timeout, StudentService, $ionicLoading, TeacherService, OrganizationService, StaffService) {
         var role = $rootScope.user.role;
         $scope.back = function() {
-            $state.go('news');
+            $state.go('home');
         };
         $scope.uploadFiles = function(file, errFiles) {
             $scope.f = file;

@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('NewsController', ['$rootScope', '$scope', 'NewsService','$stateParams', function($rootScope, $scope, NewsService,$stateParams) {
+    .controller('NewsController', ['$rootScope', '$scope', 'NewsService','$stateParams','$state', function($rootScope, $scope, NewsService,$stateParams,$state) {
         var tabIndex = $stateParams.tabIndex;
         $scope.showNewsList = true;
         $scope.showOutcomeList = false;
@@ -9,6 +9,9 @@ angular.module('education')
             $scope.showNewsList = false;
             $scope.showOutcomeList = true;
         }
+        $scope.back = function(){
+            $state.go('home');
+        };
         var page = 1,
             type = 'news';
         var obj = {

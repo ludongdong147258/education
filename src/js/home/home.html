@@ -1,15 +1,139 @@
-<ion-view title="京南课堂" class="background">
-    <ion-content scroll="false">
-        <a ui-sref="news" class="button button-light button-outline button-more button-small">更多平台新闻</a>
+<ion-view title="首页" class="home">
+    <ion-header-bar class="bar-energized">
+        <a class="button button-clear energized">河北</a>
+        <label class="item item-input item-light search-input">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="text" placeholder="搜索教师手机号、姓名" ng-model="searchText" ng-focus="goToSearch()">
+        </label>
+        <button class="button button-icon button-clear icon ion-navicon button-light" ng-click="toggleRight()"></button>
+    </ion-header-bar>
+    <ion-content>
+        <ion-slide-box active-slide="activeSlider">
+            <ion-slide>
+                <div class="img-box">
+                    <img src="././images/01.png"/>
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="img-box">
+                    <img src="././images/02.png"/>
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="img-box">
+                    <img src="././images/03.png"/>
+                </div>
+            </ion-slide>
+        </ion-slide-box>
+        <div class="row nav-btn">
+            <div class="col">
+                <button class="button button-block button-small button-energized" ui-sref="register({state:'home'})">
+                    注册
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-block button-small button-energized" ui-sref="login({state:'home'})">
+                    登录
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-block button-small button-energized" ng-click="orderHardWare()">
+                    预约硬件
+                </button>
+            </div>
+        </div>
+        <div class="row row-subject">
+            <div class="col" ui-sref="teacher({subject:'Chinese'})">
+                <img src="././images/chinese.png" alt="语文"/>
+                <span>语文</span>
+            </div>
+            <div class="col" ui-sref="teacher({subject:'math'})">
+                <img src="././images/math.png" alt="数学"/>
+                <span>数学</span>
+            </div>
+            <div class="col" ui-sref="teacher({subject:'English'})">
+                <img src="././images/english.png" alt="英语"/>
+                <span>英语</span>
+            </div>
+            <div class="col" ui-sref="teacher({subject:'physics'})">
+                <img src="././images/wuli.png" alt="物理"/>
+                <span>物理</span>
+            </div>
+            <div class="col" ui-sref="teacher({subject:'chemistry'})">
+                <img src="././images/huaxue.png" alt="化学"/>
+                <span>化学</span>
+            </div>
+        </div>
+        <div class="row row-subject">
+            <div class="col" ui-sref="teacher({subject:'biology'})">
+                <img src="././images/shengwu.png" alt="biology"/>
+                <span>生物</span>
+            </div>
+            <div class="col" ui-sref="teacher({subject:'geography'})">
+                <img src="././images/dili.png" alt="geography"/>
+                <span>地理</span>
+            </div>
+            <div class="col" ui-sref="teacher({subject:'politics'})">
+                <img src="././images/zhengzhi.png" alt="politics"/>
+                <span>政治</span>
+            </div>
+            <div class="col" ui-sref="teacher({subject:'art'})">
+                <img src="././images/art.png" alt="art"/>
+                <span>美术</span>
+            </div>
+            <div class="col" ui-sref="teacher">
+                <img src="././images/more.png" alt="更多"/>
+                <span>更多</span>
+            </div>
+        </div>
+        <div style="margin:0 10px;">
+            <div class="row row-more row-bottom">
+                <div class="col">
+                    <span></span>
+                    <span>推荐老师</span>
+                </div>
+                <div class="col">
+                    <div class="col-more" ui-sref="teacher">
+                        <em>更多</em>
+                        <i class="icon ion-ios-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="teacher-list">
+            <div ng-repeat="item in recommendList">
+                <a class="item item-avatar">
+                    <img ng-src="{{item.avatar}}">
+                    <h2>{{item.truename}}</h2>
+                    <p>教龄:{{item.worked_year}}年</p>
+                    <p>{{item.grade}}/{{item.subject}}</p>
+                </a>
+            </div>
+        </div>
+        <div style="margin:0 10px;margin-bottom:10px;">
+            <div class="row row-more row-bottom">
+                <div class="col">
+                    <span></span>
+                    <span>产品说明/新闻浏览</span>
+                </div>
+                <div class="col">
+                    <div class="col-more" ui-sref="news">
+                        <em>更多</em>
+                        <i class="icon ion-ios-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="img-box">
+            <h1 class="img-title">流程说明:</h1>
+            <img src="././images/liucheng.png"/>
+        </div>
+        <div class="img-box">
+            <h1 class="img-title">功能说明:</h1>
+            <p>真实场景互动教学、超级一对一、小班精品课、大型直播课、多人旁听，随时随地、随心所欲复习预习，不怕迟到，不怕错过，学习更轻松；
+            </p>
+            <p>个性化人工服务，致电平台客服电话13283229175，教务将根据您的要求为您 "私人定制" 直至为您找到满意的教师，请于工作时间拨打“。
+            </p>
+        </div>
     </ion-content>
-    <ion-footer-bar class="bar-light">
-        <div class="button-bar footer-bar" ng-hide="user">
-            <a class="button button-energized" ui-sref="register({tabIndex:0})">学生注册</a>
-            <a class="button button-energized" ui-sref="register({tabIndex:1})">教师注册</a>
-            <a class="button button-energized" ui-sref="register({tabIndex:2})">机构注册</a>
-        </div>
-        <div class="button-bar footer-bar home-footer-bar" ng-show="user">
-            <a class="button button-energized" ng-repeat="item in listItems" ng-click="hasHardWare(item.state,$event)" ui-sref="{{item.state}}">{{item.name}}</a>
-        </div>
-    </ion-footer-bar>
 </ion-view>

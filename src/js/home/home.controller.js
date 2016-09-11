@@ -1,5 +1,5 @@
 angular.module('education')
-    .controller('HomeController', ['$rootScope', '$scope', 'CONFIG', 'HomeService', 'StudentService', '$state', function($rootScope, $scope, CONFIG, HomeService, StudentService, $state) {
+    .controller('HomeController', ['$rootScope', '$scope', 'CONFIG', 'HomeService', 'StudentService', '$state', '$timeout', 'SearchService', function($rootScope, $scope, CONFIG, HomeService, StudentService, $state, $timeout, SearchService) {
         $rootScope.showHeaderBar = true;
         if ($rootScope.user) {
             switch ($rootScope.user.role) {
@@ -61,5 +61,57 @@ angular.module('education')
                     }
                 });
             }
+        };
+        $scope.activeSlider = 0;
+
+        function repeatActiveSlider() {
+            if ($scope.activeSlider < 3) {
+                $scope.activeSlider++;
+            }
+            if ($scope.activeSlider == 3) {
+                $scope.activeSlider = 0;
+            }
+            $timeout(function() {
+                repeatActiveSlider();
+            }, 3000);
         }
+        $timeout(function() {
+            repeatActiveSlider();
+        }, 3000);
+        $scope.recommendList = [];
+        var obj = {
+            init: function() {
+                obj.loadList();
+            },
+            loadList: function() {
+                SearchService.getRecommendTeacherList({}, function(data) {
+                    if (data.success == 'Y') {
+                        $scope.recommendList = data.data;
+                    }
+                }, function(error) {
+                    console.error(error);
+                });
+            }
+        };
+        obj.init();
+        $scope.goToSearch = function() {
+            $state.go('search');
+        }
+        $scope.orderHardWare = function() {
+            if (!$rootScope.user) {
+                $rootScope.showMessage('请先注册/登录再预约安装硬件!');
+            } else {
+                switch ($rootScope.user.role) {
+                    case 'student':
+                        $state.go('studentOrderHardWare');
+                        break;
+                    case 'teacher':
+                        $state.go('teacherOrderHardWare');
+                        break;
+                    case 'institution':
+                        $state.go('teacherOrderHardWare');
+                        break;
+                }
+            }
+        };
     }]);

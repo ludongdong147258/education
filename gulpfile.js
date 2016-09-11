@@ -12,6 +12,7 @@ var clean = require('gulp-clean'),
     concat = require('gulp-concat'), //文件合并
     rename = require('gulp-rename'), //文件更名
     rev = require('gulp-rev'), // MD5后缀
+    sass = require('gulp-sass'),
     notify = require('gulp-notify'); //提示信息
 // clean
 gulp.task("clean", function() {
@@ -72,6 +73,22 @@ gulp.task('css', function() {
         .pipe(gulp.dest('dest/css'))
         .pipe(notify({
             message: 'css task ok'
+        }));
+});
+
+gulp.task('sass', function() {
+    return gulp.src('src/css/*.scss')
+        .pipe(sass())
+        .pipe(concat('test.css'))
+        .pipe(gulp.dest('dest/css'))
+        .pipe(rename({
+            suffix: '.min'
+        }))
+        .pipe(minifycss())
+        .pipe(rev())
+        .pipe(gulp.dest('dest/css'))
+        .pipe(notify({
+            message: 'sass task ok'
         }));
 });
 

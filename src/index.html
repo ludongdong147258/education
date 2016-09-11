@@ -84,6 +84,9 @@
         </ion-side-menu-content>
         <ion-side-menu side="right">
             <ul class="list nav-list menu">
+                <li class="item" ng-click="toggleRight()" ui-sref="home">
+                    <a class="energized"><i class="home-icon"></i>首页</a>
+                </li>
                 <li class="item" ng-click="toggleRight()" ng-show="user" ui-sref="personal">
                     <a class="energized"><i class="self-icon"></i>个人中心</a>
                 </li>

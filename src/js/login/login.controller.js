@@ -31,7 +31,7 @@ angular.module('education')
         };
         // 返回
         $scope.back = function() {
-            // $state.go('news');
+            $state.go('home');
         };
         $scope.login = function() {
             var flag = obj.validateInput();
