@@ -37,9 +37,11 @@ angular.module('education')
                         } else {
                             $scope.hasMoreData = false;
                         }
+                        $scope.$broadcast('scroll.refreshComplete');
                     }
                 }, function(error) {
                     console.log(error);
+                    $scope.$broadcast('scroll.refreshComplete');
                 });
             },
             getSubjects: function() {

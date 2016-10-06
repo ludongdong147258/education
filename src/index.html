@@ -86,10 +86,10 @@
         </ion-side-menu-content>
         <ion-side-menu side="right">
             <ul class="list nav-list menu">
-                <li class="item" ng-click="toggleRight()" ui-sref="home">
+                <li menu-close class="item" ng-click="toggleRight()" ui-sref="home">
                     <a class="energized"><i class="home-icon"></i>首页</a>
                 </li>
-                <li class="item" ng-click="toggleRight()" ng-show="user" ui-sref="personal">
+                <li menu-close class="item" ng-click="toggleRight()" ng-show="user" ui-sref="personal">
                     <a class="energized"><i class="self-icon"></i>个人中心</a>
                 </li>
                 <!-- <li ng-show="user" class="item" ng-click="toggleRight()" ui-sref="{{item.state}}" ng-repeat="item in listItems">
@@ -113,10 +113,10 @@
                 <li class="item" ng-click="toggleRight()" ng-hide="user" ui-sref="login">
                     <a class="energized"><i class="login-icon"></i>账号登录</a>
                 </li> -->
-                <li class="item" ng-click="toggleRight()" ng-show="user" ui-sref="online">
+                <li menu-close class="item" ng-click="toggleRight()" ng-show="user" ui-sref="online">
                     <a class="energized"><i class="zixun-icon"></i>在线咨询</a>
                 </li>
-                <li class="item" ng-click="logout()" ng-show="user">
+                <li menu-close class="item" ng-click="logout()" ng-show="user">
                     <a class="energized"><i class="exit-icon"></i>退出登录</a>(ID:{{user.id}})
                 </li>
             </ul>

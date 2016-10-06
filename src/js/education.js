@@ -289,11 +289,11 @@ angular.module('education', ['ngResource', 'ionic', 'ngFileUpload', 'monospaced.
             }, delayTime);
         };
         $scope.toggleRight = function() {
-            $ionicSideMenuDelegate.toggleRight();
+            $ionicSideMenuDelegate.toggleRight(true);
         };
         $scope.goToSearch = function() {
             $state.go('search');
-        }
+        };
         $scope.logout = function() {
             $rootScope.user = null;
             localStorage.removeItem('token');
